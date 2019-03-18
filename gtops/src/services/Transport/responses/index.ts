@@ -1,0 +1,1 @@
+export { IGetUserInfoResponse } from "./IGetUserInfoResponse";
