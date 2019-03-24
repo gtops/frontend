@@ -1,0 +1,63 @@
+import {Table} from "../../components/table";
+import * as React from "react";
+import {Transport} from "../../services/Transport";
+import {AxiosError, AxiosResponse} from "axios";
+import {IGetUserInfoResponse} from "../../services/Transport/responses";
+import {autobind} from "core-decorators";
+import {observer} from "mobx-react";
+import {UserResultStore} from "./UserResultStore";
+import {get} from "lodash";
+import {ICompetitionResult} from "../../services/Transport/responses/ICompetitionResult";
+import "./UserResult.scss";
+
+@autobind
+@observer
+export class UserResult extends React.Component {
+    private readonly transport: Transport;
+    private readonly store = new UserResultStore();
+
+    constructor(props: {}) {
+        super(props);
+        this.transport = new Transport();
+    }
+
+    componentDidMount(): void {
+        const id = window.location.pathname.split("/")[2];
+        this.transport.getUserInfo(id).then(this.onSuccess).catch(this.onError)
+    }
+
+    private onSuccess(response: AxiosResponse<IGetUserInfoResponse>): void {
+        const data = get(response, "data");
+        const result = get(data, "message");
+        this.store.data = result.map((item: ICompetitionResult) => {
+            const date = item.date_of_competition.split("T")[0];
+            return {
+                ...item,
+                date_of_competition: date
+            }
+        })
+    }
+
+    private onError(error: AxiosError): void {
+        if (!error.response) {
+            return;
+        }
+        this.store.error = error.response.data.title;
+    }
+
+    render(): React.ReactNode {
+        return (
+            <div className={"user-result"}>
+                {
+                    this.store.error !== ""
+                        ? (
+                            <div className={"error"}>
+                                {this.store.error}
+                            </div>
+                        )
+                        : <Table columns={this.store.columns} data={this.store.data}/>
+                }
+            </div>
+        )
+    }
+}

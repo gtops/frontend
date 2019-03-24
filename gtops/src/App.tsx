@@ -1,18 +1,27 @@
 import * as React from 'react';
 import {Route, Switch} from "react-router";
 import {BrowserRouter} from 'react-router-dom';
-import {Home} from "./screens/home/index";
-import {NotFound} from "./screens/not-found/index";
+import {Home} from "./screens/home";
+import {NotFound} from "./screens/not-found";
+import {Header} from "./components/header";
+import "./App.scss";
+import {Footer} from "./components/footer";
+import {UserResult} from "./screens/user-result";
 
 class App extends React.Component {
     render(): React.ReactNode {
         return (
-            <BrowserRouter>
-                <Switch>
-                    <Route exact path="/" component={Home}/>
-                    <Route component={NotFound}/>
-                </Switch>
-            </BrowserRouter>
+            <>
+                <Header/>
+                <BrowserRouter>
+                    <Switch>
+                        <Route exact path="/" component={Home}/>
+                        <Route path="/user-result" component={UserResult}/>
+                        <Route component={NotFound}/>
+                    </Switch>
+                </BrowserRouter>
+                <Footer/>
+            </>
         );
     }
 }

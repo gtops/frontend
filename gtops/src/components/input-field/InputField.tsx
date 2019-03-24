@@ -20,8 +20,9 @@ export class InputField extends React.Component<IInputFieldProps> {
 
     render(): React.ReactNode {
         return (
-            <div>
+            <div className={this.props.className || ""}>
                 <input
+                    className={"input__field"}
                     onChange={this.onChange}
                     value={this.store.value}
                 />
