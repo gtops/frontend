@@ -1,6 +1,7 @@
 import {ITableColumn} from "./ITableColumn";
+import {ITableData} from "./ITableData";
 
 export interface ITableProps {
     columns?: ITableColumn[];
-    data?: object[];
+    data?: ITableData[];
 }

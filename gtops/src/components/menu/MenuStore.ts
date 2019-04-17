@@ -1,6 +1,17 @@
 import {observable} from "mobx";
+import {IMenuItem} from "./IMenuItem";
 
 export class MenuStore {
-    @observable items = ["Меню 1", "Меню 2", "Меню 3", "Меню 4", "Меню 5"];
+    @observable items: IMenuItem[] = [
+        {title: "Калькулятор", onClick: MenuStore.onCalcItemClick},
+        {title: "Меню 2", onClick: MenuStore.onCalcItemClick},
+        {title: "Меню 3", onClick: MenuStore.onCalcItemClick},
+        {title: "Меню 4", onClick: MenuStore.onCalcItemClick},
+        {title: "Меню 5", onClick: MenuStore.onCalcItemClick}
+    ];
     @observable inputValue = "";
+
+    private static onCalcItemClick(): void {
+        window.location.replace("/calculator")
+    }
 }

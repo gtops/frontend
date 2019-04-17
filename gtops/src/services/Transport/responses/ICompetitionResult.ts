@@ -4,4 +4,5 @@ export interface ICompetitionResult {
     primary_result: number;
     secondary_result: number;
     unique_number: string;
+    trial_id: string;
 }

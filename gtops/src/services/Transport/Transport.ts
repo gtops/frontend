@@ -1,7 +1,10 @@
 import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
 import {get} from "lodash";
 import {EApiRoutes} from "./EApiRoutes";
-import {IGetUserInfoResponse} from "./responses";
+import {IGetUserInfoResponse, ILoginResponse} from "./responses";
+import {ILoginParams} from "./params";
+import {IGetTrialsParams} from "./params/IGetTrialsParams";
+import {IGetTrialsResponse} from "./responses/IGetTrialsResponse";
 
 export class Transport {
     private static BASE_URL: string;
@@ -17,4 +20,16 @@ export class Transport {
     async getUserInfo(id: string): Promise<AxiosResponse<IGetUserInfoResponse>> {
         return this.client.get(`${EApiRoutes.GET_USER_INFO}`.replace("{:uid}", id));
     }
+
+    async login(params: ILoginParams): Promise<AxiosResponse<ILoginResponse>> {
+        return this.client.post(EApiRoutes.LOGIN, params);
+    }
+
+    async getTrials(params: IGetTrialsParams): Promise<AxiosResponse<IGetTrialsResponse>> {
+        return this.client.post(EApiRoutes.GET_TRIALS, params);
+    }
+
+    // POST /api/participant/trial - список соревенований
+    // gender_id - айдишник пола
+    // old - возраст
 }

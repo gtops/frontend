@@ -33,9 +33,9 @@ export class Menu extends React.Component<IMenuProps> {
     private getItems(): React.ReactNode {
         return (
             this.store.items.map((item, index) => (
-                <div className={"item"} key={index}>
+                <div className={"item"} key={index} onClick={item.onClick}>
                     <div className={"item__border"}/>
-                    <div className={"item__content"}>{item}</div>
+                    <div className={"item__content"}>{item.title}</div>
                 </div>
             ))
         )

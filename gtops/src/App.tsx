@@ -7,6 +7,9 @@ import {Header} from "./components/header";
 import "./App.scss";
 import {Footer} from "./components/footer";
 import {UserResult} from "./screens/user-result";
+import {Login} from "./screens/login/Login";
+import {Profile} from "./screens/profile";
+import {Calculator} from "./screens/calculator";
 
 class App extends React.Component {
     render(): React.ReactNode {
@@ -16,7 +19,10 @@ class App extends React.Component {
                 <BrowserRouter>
                     <Switch>
                         <Route exact path="/" component={Home}/>
+                        <Route exact path="/login" component={Login}/>
+                        <Route exact path="/profile" component={Profile}/>
                         <Route path="/user-result" component={UserResult}/>
+                        <Route path="/calculator" component={Calculator}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </BrowserRouter>

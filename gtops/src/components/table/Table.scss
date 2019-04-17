@@ -11,6 +11,16 @@
     justify-content: space-between;
   }
 
+  &__sub-header {
+    height: 50px;
+    color: $text-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    font-size: medium;
+  }
+
   &__body {
     display: flex;
   }
@@ -18,7 +28,8 @@
   &__line {
     display: flex;
     border-bottom: 1px solid $main-color;
-    height: 50px;
+    min-height: 50px;
+    align-items: center;
   }
 
   &-item {
@@ -30,5 +41,6 @@
     color: $text-color;
     text-transform: uppercase;
     font-family: 'Noto Sans', sans-serif;
+    text-align: center;
   }
 }

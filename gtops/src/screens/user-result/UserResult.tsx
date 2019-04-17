@@ -32,8 +32,10 @@ export class UserResult extends React.Component {
         this.store.data = result.map((item: ICompetitionResult) => {
             const date = item.date_of_competition.split("T")[0];
             return {
-                ...item,
-                date_of_competition: date
+                data: {
+                    ...item,
+                    date_of_competition: date
+                }
             }
         })
     }
