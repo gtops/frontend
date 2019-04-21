@@ -1,8 +1,6 @@
 import {observable} from "mobx";
-import {ICompetitionResult} from "../../services/Transport/responses/ICompetitionResult";
 import {autobind} from "core-decorators";
-import {ITableColumn} from "../../components/table";
-import {ITableData} from "../../components/table/ITableData";
+import {ITableColumn, ITableData} from "../../components/table";
 import * as React from "react";
 
 @autobind

@@ -10,6 +10,7 @@ import {UserResult} from "./screens/user-result";
 import {Login} from "./screens/login/Login";
 import {Profile} from "./screens/profile";
 import {Calculator} from "./screens/calculator";
+import {Registration} from "./screens/registration";
 
 class App extends React.Component {
     render(): React.ReactNode {
@@ -23,10 +24,11 @@ class App extends React.Component {
                         <Route exact path="/profile" component={Profile}/>
                         <Route path="/user-result" component={UserResult}/>
                         <Route path="/calculator" component={Calculator}/>
+                        <Route path="/user/invite" component={Registration}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </BrowserRouter>
-                <Footer/>
+                {/*<Footer/>*/}
             </>
         );
     }

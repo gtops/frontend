@@ -1,6 +1,6 @@
 import * as React from "react";
 import {InputField} from "../../components/input-field";
-import {Radio} from "../../components/radio-button/Radio";
+import {Radio} from "../../components/radio-button";
 import "./Calculator.scss";
 import {ERegExp} from "../../components/input-field/ERegExp";
 import {CalculatorController} from "./CalculatorController";
@@ -9,7 +9,8 @@ import {CalculatorStore} from "./CalculatorStore";
 import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
 import {get} from "lodash";
-import {ICompetitionResult} from "../../services/Transport/responses/ICompetitionResult";
+import {ICompetitionResult} from "../../services/Transport/responses";
+import {EGender} from "./EGender";
 
 @autobind
 @observer
@@ -27,9 +28,9 @@ export class Calculator extends React.Component {
             {accessor: "name_of_trial", title: "Соревнование", className: "name"},
             {accessor: "primary_result", title: "Первичный результат", cell: this.store.cell},
             {accessor: "secondary_result", title: "Приведенный результат"},
-            {accessor: "gold", title: "золото"},
-            {accessor: "serebro", title: "серебро"},
-            {accessor: "bronza", title: "бронза"},
+            {accessor: "result_for_gold", title: "золото"},
+            {accessor: "result_for_silver", title: "серебро"},
+            {accessor: "result_for_bronze", title: "бронза"},
         ]
     }
 
@@ -39,7 +40,7 @@ export class Calculator extends React.Component {
                 <div className={"calculator__user-data"}>
                     <div className={"gender"}>
                         <span>Пол: </span>
-                        <Radio values={["мужской", "женский"]} onChange={this.controller.onRadioChange}/>
+                        <Radio values={[EGender.MALE, EGender.FEMALE]} onChange={this.controller.onRadioChange}/>
                     </div>
                     <label>Возраст:
                         <InputField

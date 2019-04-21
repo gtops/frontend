@@ -7,6 +7,7 @@ import {Transport} from "../../services/Transport";
 import {AxiosResponse} from "axios";
 import {IGetUserInfoResponse, ILoginResponse} from "../../services/Transport/responses";
 import {UserStore} from "../../components/UserStore/UserStore";
+import {SingletonClass} from "../../components/UserStore/SingletoneClass";
 
 @autobind
 export class Login extends React.Component {
@@ -44,7 +45,9 @@ export class Login extends React.Component {
     }
 
     onSuccess(response: AxiosResponse<ILoginResponse>): void {
-        UserStore.Instance.token = response.data.token;
-        window.location.replace("/profile")
+        console.log("Login.onSuccess", response);
+        UserStore.getInstance().token = response.data.token;
+        window.location.replace("/profile");
+        SingletonClass.getInstance().addPoints(10);
     }
 }

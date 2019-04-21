@@ -40,7 +40,6 @@ export class InputField extends React.Component<IInputFieldProps> {
         const value = event.target.value;
         if (!isUndefined(this.props.mask) && !isEmpty(value)) {
             const mask = new RegExp(this.props.mask);
-            console.log(mask.test(value));
             if (mask.test(value) && this.checkDouble(value)) {
                 this.store.value = value;
                 attempt(this.props.setValue!, this.store.value);

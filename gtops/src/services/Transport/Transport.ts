@@ -2,8 +2,7 @@ import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
 import {get} from "lodash";
 import {EApiRoutes} from "./EApiRoutes";
 import {IGetUserInfoResponse, ILoginResponse} from "./responses";
-import {ILoginParams} from "./params";
-import {IGetTrialsParams} from "./params/IGetTrialsParams";
+import {IGetCalculationResultParams, ILoginParams, IGetTrialsParams} from "./params";
 import {IGetTrialsResponse} from "./responses/IGetTrialsResponse";
 
 export class Transport {
@@ -29,7 +28,8 @@ export class Transport {
         return this.client.post(EApiRoutes.GET_TRIALS, params);
     }
 
-    // POST /api/participant/trial - список соревенований
-    // gender_id - айдишник пола
-    // old - возраст
+    async getCalculationResult(params: IGetCalculationResultParams): Promise<AxiosResponse<IGetTrialsResponse>> {
+        return this.client.post(EApiRoutes.GET_CALCULATED_RESULT, params);
+    }
+
 }

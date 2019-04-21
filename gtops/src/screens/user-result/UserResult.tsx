@@ -2,12 +2,11 @@ import {Table} from "../../components/table";
 import * as React from "react";
 import {Transport} from "../../services/Transport";
 import {AxiosError, AxiosResponse} from "axios";
-import {IGetUserInfoResponse} from "../../services/Transport/responses";
+import {IGetUserInfoResponse, ICompetitionResult} from "../../services/Transport/responses";
 import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
 import {UserResultStore} from "./UserResultStore";
 import {get} from "lodash";
-import {ICompetitionResult} from "../../services/Transport/responses/ICompetitionResult";
 import "./UserResult.scss";
 
 @autobind

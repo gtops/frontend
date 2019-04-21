@@ -4,14 +4,25 @@ import {autobind} from "core-decorators";
 import "./Menu.scss";
 import {InputField} from "../input-field";
 import {IMenuProps} from "./IMenuProps";
+import {UserStore} from "../UserStore/UserStore";
+import {SingletonClass} from "../UserStore/SingletoneClass";
 
 @autobind
 export class Menu extends React.Component<IMenuProps> {
     private readonly store = new MenuStore();
 
+    componentDidMount(): void {
+        console.log(SingletonClass.getInstance().getScore());
+    }
+
     render(): React.ReactNode {
         return (
             <div className={"menu"}>
+                {
+                    UserStore.getInstance().isLogin()
+                        ? <div className={"profile"} onClick={this.redirectToProfile}>Profile</div>
+                        : void 0
+                }
                 <div className={"menu__items"}>
                     {this.getItems()}
                 </div>
@@ -43,5 +54,9 @@ export class Menu extends React.Component<IMenuProps> {
 
     private setValue(value: string): void {
         this.store.inputValue = value;
+    }
+
+    private redirectToProfile(): void {
+        window.location.replace("/profile");
     }
 }

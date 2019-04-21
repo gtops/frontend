@@ -16,16 +16,18 @@
     justify-content: center;
     background: white;
     width: 600px;
-    height: 400px;
+    min-height: 345px;
     border-radius: 6px;
     box-shadow: 0 0 10px 0 #bfc4cf;
     font-family: 'Noto Sans', sans-serif;
+    padding-bottom: 30px;
 
     .input__field {
       height: 30px;
       border: none;
       border-bottom: 1px solid #bfc4cf;
       width: 500px;
+      border-radius: 0;
       font-size: 18px;
       margin-bottom: 20px;
       background: transparent;
