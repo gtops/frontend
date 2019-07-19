@@ -6,6 +6,7 @@ import {IInputFieldProps} from "./IInputFieldProps";
 import {autobind} from "core-decorators";
 import "./InputField.scss";
 import {ERegExp} from "./ERegExp";
+import classNames from "classnames";
 
 @observer
 @autobind
@@ -23,7 +24,7 @@ export class InputField extends React.Component<IInputFieldProps> {
     render(): React.ReactNode {
         return (
             <input
-                className={"input__field"}
+                className={classNames({"input__field": true, "read-only": this.props.isReadOnly})}
                 onChange={this.onChange}
                 value={this.store.value}
                 type={this.props.type}
@@ -32,6 +33,7 @@ export class InputField extends React.Component<IInputFieldProps> {
                 name={this.props.name}
                 accessKey={this.props.accessKey}
                 placeholder={this.props.placeholder}
+                readOnly={this.props.isReadOnly}
             />
         );
     }

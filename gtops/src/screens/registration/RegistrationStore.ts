@@ -1,5 +1,5 @@
 import {observable} from "mobx";
 
 export class RegistrationStore {
-    // @observable email: string;
+    @observable email: string = "";
 }

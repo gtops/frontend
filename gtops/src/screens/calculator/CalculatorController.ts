@@ -5,6 +5,7 @@ import {autobind} from "core-decorators";
 import {isNil} from "lodash";
 import {IGetCalculationResultParams} from "../../services/Transport/params";
 import {EGender} from "./EGender";
+import {ICompetitionResult} from "../../services/Transport/responses";
 
 @autobind
 export class CalculatorController {
@@ -34,6 +35,21 @@ export class CalculatorController {
     onRadioChange(value: string): void {
         this.store.gender = value as EGender;
         this.onBlur();
+    }
+
+    onComponentDidMount(): void {
+        this.transport.getCategories().then(this.store.onSuccessGetCategories).catch(this.store.onError);
+    }
+
+    onClickVisible(id: string): void {
+        this.store.data = this.store.data.map(item => {
+            const data = item.data as ICompetitionResult;
+            return {
+                data,
+                isVisible: data.trial_id === id ? false : item.isVisible
+            }
+
+        })
     }
 
     onBlurInput(event: React.FocusEvent<HTMLInputElement>): void {

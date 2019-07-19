@@ -10,17 +10,20 @@
   align-items: center;
   justify-content: center;
 
+  p {
+    cursor: default;
+  }
   .form {
     display: flex;
     align-items: center;
     justify-content: center;
     background: white;
     width: 600px;
-    min-height: 345px;
+    min-height: 320px;
     border-radius: 6px;
     box-shadow: 0 0 10px 0 #bfc4cf;
     font-family: 'Noto Sans', sans-serif;
-    padding-bottom: 30px;
+    padding: 30px 0;
 
     .input__field {
       height: 30px;

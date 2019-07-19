@@ -34,7 +34,8 @@ export class UserResult extends React.Component {
                 data: {
                     ...item,
                     date_of_competition: date
-                }
+                },
+                isVisible: true,
             }
         })
     }

@@ -11,6 +11,17 @@
     margin-top: 10px;
   }
 
+  .visible-control {
+    display: flex;
+    border: 1px solid gray;
+    border-radius: 4px;
+    order: -1;
+    margin-right: 10px;
+    flex: none;
+    font-size: 8px;
+    cursor: pointer;
+  }
+
   .radio-form {
     margin-top: 0;
     margin-left: 10px;

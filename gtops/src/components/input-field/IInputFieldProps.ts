@@ -10,6 +10,7 @@ export interface IInputFieldProps {
     name?: string;
     placeholder?: string;
     accessKey?: string;
+    isReadOnly?: boolean;
 
     onBlur?(event: React.FocusEvent<HTMLInputElement>): void;
 

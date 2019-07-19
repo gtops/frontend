@@ -5,9 +5,8 @@ import {LoginStore} from "./img/LoginStore";
 import {autobind} from "core-decorators";
 import {Transport} from "../../services/Transport";
 import {AxiosResponse} from "axios";
-import {IGetUserInfoResponse, ILoginResponse} from "../../services/Transport/responses";
-import {UserStore} from "../../components/UserStore/UserStore";
-import {SingletonClass} from "../../components/UserStore/SingletoneClass";
+import {ILoginResponse} from "../../services/Transport/responses";
+import {UserStore} from "../../components/user-store";
 
 @autobind
 export class Login extends React.Component {
@@ -48,6 +47,5 @@ export class Login extends React.Component {
         console.log("Login.onSuccess", response);
         UserStore.getInstance().token = response.data.token;
         window.location.replace("/profile");
-        SingletonClass.getInstance().addPoints(10);
     }
 }

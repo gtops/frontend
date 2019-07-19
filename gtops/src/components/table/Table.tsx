@@ -61,21 +61,26 @@ export class Table extends React.Component<ITableProps> {
         return (
             this.store.data.map((line, index) => {
                 if (isUndefined(get(line, "header"))) {
-                    return (
-                        <div key={index} className={"table__line"}>
-                            {
-                                this.store.columns.map((column, index) => {
-                                        return (
-                                            <div key={index} className={`table-item ${column.className || ""}`}>
-                                                {get(get(line, "data"), column.accessor)}
-                                                {Table.getCell(line, column.cell)}
-                                            </div>
-                                        )
-                                    }
-                                )
-                            }
-                        </div>
-                    )
+                    if (get(line, "isVisible")) {
+                        return (
+                            <div key={index} className={"table__line"}>
+                                {
+                                    this.store.columns.map((column, index) => {
+
+                                            return (
+                                                <div key={index} className={`table-item ${column.className || ""}`}>
+                                                    {get(get(line, "data"), column.accessor)}
+                                                    {Table.getCell(line, column.cell)}
+                                                </div>
+                                            )
+                                        }
+                                    )
+                                }
+                            </div>
+                        )
+                    } else {
+                        return void 0
+                    }
                 }
                 return <div className={"table__sub-header"}>{get(line, "header")}</div>
             })
