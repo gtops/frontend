@@ -1,4 +1,4 @@
 export interface IGetTrialsParams {
-    gender_id: number;
-    old: number;
+    gender: number;
+    age: number;
 }

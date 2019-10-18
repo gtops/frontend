@@ -1,11 +1,72 @@
-.header {
-  margin: 0 auto;
-  background-color: #bb2b2e;
+a {
+  text-decoration: none;
+}
 
-  &__image {
-    width: 720px;
-    margin: 0 auto;
-    height: 180px;
-    background: url(./img/gto.png) no-repeat;
+.header {
+  background-color: #010E8A;
+  height: 95px;
+  position: fixed;
+  width: 100%;
+
+  &__container {
+    padding: 0 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  @media (max-width: 600px) {
+    padding: 0 10px;
+  }
+
+  &__menu {
+    background-image: url("./img/menu.svg");
+  }
+
+  &__profile {
+    background-image: url("./img/profile.svg");
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &-text {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 28px;
+      line-height: 33px;
+      color: white;
+
+      @media (max-width: 600px) {
+        font-size: 24px;
+      }
+
+      @media (max-width: 400px) {
+        display: none;
+      }
+    }
+
+    &-icon {
+      width: 80px;
+      height: 53px;
+      background: url("./img/logo.svg") no-repeat;
+      margin-right: 30px;
+
+      @media (max-width: 400px) {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .icon {
+    height: 40px;
+    width: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
   }
 }

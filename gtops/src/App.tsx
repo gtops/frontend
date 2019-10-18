@@ -11,12 +11,13 @@ import {Login} from "./screens/login/Login";
 import {Profile} from "./screens/profile";
 import {Calculator} from "./screens/calculator";
 import {Registration} from "./screens/registration";
+import {Test} from "./screens/test/Test";
 
 class App extends React.Component {
     render(): React.ReactNode {
         return (
             <>
-                <Header/>
+                {/*<Header/>*/}
                 <BrowserRouter>
                     <Switch>
                         <Route exact path="/" component={Home}/>
@@ -25,6 +26,7 @@ class App extends React.Component {
                         <Route path="/user-result" component={UserResult}/>
                         <Route path="/calculator" component={Calculator}/>
                         <Route path="/user/invite" component={Registration}/>
+                        <Route path="/test" component={Test}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </BrowserRouter>

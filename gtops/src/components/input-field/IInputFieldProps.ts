@@ -9,7 +9,7 @@ export interface IInputFieldProps {
     maxLength?: number;
     name?: string;
     placeholder?: string;
-    accessKey?: string;
+    accessKey?: number;
     isReadOnly?: boolean;
 
     onBlur?(event: React.FocusEvent<HTMLInputElement>): void;

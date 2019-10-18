@@ -5,6 +5,7 @@ import {IGetCategoriesResponse, IGetEmailResponse, IGetUserInfoResponse, ILoginR
 import {IGetCalculationResultParams, ILoginParams, IGetTrialsParams, IInviteParams} from "./params";
 import {IGetTrialsResponse} from "./responses/IGetTrialsResponse";
 import {IRole} from "../../components/user-store";
+import {ICalculateResponse} from "./responses/ICalculateResponse";
 
 export class Transport {
     private static BASE_URL: string;
@@ -26,15 +27,23 @@ export class Transport {
     }
 
     async getTrials(params: IGetTrialsParams): Promise<AxiosResponse<IGetTrialsResponse>> {
-        return this.client.post(EApiRoutes.GET_TRIALS, params);
+        return this.client.get(
+            `${EApiRoutes.GET_TRIALS}`
+                .replace("{:age}", params.age.toString())
+                .replace("{:gender}", params.gender.toString())
+        );
     }
 
     async getCategories(): Promise<AxiosResponse<IGetCategoriesResponse[]>> {
         return this.client.get(EApiRoutes.GET_CATEGORIES);
     }
 
-    async getCalculationResult(params: IGetCalculationResultParams): Promise<AxiosResponse<IGetTrialsResponse>> {
-        return this.client.post(EApiRoutes.GET_CALCULATED_RESULT, params);
+    async getCalculationResult(params: IGetCalculationResultParams): Promise<AxiosResponse<ICalculateResponse>> {
+        return this.client.get(
+            `${EApiRoutes.GET_CALCULATED_RESULT}`
+                .replace("{:firstResult}", params.primary_result.toString())
+                .replace("{:trialId}", params.trial_id.toString())
+        );
     }
 
     async getRoles(): Promise<AxiosResponse<IRole[]>> {

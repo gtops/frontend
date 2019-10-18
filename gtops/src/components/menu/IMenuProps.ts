@@ -1,3 +1,3 @@
 export interface IMenuProps {
-    onClickSearchButton?(): void;
+    isVisible?: boolean;
 }

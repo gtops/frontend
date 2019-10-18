@@ -22,8 +22,8 @@ export class CalculatorController {
             return;
         }
         this.store.data.splice(0, this.store.data.length);
-        const genderId = this.store.gender === EGender.MALE ? 1 : 2;
-        this.transport.getTrials({gender_id: genderId, old: res})
+        const genderId = this.store.gender === EGender.MALE ? 1 : 0;
+        this.transport.getTrials({gender: genderId, age: res})
             .then(this.store.onSuccessGetTrials)
             .catch(this.store.onError)
     }
@@ -62,11 +62,12 @@ export class CalculatorController {
     }
 
     private getCalculationResult(trial_id: number, primary_result: number): void {
+        this.store.activeId = trial_id;
         const params: IGetCalculationResultParams = {
             age_category_id: this.store.ageCategoryId,
             primary_result,
             trial_id,
-            gender_id: this.store.gender === EGender.MALE ? 1 : 2,
+            gender_id: this.store.gender === EGender.MALE ? 1 : 0,
         };
         this.transport
             .getCalculationResult(params)
