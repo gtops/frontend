@@ -31,7 +31,8 @@ export class Profile extends React.Component {
     render(): React.ReactNode {
         return (
             <div className={"profile"}>
-                <div>profile</div>
+                <div>Вы вошли как</div>
+                <div>Введите почту для отправки приглашения</div>
                 <InputField setValue={this.setValue}/>
                 <Select
                     isSearchable={true}

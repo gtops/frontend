@@ -17,7 +17,7 @@ class App extends React.Component {
     render(): React.ReactNode {
         return (
             <>
-                {/*<Header/>*/}
+                {<Header/>}
                 <BrowserRouter>
                     <Switch>
                         <Route exact path="/" component={Home}/>
