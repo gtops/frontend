@@ -52,19 +52,28 @@ export class Calculator extends React.Component {
                         <InputField
                             mask={ERegExp.ONLY_NUMBERS}
                             maxLength={3}
-                            onBlur={this.controller.onBlur}
                             setValue={this.controller.setOld}
                         />
                         (полных лет)
                     </label>
+                    <div className={"button"} onClick={this.controller.onSearchButtonClick}>Получить</div>
+                    {
+                        this.store.ageCategory
+                            ? (
+                                <div className={"age-category"}>
+                                    Ваша возрастная ступень: {this.store.ageCategory}
+                                </div>
+                            )
+                            : void 0
+                    }
                 </div>
                 <Table columns={this.store.columns} data={this.store.data}/>
             </div>
         )
     }
 
-    private getOptions(): {value: string, label: string}[] {
-        const res: {value: string, label: string}[] = [];
+    private getOptions(): { value: string, label: string }[] {
+        const res: { value: string, label: string }[] = [];
         this.store.categories.forEach(item => {
             const genderId = this.store.gender === EGender.MALE ? 1 : 2;
             if (item.gender_id === genderId) {

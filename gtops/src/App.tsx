@@ -12,6 +12,7 @@ import {Profile} from "./screens/profile";
 import {Calculator} from "./screens/calculator";
 import {Registration} from "./screens/registration";
 import {Test} from "./screens/test/Test";
+import {EPath} from "./EPath";
 
 class App extends React.Component {
     render(): React.ReactNode {
@@ -20,13 +21,12 @@ class App extends React.Component {
                 {<Header/>}
                 <BrowserRouter>
                     <Switch>
-                        <Route exact path="/" component={Home}/>
-                        <Route exact path="/login" component={Login}/>
-                        <Route exact path="/profile" component={Profile}/>
-                        <Route path="/user-result" component={UserResult}/>
-                        <Route path="/calculator" component={Calculator}/>
-                        <Route path="/user/invite" component={Registration}/>
-                        <Route path="/test" component={Test}/>
+                        <Route exact path={EPath.HOME} component={Home}/>
+                        <Route exact path={EPath.LOGIN} component={Login}/>
+                        <Route exact path={EPath.PROFILE} component={Profile}/>
+                        <Route path={EPath.USER_RESULT} component={UserResult}/>
+                        <Route path={EPath.CALCULATOR} component={Calculator}/>
+                        <Route path={EPath.INVITE_USER} component={Registration}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </BrowserRouter>

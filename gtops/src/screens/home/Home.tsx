@@ -20,6 +20,7 @@ export class Home extends React.Component {
                     {
                         this.store.cards.map((item, index) =>
                             <div key={index} className={`card ${item.className}`}>
+                                <a className={"card__link"} href={item.link}></a>
                                 <div className={"card__content"}>
                                     <div className={`card__img ${item.className}`}/>
                                     <div className={"card__title"}>{item.title}</div>

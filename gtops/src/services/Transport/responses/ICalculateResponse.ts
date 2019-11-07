@@ -1,5 +1,3 @@
 export interface ICalculateResponse {
-    data: {
-        secondResult: number;
-    }
+    secondResult: number
 }

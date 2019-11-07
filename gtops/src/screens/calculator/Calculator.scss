@@ -2,13 +2,21 @@
   &__user-data {
     margin-left: 20px;
     margin-bottom: 20px;
-  }
 
-  .gender {
-    display: flex;
-    margin-bottom: 20px;
-    align-items: center;
-    margin-top: 10px;
+    .button {
+      margin-left: 20px;
+    }
+
+    .age-category {
+      margin-top: 20px;
+    }
+
+    .gender {
+      display: flex;
+      margin-bottom: 20px;
+      align-items: center;
+      margin-top: 10px;
+    }
   }
 
   .visible-control {
@@ -56,7 +64,7 @@
       color: lightgrey;
     }
 
-    ::-ms-input-placeholder { /* Microsoft Edge */
+    :-ms-input-placeholder { /* Microsoft Edge */
       color: lightgrey;
     }
   }

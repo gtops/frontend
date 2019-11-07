@@ -12,5 +12,8 @@ interface ITrialGroup {
 }
 
 export interface IGetTrialsResponse {
-    data: ITrial[];
+    data:  {
+        trials: ITrial[];
+        ageCategory: string;
+    };
 }

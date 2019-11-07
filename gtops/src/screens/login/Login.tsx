@@ -28,7 +28,7 @@ export class Login extends React.Component {
                             <p className={"field-name"}>Пароль</p>
                             <InputField type={"password"} setValue={this.store.setPassword}/>
                         </div>
-                        <div className={"button"} onClick={this.onSubmit}>Войти</div>
+                        <div className={"login__button"} onClick={this.onSubmit}>Войти</div>
                     </div>
                 </div>
             </div>

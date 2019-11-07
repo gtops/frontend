@@ -17,16 +17,17 @@ export class CalculatorStore {
     @observable columns: ITableColumn[] = [];
     @observable gender = EGender.MALE;
     @observable old = "";
-    @observable ageCategoryId = -1;
+    @observable ageCategory = "";
     @observable categories: IGetCategoriesResponse[] = [];
     @observable activeId = -1;
 
     onSuccessGetTrials(response: AxiosResponse<IGetTrialsResponse>): void {
         console.log("CalculatorStore.onSuccessGetTrials", response);
         const data = get(response, "data");
-        data.data.forEach((trial: ITrial) => {
+        data.data.trials.forEach((trial: ITrial) => {
             this.data.push({data: trial, isVisible: true})
         });
+        this.ageCategory = data.data.ageCategory;
     }
 
 
@@ -37,7 +38,7 @@ export class CalculatorStore {
             if (line.trialId != this.activeId) {
                 return item;
             }
-            line.secondResult = response.data.data.secondResult;
+            line.secondResult = response.data.secondResult;
             return {data: line, isVisible: true};
         }))
     }

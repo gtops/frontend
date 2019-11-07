@@ -1,3 +1,5 @@
+@import "../../Settings";
+
 .radio-form {
   display: flex;
   cursor: pointer;
@@ -13,8 +15,8 @@
     margin-right: 5px;
 
     &.checked {
-      border-color: #010E8A;
-      box-shadow: 0 0 0 1px #010E8A;
+      border-color: $mainColor;
+      box-shadow: 0 0 0 1px $mainColor;
       transition: border 200ms ease-in-out;
     }
   }

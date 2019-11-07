@@ -6,6 +6,7 @@ import {IGetCalculationResultParams, ILoginParams, IGetTrialsParams, IInvitePara
 import {IGetTrialsResponse} from "./responses/IGetTrialsResponse";
 import {IRole} from "../../components/user-store";
 import {ICalculateResponse} from "./responses/ICalculateResponse";
+import {IGetRolesResponse} from "./responses/IGetRolesResponse";
 
 export class Transport {
     private static BASE_URL: string;
@@ -46,22 +47,20 @@ export class Transport {
         );
     }
 
-    async getRoles(): Promise<AxiosResponse<IRole[]>> {
-        const options = {baseURL: Transport.BASE_URL, headers: {token: localStorage.getItem("token")}};
-        const client = axios.create(options);
-        return client.get(EApiRoutes.GET_ROLES);
+    async getRoles(): Promise<AxiosResponse<IGetRolesResponse>> {
+        return this.client.get(EApiRoutes.GET_ROLES);
     }
 
     async inviteUser(params: IInviteParams): Promise<AxiosResponse> {
-        const options = {baseURL: Transport.BASE_URL, headers: {token: localStorage.getItem("token")}};
-        const client = axios.create(options);
-        return client.post(EApiRoutes.INVITE, params);
+        return this.client.post(EApiRoutes.INVITE, params);
     }
 
     async getEmail(): Promise<AxiosResponse<IGetEmailResponse>> {
-        const options = {baseURL: Transport.BASE_URL, headers: {invite_token: localStorage.getItem("token")}};
         console.log(localStorage.getItem("token"));
-        const client = axios.create(options);
-        return client.get(EApiRoutes.GET_MAIL);
+        return this.client.get(EApiRoutes.GET_MAIL, Transport.getHeaderToken());
+    }
+
+    private static getHeaderToken() {
+        return {headers: {"invite_token": localStorage.getItem("token")}};
     }
 }

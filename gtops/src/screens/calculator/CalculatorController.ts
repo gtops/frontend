@@ -16,7 +16,7 @@ export class CalculatorController {
         this.store = store;
     }
 
-    onBlur(): void {
+    onSearchButtonClick(): void {
         const res = +this.store.old;
         if (isNil(res) || this.store.old === "") {
             return;
@@ -34,7 +34,7 @@ export class CalculatorController {
 
     onRadioChange(value: string): void {
         this.store.gender = value as EGender;
-        this.onBlur();
+        // this.onSearchButtonClick();
     }
 
     onComponentDidMount(): void {
@@ -64,7 +64,6 @@ export class CalculatorController {
     private getCalculationResult(trial_id: number, primary_result: number): void {
         this.store.activeId = trial_id;
         const params: IGetCalculationResultParams = {
-            age_category_id: this.store.ageCategoryId,
             primary_result,
             trial_id,
             gender_id: this.store.gender === EGender.MALE ? 1 : 0,

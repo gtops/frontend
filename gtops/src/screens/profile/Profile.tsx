@@ -9,23 +9,17 @@ import {Transport} from "../../services/Transport";
 import {ProfileStore} from "./ProfileStore";
 import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
+import {IGetRolesResponse} from "../../services/Transport/responses/IGetRolesResponse";
+import {ProfileController} from "./ProfileController";
 
 @autobind
 @observer
 export class Profile extends React.Component {
-    private readonly transport = new Transport();
     private readonly store = new ProfileStore();
+    private readonly controller = new ProfileController(this.store);
 
     componentDidMount(): void {
-        this.getAllRoles().then(this.onSuccess);
-    }
-
-    onSuccess(r: AxiosResponse<IRole[]>): void {
-        this.store.roles = r.data;
-    }
-
-    getAllRoles(): Promise<AxiosResponse<IRole[]>> {
-        return this.transport.getRoles();
+        this.controller.onComponentDidMount();
     }
 
     render(): React.ReactNode {
@@ -33,7 +27,7 @@ export class Profile extends React.Component {
             <div className={"profile"}>
                 <div>Вы вошли как</div>
                 <div>Введите почту для отправки приглашения</div>
-                <InputField setValue={this.setValue}/>
+                <InputField setValue={this.controller.setValue}/>
                 <Select
                     isSearchable={true}
                     options={
@@ -46,20 +40,10 @@ export class Profile extends React.Component {
                     className="react-select-container"
                     classNamePrefix="react-select"
                     placeholder={"Выберете роль"}
-                    onChange={this.onChange}
+                    onChange={this.controller.onChange}
                 />
-                <button onClick={this.onSubmit}>send</button>
+                <button onClick={this.controller.onSubmit}>send</button>
             </div>
         )
-    }
-    onSubmit(): void {
-        this.transport.inviteUser({role_id: this.store.selectedRoleId, email: this.store.email}).then(console.log)
-    }
-    onChange(selectedOption: any): void {
-        this.store.selectedRoleId = selectedOption.value;
-    }
-
-    setValue(value: string): void {
-        this.store.email = value;
     }
 }
