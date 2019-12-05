@@ -26,10 +26,10 @@ export class CalculatorStore extends Store {
     onSuccessGetTrials(response: AxiosResponse<IGetTrialsResponse>): void {
         console.log("CalculatorStore.onSuccessGetTrials", response);
         const data = get(response, "data");
-        data.data.trials.forEach((trial: ITrial) => {
+        data.trials.forEach((trial: ITrial) => {
             this.data.push({data: trial, isVisible: true})
         });
-        this.ageCategory = data.data.ageCategory;
+        this.ageCategory = data.ageCategory;
     }
 
 
