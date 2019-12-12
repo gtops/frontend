@@ -1,11 +1,13 @@
-import {ProfileStore} from "./ProfileStore";
+import {CommonProfileController} from "../common-profile/CommonProfileController";
+import {AdminProfileStore} from "./AdminProfileStore";
 import {autobind} from "core-decorators";
 
 @autobind
-export class ProfileController {
-    private readonly store: ProfileStore;
+export class AdminProfileController extends CommonProfileController {
+    protected store: AdminProfileStore;
 
-    constructor(store: ProfileStore){
+    constructor(store: AdminProfileStore) {
+        super();
         this.store = store;
     }
 

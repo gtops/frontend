@@ -2,12 +2,14 @@ import {isEmpty} from "lodash";
 import {autobind} from "core-decorators";
 import {IRole} from "./IRole";
 import {Transport} from "../../services/transport";
+import {ERoles} from "./ERoles";
 
 @autobind
 export class UserStore {
     private static _instance: UserStore;
     private readonly transport = new Transport();
     private roles: IRole[] = [];
+    private _role: ERoles = ERoles.ADMIN;
 
     constructor() {
         if (UserStore._instance){
@@ -31,6 +33,11 @@ export class UserStore {
     isLogin(): boolean {
         return !isEmpty(localStorage.getItem("AccessToken"));
     }
+
+    get role(): ERoles {
+        return this._role;
+    }
 }
 
 export { IRole } from "./IRole";
+export { ERoles } from "./ERoles";

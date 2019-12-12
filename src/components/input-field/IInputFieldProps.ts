@@ -12,6 +12,7 @@ export interface IInputFieldProps {
     accessKey?: string;
     isReadOnly?: boolean;
     value?: string;
+    id?: string;
 
     onKeyPress?(event: React.KeyboardEvent<HTMLInputElement>): void;
 

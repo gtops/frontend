@@ -1,7 +1,8 @@
 import {UserStore} from "../../components/user-store";
 import {RegistrationStore} from "./RegistrationStore";
 import {IRegistrationParams} from "../../services/transport/params";
-
+import {autobind} from "core-decorators";
+@autobind
 export class RegistrationController {
     private readonly store: RegistrationStore;
 

@@ -37,7 +37,6 @@ export class Calculator extends React.Component {
     }
 
     render(): React.ReactNode {
-        const options = this.getOptions();
         return (
             <div className={"calculator"}>
                 <div className={"calculator__user-data"}>
@@ -102,6 +101,7 @@ export class Calculator extends React.Component {
                 accessKey={result.trialId.toString()}
                 mask={ERegExp.ONLY_DOUBLE}
                 maxLength={10}
+                id={`input-${result.trialId}`}
             />
         )
     }

@@ -38,6 +38,7 @@ export class InputField extends React.Component<IInputFieldProps> {
                 readOnly={this.props.isReadOnly}
                 defaultValue={this.store.defaultValue}
                 onKeyPress={this.props.onKeyPress}
+                id={this.props.id}
             />
         );
     }

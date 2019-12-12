@@ -5,15 +5,16 @@ export interface ITrial {
     resultForGold: number;
     trialId: number;
     secondResult?: number;
-}
-
-interface ITrialGroup {
-    trial_group: ITrial[]
+    typeTime?: boolean;
+    firstResult?: number;
 }
 
 export interface IGetTrialsResponse {
-    data:  {
-        trials: ITrial[];
-        ageCategory: string;
-    };
+    groups: IGroup[]
+    ageCategory: string;
+}
+
+export interface IGroup {
+    necessary: boolean;
+    group: ITrial[]
 }
