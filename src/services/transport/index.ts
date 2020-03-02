@@ -6,7 +6,7 @@ import {
     ILoginParams,
     IGetTrialsParams,
     IInviteParams,
-    IRegistrationParams
+    IRegistrationParams, IAddOrgParams
 } from "./params";
 import {
     IGetTrialsResponse,
@@ -15,7 +15,8 @@ import {
     IGetCategoriesResponse,
     IValidateToken,
     IGetUserInfoResponse,
-    ILoginResponse
+    ILoginResponse,
+    IGetOrgsListResponse,
 } from "./responses";
 
 export class Transport {
@@ -34,7 +35,7 @@ export class Transport {
     }
 
     async login(params: ILoginParams): Promise<AxiosResponse<ILoginResponse>> {
-        return this.client.post(EApiRoutes.LOGIN, params, {headers: {Authorization: 'test'}});
+        return this.client.post(EApiRoutes.LOGIN, params);
     }
 
     async getTrials(params: IGetTrialsParams): Promise<AxiosResponse<IGetTrialsResponse>> {
@@ -71,6 +72,14 @@ export class Transport {
 
     async register(params: IRegistrationParams): Promise<AxiosResponse> {
         return this.client.post(EApiRoutes.REGISTRATION, params);
+    }
+
+    async inviteOrg(params: IAddOrgParams): Promise<AxiosResponse> {
+        return this.client.post(EApiRoutes.ORGANIZATION, params, Transport.getHeaderToken());
+    }
+
+    async getOrgsList(): Promise<AxiosResponse<IGetOrgsListResponse[]>> {
+        return this.client.get(EApiRoutes.ORGANIZATION);
     }
 
     private static getHeaderToken() {

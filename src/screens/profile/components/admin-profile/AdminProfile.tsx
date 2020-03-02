@@ -7,6 +7,7 @@ import {AdminProfileStore} from "./AdminProfileStore";
 import {Table} from "../../../../components/table";
 import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
+import {EPath} from "../../../../EPath";
 
 @autobind
 @observer
@@ -31,7 +32,7 @@ export class AdminProfile extends CommonProfile {
                         <h2>Список мероприятий</h2>
                         <Table columns={this.store.eventColumns} data={this.store.eventData}/>
                     </section>
-                    <section className={"invite-section"}>
+                    {/*<section className={"invite-section"}>
                         <h2>Пригласить пользователя</h2>
                         <p>Введите почту для отправки приглашения</p>
                         <InputField setValue={this.controller.setValue}/>
@@ -55,6 +56,58 @@ export class AdminProfile extends CommonProfile {
                                 ? <div>Приглашение успешно отправлено</div>
                                 : void 0
                         }
+                    </section>*/}
+
+                    <section className={"invite-org-section"}>
+                        <h2>Добавить организацию</h2>
+                        <form onSubmit={this.controller.handleSubmit}>
+                            <label>
+                                Название:
+                                <input name="name" onChange={this.controller.handleInputChange}
+                                       value={this.store.addFormValues.name}/>
+                            </label><br/>
+                            <label>
+                                Адрес:
+                                <input name="address" onChange={this.controller.handleInputChange}
+                                       value={this.store.addFormValues.address}/>
+                            </label><br/>
+                            <label>
+                                Ответственное лицо:
+                                <input name="leader" onChange={this.controller.handleInputChange}
+                                       value={this.store.addFormValues.leader}/>
+                            </label><br/>
+                            <label>
+                                Номер телефона:
+                                <input name="phoneNumber" onChange={this.controller.handleInputChange}
+                                       value={this.store.addFormValues.phoneNumber}/>
+                            </label><br/>
+                            <label>
+                                oqrn:
+                                <input name="oqrn" onChange={this.controller.handleInputChange}
+                                       value={this.store.addFormValues.oqrn}/>
+                            </label><br/>
+                            <label>
+                                paymentAccount:
+                                <input name="paymentAccount" onChange={this.controller.handleInputChange}
+                                       value={this.store.addFormValues.paymentAccount}/>
+                            </label><br/>
+                            <label>
+                                branch:
+                                <input name="branch" onChange={this.controller.handleInputChange}
+                                       value={this.store.addFormValues.branch}/>
+                            </label><br/>
+                            <label>
+                                bik:
+                                <input name="bik" onChange={this.controller.handleInputChange}
+                                       value={this.store.addFormValues.bik}/>
+                            </label><br/>
+                            <label>
+                                correspondentAccount:
+                                <input name="correspondentAccount" onChange={this.controller.handleInputChange}
+                                       value={this.store.addFormValues.correspondentAccount}/>
+                            </label>
+                            <input type={"submit"} value="Добавить"/>
+                        </form>
                     </section>
                 </div>
             </div>

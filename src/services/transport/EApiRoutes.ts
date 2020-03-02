@@ -8,4 +8,5 @@ export enum EApiRoutes {
     VALIDATE_TOKEN = "/api/v1/invite/isValid",
     GET_CATEGORIES = "/api/participant/categories",
     REGISTRATION = "/api/v1/auth/registration",
+    ORGANIZATION = "/api/v1/organization",
 }

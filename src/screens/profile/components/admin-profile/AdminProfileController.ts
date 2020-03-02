@@ -1,6 +1,7 @@
 import {CommonProfileController} from "../common-profile/CommonProfileController";
 import {AdminProfileStore} from "./AdminProfileStore";
 import {autobind} from "core-decorators";
+import * as React from "react";
 
 @autobind
 export class AdminProfileController extends CommonProfileController {
@@ -16,6 +17,11 @@ export class AdminProfileController extends CommonProfileController {
             .getRoles()
             .then(this.store.onSuccessGetRoles)
             .catch(console.error);
+
+        this.store.transport
+            .getOrgsList()
+            .then(this.store.onSuccessGetOrgsList)
+            .catch(this.store.onError);
     }
 
     onSubmit(): void {
@@ -38,5 +44,22 @@ export class AdminProfileController extends CommonProfileController {
         if (this.store.isSuccessPopupVisible) {
             this.store.isSuccessPopupVisible = false;
         }
+    }
+
+
+    handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        this.store.addFormValues[name] = value;
+    }
+
+    handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        this.store.transport
+            .inviteOrg(this.store.addFormValues)
+            .then(console.log)
+            .catch(this.store.onError);
     }
 }

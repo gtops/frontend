@@ -6,3 +6,4 @@ export {IValidateToken} from "./IValidateToken";
 export {IGetCategoriesResponse} from "./IGetCategoriesResponse";
 export {ICalculateResponse} from "./ICalculateResponse"
 export {IGetRolesResponse} from "./IGetRolesResponse"
+export {IGetOrgsListResponse} from "./IGetOrgsListResponse"

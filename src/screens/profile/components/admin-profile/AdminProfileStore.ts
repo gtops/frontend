@@ -1,10 +1,11 @@
 import {CommonProfileStore} from "../common-profile/CommonProfileStore";
 import {observable} from "mobx";
-import {IGetRolesResponse} from "../../../../services/transport/responses";
+import {IGetOrgsListResponse, IGetRolesResponse} from "../../../../services/transport/responses";
 import {AxiosResponse} from "axios";
 import {IRole} from "../../../../components/user-store";
 import {autobind} from "core-decorators";
 import {ITableColumn, ITableData} from "../../../../components/table";
+import {IAddOrgParams} from "../../../../services/transport/params";
 
 @autobind
 export class AdminProfileStore extends CommonProfileStore {
@@ -17,11 +18,7 @@ export class AdminProfileStore extends CommonProfileStore {
         {accessor: "orgAddress", title: "Адрес"},
         {accessor: "orgId", title: "ID"},
     ];
-    @observable orgData: ITableData[] = [
-        {isVisible: true, data: {orgName: "Организация", orgAddress: "г.Йошкар-Ола, Ленинский проспект 12", orgId: "hfd-74-12"}},
-        {isVisible: true, data: {orgName: "Организация1", orgAddress: "г.Йошкар-Ола, Машиностроителей 20", orgId: "78-585-55"}},
-        {isVisible: true, data: {orgName: "Организация2", orgAddress: "г.Йошкар-Ола, Волкова 56", orgId: "555-pro-123"}},
-    ];
+    @observable orgData: ITableData[] = [];
 
     @observable eventColumns: ITableColumn[] = [
         {accessor: "eventName", title: "Название", className: "name"},
@@ -33,9 +30,31 @@ export class AdminProfileStore extends CommonProfileStore {
 
     ];
 
+    @observable addFormValues: IAddOrgParams = {
+        name: "",
+        address: "",
+        leader: "",
+        phoneNumber: "",
+        oqrn: "",
+        paymentAccount: "",
+        branch: "",
+        bik: "",
+        correspondentAccount: "",
+    };
+
     onSuccessGetRoles(response: AxiosResponse<IGetRolesResponse>): void {
         console.log("[ProfileStore.onSuccessGetRoles]:", response);
         this.roles = response.data.roles;
+    }
+
+    onSuccessGetOrgsList(response: AxiosResponse<IGetOrgsListResponse[]>): void {
+        console.log("[ProfileStore.onSuccessGetOrgsList]:", response);
+        this.orgData = response.data.map(item => {
+            return {
+                isVisible: true,
+                data: {orgName: item.name, orgAddress: item.address, orgId: item.id}
+            }
+        });
     }
 
     onSuccessInvite(response: AxiosResponse): void {
