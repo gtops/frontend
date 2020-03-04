@@ -82,6 +82,10 @@ export class Transport {
         return this.client.get(EApiRoutes.ORGANIZATION);
     }
 
+    async deleteOrg(id: number): Promise<AxiosResponse> {
+        return this.client.delete(EApiRoutes.ORGANIZATION + `/${id}`, Transport.getHeaderToken());
+    }
+
     private static getHeaderToken() {
         return {headers: {Authorization: localStorage.getItem("AccessToken")}};
     }

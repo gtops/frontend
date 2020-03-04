@@ -6,18 +6,16 @@ import {IRole} from "../../../../components/user-store";
 import {autobind} from "core-decorators";
 import {ITableColumn, ITableData} from "../../../../components/table";
 import {IAddOrgParams} from "../../../../services/transport/params";
+import * as React from "react";
 
 @autobind
 export class AdminProfileStore extends CommonProfileStore {
     @observable roles: IRole[] = [];
     @observable selectedRoleId = "";
+    @observable cell?: (data: object) => React.ReactNode;
     @observable email = "";
     @observable isSuccessPopupVisible = false;
-    @observable orgColumns: ITableColumn[] = [
-        {accessor: "orgName", title: "Название", className: "name"},
-        {accessor: "orgAddress", title: "Адрес"},
-        {accessor: "orgId", title: "ID"},
-    ];
+    @observable orgColumns: ITableColumn[] = [];
     @observable orgData: ITableData[] = [];
 
     @observable eventColumns: ITableColumn[] = [
@@ -26,7 +24,7 @@ export class AdminProfileStore extends CommonProfileStore {
         {accessor: "eventСount", title: "Количество участников"},
     ];
     @observable eventData: ITableData[] = [
-        {isVisible: true, data: {eventName: "ГТО", eventDate: new Date().toDateString(), eventСount: "20"}},
+        {isVisible: true, data: {eventName: "ГТО", eventDate: new Date().toDateString(), eventCount: "20"}},
 
     ];
 

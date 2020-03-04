@@ -1,13 +1,12 @@
 import React from "react";
-import {InputField} from "../../../../components/input-field";
 import {CommonProfile} from "../common-profile";
-import Select from "react-select";
 import {AdminProfileController} from "./AdminProfileController";
 import {AdminProfileStore} from "./AdminProfileStore";
 import {Table} from "../../../../components/table";
 import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
-import {EPath} from "../../../../EPath";
+import {IAddOrgParams} from "../../../../services/transport/params";
+import {IGetOrgsListResponse} from "../../../../services/transport/responses";
 
 @autobind
 @observer
@@ -17,6 +16,16 @@ export class AdminProfile extends CommonProfile {
 
     componentDidMount(): void {
         this.controller.onComponentDidMount();
+        this.setColumns();
+    }
+
+    setColumns(): void {
+        this.store.orgColumns = [
+            {accessor: "orgName", title: "Название", className: "name"},
+            {accessor: "orgAddress", title: "Адрес"},
+            {accessor: "orgId", title: "ID"},
+            {accessor: "delete", title: "", cell: this.setCell},
+        ]
     }
 
     render() {
@@ -112,5 +121,10 @@ export class AdminProfile extends CommonProfile {
                 </div>
             </div>
         )
+    }
+
+    //TODO.. fix type
+    private setCell(data: any): React.ReactNode {
+        return <span onClick={() => this.controller.deleteOrg(data.data.orgId)} style={{transform: "rotate(90deg)", cursor: "pointer"}}>X</span>
     }
 }

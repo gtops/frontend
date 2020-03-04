@@ -62,4 +62,9 @@ export class AdminProfileController extends CommonProfileController {
             .then(console.log)
             .catch(this.store.onError);
     }
+
+    deleteOrg(id: number) {
+        console.log(id)
+        this.store.transport.deleteOrg(id).then(console.log)
+    }
 }
