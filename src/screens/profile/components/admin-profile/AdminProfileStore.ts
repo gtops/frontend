@@ -5,18 +5,31 @@ import {AxiosResponse} from "axios";
 import {IRole} from "../../../../components/user-store";
 import {autobind} from "core-decorators";
 import {ITableColumn, ITableData} from "../../../../components/table";
-import {IAddOrgParams} from "../../../../services/transport/params";
+import {IAddOrgParams, IEditOrgParams} from "../../../../services/transport/params";
 import * as React from "react";
+
+let EMPTY_FORM_VALUES: IAddOrgParams = {
+    name: "",
+    address: "",
+    leader: "",
+    phoneNumber: "",
+    oqrn: "",
+    paymentAccount: "",
+    branch: "",
+    bik: "",
+    correspondentAccount: "",
+};
 
 @autobind
 export class AdminProfileStore extends CommonProfileStore {
     @observable roles: IRole[] = [];
-    @observable selectedRoleId = "";
+    @observable selectedOrgId = -1;
     @observable cell?: (data: object) => React.ReactNode;
     @observable email = "";
     @observable isSuccessPopupVisible = false;
     @observable orgColumns: ITableColumn[] = [];
     @observable orgData: ITableData[] = [];
+    @observable orgsList: IGetOrgsListResponse[] = [];
 
     @observable eventColumns: ITableColumn[] = [
         {accessor: "eventName", title: "Название", className: "name"},
@@ -28,17 +41,9 @@ export class AdminProfileStore extends CommonProfileStore {
 
     ];
 
-    @observable addFormValues: IAddOrgParams = {
-        name: "",
-        address: "",
-        leader: "",
-        phoneNumber: "",
-        oqrn: "",
-        paymentAccount: "",
-        branch: "",
-        bik: "",
-        correspondentAccount: "",
-    };
+    @observable addFormValues: IAddOrgParams = EMPTY_FORM_VALUES;
+
+    @observable editFormValues: IAddOrgParams = EMPTY_FORM_VALUES;
 
     onSuccessGetRoles(response: AxiosResponse<IGetRolesResponse>): void {
         console.log("[ProfileStore.onSuccessGetRoles]:", response);
@@ -47,6 +52,7 @@ export class AdminProfileStore extends CommonProfileStore {
 
     onSuccessGetOrgsList(response: AxiosResponse<IGetOrgsListResponse[]>): void {
         console.log("[ProfileStore.onSuccessGetOrgsList]:", response);
+        this.orgsList = response.data;
         this.orgData = response.data.map(item => {
             return {
                 isVisible: true,
@@ -57,6 +63,10 @@ export class AdminProfileStore extends CommonProfileStore {
 
     onSuccessInvite(response: AxiosResponse): void {
         console.log("[ProfileStore.onSuccessInvite]:", response);
+    }
+
+    onSuccessEdit(response: AxiosResponse): void {
+        console.log("[ProfileStore.onSuccessEdit]:", response);
         this.isSuccessPopupVisible = true;
     }
 }

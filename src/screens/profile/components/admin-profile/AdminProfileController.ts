@@ -24,18 +24,38 @@ export class AdminProfileController extends CommonProfileController {
             .catch(this.store.onError);
     }
 
-    onSubmit(): void {
+    onSubmit(event: React.FormEvent<HTMLFormElement>): void {
+        if (!this.store.editFormValues.id) return;
+        event.preventDefault();
+
+        let id = +this.store.editFormValues.id;
+        if (isNaN(id)) return;
+
         this.store.transport
-            .inviteUser({
-                role: this.store.selectedRoleId,
-                email: this.store.email,
-            })
-            .then(this.store.onSuccessInvite)
-            .catch(this.store.onError)
+            .editOrgInfo(this.store.editFormValues, this.store.selectedOrgId)
+            .then(this.store.onSuccessEdit)
+            .catch(this.store.onError);
+
     }
 
     onChange(selectedOption: any): void {
-        this.store.selectedRoleId = selectedOption.label;
+        let id = selectedOption.value;
+        let value = this.store.orgsList.find((item) => item.id == id);
+        this.store.selectedOrgId = id;
+
+        if (!value) return;
+
+        this.store.editFormValues = {
+            phoneNumber: value.phone_number,
+            oqrn: value.OQRN,
+            paymentAccount: value.payment_account,
+            correspondentAccount: value.correspondent_account,
+            name: value.name,
+            bik: value.bik,
+            branch: value.branch,
+            address: value.address,
+            leader: value.leader
+        }
     }
 
     setValue(value: string): void {
@@ -55,6 +75,14 @@ export class AdminProfileController extends CommonProfileController {
         this.store.addFormValues[name] = value;
     }
 
+    handleEditInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        this.store.editFormValues[name] = value;
+    }
+
     handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         this.store.transport
@@ -64,7 +92,6 @@ export class AdminProfileController extends CommonProfileController {
     }
 
     deleteOrg(id: number) {
-        console.log(id)
         this.store.transport.deleteOrg(id).then(console.log)
     }
 }

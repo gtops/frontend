@@ -6,7 +6,7 @@ import {
     ILoginParams,
     IGetTrialsParams,
     IInviteParams,
-    IRegistrationParams, IAddOrgParams
+    IRegistrationParams, IAddOrgParams, IEditOrgParams
 } from "./params";
 import {
     IGetTrialsResponse,
@@ -64,6 +64,10 @@ export class Transport {
 
     async inviteUser(params: IInviteParams): Promise<AxiosResponse> {
         return this.client.post(EApiRoutes.INVITE, params, Transport.getHeaderToken());
+    }
+
+    async editOrgInfo(params: IEditOrgParams, id: number): Promise<AxiosResponse> {
+        return this.client.put(EApiRoutes.ORGANIZATION + `/${id}`, params, Transport.getHeaderToken());
     }
 
     async validateToken(): Promise<AxiosResponse<IValidateToken>> {

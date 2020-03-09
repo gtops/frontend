@@ -4,3 +4,4 @@ export {IGetTrialsParams} from "./IGetTrialsParams";
 export {IInviteParams} from "./IInviteParams";
 export {IRegistrationParams} from "./IRegistrationParams";
 export {IAddOrgParams} from "./IAddOrgParams";
+export {IEditOrgParams} from "./IEditOrgParams";

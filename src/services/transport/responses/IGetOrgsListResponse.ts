@@ -3,10 +3,11 @@ export interface IGetOrgsListResponse {
     name: string,
     address: string,
     leader: string,
-    phoneNumber: string,
+    phone_number: string,
     OQRN: string,
     payment_account: string,
     branch: string,
     bik: string
-    correspondent_account: string
+    correspondent_account: string;
+    [key: string]: string | number;
 }
