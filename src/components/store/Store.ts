@@ -7,6 +7,7 @@ import {AxiosError} from "axios";
 export class Store {
     private _transport = new Transport();
     @observable private _isCorrectData = false;
+    @observable private _isError = false;
 
     get transport(): Transport {
         return this._transport;
@@ -24,8 +25,16 @@ export class Store {
         this._isCorrectData = value;
     }
 
+    get isError(): boolean {
+        return this._isError;
+    }
+
+    set isError(value: boolean) {
+        this._isError = value;
+    }
 
     onError(error: AxiosError): void {
+        this._isError = true;
         console.error(error);
     }
 }
