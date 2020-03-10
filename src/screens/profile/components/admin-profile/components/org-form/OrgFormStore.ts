@@ -2,7 +2,7 @@ import {observable} from "mobx";
 import {AxiosError, AxiosResponse} from "axios";
 import {autobind} from "core-decorators";
 import * as React from "react";
-import {IAddOrgParams} from "../../../../../../services/transport/params";
+import {IAddAdminParams, IAddOrgParams} from "../../../../../../services/transport/params";
 import {IGetOrgsListResponse} from "../../../../../../services/transport/responses";
 import {CommonProfileStore} from "../../../common-profile/CommonProfileStore";
 
@@ -20,6 +20,7 @@ export class OrgFormStore extends CommonProfileStore {
         bik: "",
         correspondentAccount: "",
     };
+
     @observable selectedOrgId = -1;
     @observable isPopupVisible = false;
     @observable formValues: IAddOrgParams = this.EMPTY_FORM_VALUES;

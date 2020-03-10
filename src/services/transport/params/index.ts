@@ -5,3 +5,5 @@ export {IInviteParams} from "./IInviteParams";
 export {IRegistrationParams} from "./IRegistrationParams";
 export {IAddOrgParams} from "./IAddOrgParams";
 export {IEditOrgParams} from "./IEditOrgParams";
+export {IAddAdminParams} from "./IAddAdminParams";
+export {IAddEventParams} from "./IAddEventParams";

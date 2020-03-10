@@ -9,4 +9,7 @@ export enum EApiRoutes {
     GET_CATEGORIES = "/api/participant/categories",
     REGISTRATION = "/api/v1/auth/registration",
     ORGANIZATION = "/api/v1/organization",
+    ADMIN = "/api/v1/organization/{:id}/localAdmin",
+    ADMIN_EXIST = "/api/v1/organization/{:id}/localAdmin/existingAccount",
+    EVENT = "/api/v1/organization/{:id}/event",
 }

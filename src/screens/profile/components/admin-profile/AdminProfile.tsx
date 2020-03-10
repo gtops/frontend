@@ -5,7 +5,7 @@ import {AdminProfileStore} from "./AdminProfileStore";
 import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
 import {Tabs} from "../../../../components/tabs";
-import {Events} from "./components/events";
+import {Events} from "../events";
 import {Organisations} from "./components/organisations";
 
 @autobind
@@ -19,7 +19,7 @@ export class AdminProfile extends CommonProfile {
             <div className={"container"}>
                 <Tabs
                     tabs={[
-                        {name: "Организации", component: <Organisations/>, isActive: true   },
+                        {name: "Организации", component: <Organisations/>, isActive: true},
                         {name: "Мероприятия", component: <Events/>}
                     ]}
                     isMain={true}

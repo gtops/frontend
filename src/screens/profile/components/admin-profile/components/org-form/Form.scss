@@ -4,6 +4,14 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
+  &.-type-admin {
+    flex-direction: column;
+
+    .react-select-container {
+      width: 45%;
+    }
+  }
+
   .react-select-container {
     width: 100%;
     margin-bottom: 20px;
@@ -35,7 +43,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(0,0,0,.7);
+  background: rgba(0, 0, 0, .7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,6 +55,8 @@
     position: relative;
     display: flex;
     align-items: center;
+    max-width: 767px;
+    text-align: center;
 
     &:before {
       content: '';

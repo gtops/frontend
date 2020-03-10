@@ -4,7 +4,6 @@ import {CommonProfileController} from "../../../common-profile/CommonProfileCont
 import {OrgFormStore} from "./OrgFormStore";
 import {IOrgFormProps} from "./IOrgFormProps";
 import {isEmpty} from "lodash";
-import {values} from "mobx";
 
 @autobind
 export class OrgFormController extends CommonProfileController {
@@ -105,11 +104,10 @@ export class OrgFormController extends CommonProfileController {
 
     validateForm(): boolean {
         let values = this.store.formValues;
-        console.log(isEmpty(values.leader));
         return !isEmpty(values.leader) && !isEmpty(values.address)
             && !isEmpty(values.branch) && !isEmpty(values.bik)
             && !isEmpty(values.name) && !isEmpty(values.oqrn)
-            && !isEmpty(values.correspondentAccount)&& !isEmpty(values.phoneNumber)
+            && !isEmpty(values.correspondentAccount) && !isEmpty(values.phoneNumber)
             && !isEmpty(values.paymentAccount)
     }
 }

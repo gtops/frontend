@@ -9,7 +9,7 @@ export class UserStore {
     private static _instance: UserStore;
     private readonly transport = new Transport();
     private roles: IRole[] = [];
-    private _role: ERoles = ERoles.ADMIN;
+    private _role: ERoles = ERoles.USER;
 
     constructor() {
         if (UserStore._instance){
@@ -34,8 +34,22 @@ export class UserStore {
         return !isEmpty(localStorage.getItem("AccessToken"));
     }
 
+    set role(value: ERoles) {
+        this._role = value;
+    }
+
     get role(): ERoles {
         return this._role;
+    }
+
+    set organizationId(value: number) {
+        localStorage.setItem("organizationId", value.toString());
+    }
+
+    get organizationId(): number {
+        console.log(localStorage.getItem("organizationId"));
+        console.log(isEmpty(localStorage.getItem("organizationId")));
+        return isEmpty(localStorage.getItem("organizationId")) ? -1 : +localStorage.getItem("organizationId")!;
     }
 }
 

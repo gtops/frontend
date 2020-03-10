@@ -1,7 +1,7 @@
 import {observable} from "mobx";
 import {autobind} from "core-decorators";
 import {AxiosResponse} from "axios";
-import {UserStore} from "../../components/user-store";
+import {ERoles, UserStore} from "../../components/user-store";
 import {Store} from "../../components/store";
 import {ILoginResponse} from "../../services/transport/responses";
 
@@ -21,6 +21,13 @@ export class LoginStore extends Store {
     onSuccess(response: AxiosResponse<ILoginResponse>): void {
         console.log("Login.onSuccess", response);
         UserStore.getInstance().token = response.data.accessToken;
+        UserStore.getInstance().organizationId = response.data.organizationId || -1;
+        console.log(response.data.organizationId)
+        switch (response.data.role) {
+            case "Локальный администратор": localStorage.setItem("role", ERoles.LOCAL_ADMIN); break;
+            case "Глобальный администратор": localStorage.setItem("role", ERoles.ADMIN); break;
+            default: break;
+        }
         window.location.replace("/profile");
     }
 }

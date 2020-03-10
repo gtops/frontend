@@ -7,3 +7,4 @@ export {IGetCategoriesResponse} from "./IGetCategoriesResponse";
 export {ICalculateResponse} from "./ICalculateResponse"
 export {IGetRolesResponse} from "./IGetRolesResponse"
 export {IGetOrgsListResponse} from "./IGetOrgsListResponse"
+export {IGetOrgEventsListResponse} from "./IGetOrgEventsListResponse"

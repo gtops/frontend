@@ -6,6 +6,7 @@ import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
 import {EPath} from "../../EPath";
 import {AdminProfile} from "./components/admin-profile";
+import {LocalAdminProfile} from "./components/local-admin-profile";
 
 @autobind
 @observer
@@ -15,9 +16,10 @@ export class Profile extends React.Component {
             window.location.replace(EPath.LOGIN);
             return void 0;
         }
-        switch (UserStore.getInstance().role) {
+        switch (localStorage.getItem("role")) {
             case ERoles.ADMIN: return <AdminProfile/>;
-            default: return void 0;
+            case ERoles.LOCAL_ADMIN: return <LocalAdminProfile/>;
+            default: return <div/>;
         }
     }
 }

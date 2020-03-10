@@ -85,6 +85,7 @@ export class OrgForm extends React.Component<IOrgFormProps> {
                         <input name="correspondentAccount" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.correspondentAccount}/>
                     </label>
+
                     <input type={"submit"} value="Сохранить"/>
                     {
                         this.store.isPopupVisible ?

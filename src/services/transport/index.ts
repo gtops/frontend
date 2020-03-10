@@ -6,7 +6,7 @@ import {
     ILoginParams,
     IGetTrialsParams,
     IInviteParams,
-    IRegistrationParams, IAddOrgParams, IEditOrgParams
+    IRegistrationParams, IAddOrgParams, IEditOrgParams, IAddAdminParams, IAddEventParams
 } from "./params";
 import {
     IGetTrialsResponse,
@@ -17,6 +17,7 @@ import {
     IGetUserInfoResponse,
     ILoginResponse,
     IGetOrgsListResponse,
+    IGetOrgEventsListResponse,
 } from "./responses";
 
 export class Transport {
@@ -70,6 +71,14 @@ export class Transport {
         return this.client.put(EApiRoutes.ORGANIZATION + `/${id}`, params, Transport.getHeaderToken());
     }
 
+    async addLocalAdmin(params: IAddAdminParams, id: number): Promise<AxiosResponse> {
+        return this.client.post(`${EApiRoutes.ADMIN}`.replace("{:id}", id.toString()), params, Transport.getHeaderToken());
+    }
+
+    async addExistingLocalAdmin(email: string, id: number): Promise<AxiosResponse> {
+        return this.client.post(`${EApiRoutes.ADMIN_EXIST}`.replace("{:id}", id.toString()), {email: email}, Transport.getHeaderToken());
+    }
+
     async validateToken(): Promise<AxiosResponse<IValidateToken>> {
         return this.client.post(EApiRoutes.VALIDATE_TOKEN, {token: localStorage.getItem("AccessToken")});
     }
@@ -88,6 +97,15 @@ export class Transport {
 
     async deleteOrg(id: number): Promise<AxiosResponse> {
         return this.client.delete(EApiRoutes.ORGANIZATION + `/${id}`, Transport.getHeaderToken());
+    }
+
+    async getOrgEventsList(id: number): Promise<AxiosResponse<IGetOrgEventsListResponse[]>> {
+        return this.client.get(`${EApiRoutes.EVENT}`.replace("{:id}", id.toString()));
+    }
+
+
+    async addEvent(params: IAddEventParams, id: number): Promise<AxiosResponse> {
+        return this.client.post(`${EApiRoutes.EVENT}`.replace("{:id}", id.toString()), params, Transport.getHeaderToken());
     }
 
     private static getHeaderToken() {
