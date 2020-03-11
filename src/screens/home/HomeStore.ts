@@ -10,6 +10,6 @@ export class HomeStore {
         {title: "участникам", link: EPath.CALCULATOR, className: "participant"},
         {title: "организаторам", link: "", className: "organizer"},
         {title: "командам", link: "", className: "team"},
-        {title: "судьям", link: "", className: "judge"}
+        {title: "гостям", link: "", className: "judge"}
     ];
 }
