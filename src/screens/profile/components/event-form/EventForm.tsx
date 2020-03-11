@@ -3,6 +3,9 @@ import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
 import {EventFormStore} from "./EventFormStore";
 import {EventFormController} from "./EventFormController";
+import {Popup} from "../../../../components/popup/Popup";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 @autobind
 @observer
@@ -11,6 +14,8 @@ export class EventForm extends React.Component {
     protected readonly controller = new EventFormController(this.store);
 
     render(): React.ReactNode {
+        let startDate = this.store.formValues.startDate == "" ? new Date() : new Date(this.store.formValues.startDate);
+        let expirationDate = this.store.formValues.expirationDate == "" ? new Date() : new Date(this.store.formValues.expirationDate);
         return (
             <section className={"add-event-section"}>
                 <form className={"form"} onSubmit={this.controller.handleSubmit}>
@@ -21,13 +26,17 @@ export class EventForm extends React.Component {
                     </label>
                     <label className={"form__address label"}>
                         Дата начала:
-                        <input name="startDate" type={"date"} onChange={this.controller.handleInputChange}
-                               value={this.store.formValues.startDate}/>
+                        <DatePicker
+                            onChange={this.controller.setStartDate}
+                            selected={startDate}
+                        />
                     </label>
                     <label className={"form__leader label"}>
                         Дата окончания:
-                        <input name="expirationDate" type={"date"} onChange={this.controller.handleInputChange}
-                               value={this.store.formValues.expirationDate}/>
+                        <DatePicker
+                            onChange={this.controller.setExpirationDate}
+                            selected={expirationDate}
+                        />
                     </label>
                     <label className={"label form__description"}>
                         Описание:
@@ -36,19 +45,12 @@ export class EventForm extends React.Component {
                     </label>
 
                     <input className={"form__button"} type={"submit"} value="Сохранить"/>
-                    {/*
-                        this.store.isPopupVisible ?
-                            <div className={"popup-wrapper"}>
-                                <div className={classNames({
-                                    "popup": true,
-                                    "-type-error": this.store.isError
-                                })}>
-                                    {this.store.popupText}
-                                    <div className={"popup__close-icon"} onClick={this.controller.handleCloseClick}/>
-                                </div>
-                            </div>
-                            : void 0
-                    */}
+                    <Popup
+                        isVisible={this.store.isPopupVisible}
+                        isError={this.store.isError}
+                        popupText={this.store.popupText}
+                        onClose={this.controller.handleClose}
+                    />
                 </form>
             </section>
         )
