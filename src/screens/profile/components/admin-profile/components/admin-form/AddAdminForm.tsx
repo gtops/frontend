@@ -46,24 +46,23 @@ export class AddAdminForm extends React.Component {
                 </div>
                 {
                     this.store.isAddChecked
-                        ? <div>
-                            <label className={"label"}>
+                        ? <div className={"label__container"}>
+                            <label>
                                 Имя:
-                                <input name="name" onChange={this.controller.handleInputAdminChange}
+                                <input className={"form__input"} name="name" onChange={this.controller.handleInputAdminChange}
                                        value={this.store.adminValues.name}/>
                             </label>
-                            <label className={"label"}>
+                            <label>
                                 Почта:
-                                <input name="email" onChange={this.controller.handleInputAdminChange}
+                                <input className={"form__input"} name="email" onChange={this.controller.handleInputAdminChange}
                                        value={this.store.adminValues.email}/>
                             </label>
-                            <label className={"label"}>
+                            <label>
                                 Пароль:
-                                <input name="password" type={"password"}
+                                <input className={"form__input"} name="password" type={"password"}
                                        onChange={this.controller.handleInputAdminChange}
                                        value={this.store.adminValues.password}/>
                             </label>
-                            <br/>
                         </div>
                         :
                         <label className={"label"}>
@@ -74,7 +73,7 @@ export class AddAdminForm extends React.Component {
                         </label>
                 }
 
-                <input className={"label"} type={"submit"} value="Сохранить"/>
+                <input className={"label form__button"} type={"submit"} value="Сохранить"/>
                 {
                     this.store.isPopupVisible ?
                         <div className={"popup-wrapper"}>

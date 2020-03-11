@@ -61,32 +61,32 @@ export class OrgForm extends React.Component<IOrgFormProps> {
                                value={this.store.formValues.phoneNumber}/>
                     </label>
                     <label className={"label"}>
-                        oqrn:
+                        ОГРН:
                         <input name="oqrn" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.oqrn}/>
                     </label>
                     <label className={"label"}>
-                        paymentAccount:
+                        Лицевой счёт:
                         <input name="paymentAccount" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.paymentAccount}/>
                     </label>
                     <label className={"label"}>
-                        branch:
+                        Филиал:
                         <input name="branch" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.branch}/>
                     </label>
                     <label className={"label"}>
-                        bik:
+                        БИК:
                         <input name="bik" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.bik}/>
                     </label>
                     <label className={"label"}>
-                        correspondentAccount:
+                        Расчётный счёт:
                         <input name="correspondentAccount" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.correspondentAccount}/>
                     </label>
 
-                    <input type={"submit"} value="Сохранить"/>
+                    <input type={"submit"} className={"form__button"} value="Сохранить"/>
                     {
                         this.store.isPopupVisible ?
                             <div className={"popup-wrapper"}>

@@ -29,13 +29,13 @@ export class EventForm extends React.Component {
                         <input name="expirationDate" type={"date"} onChange={this.controller.handleInputChange}
                                value={this.store.formValues.expirationDate}/>
                     </label>
-                    <label className={"label"}>
+                    <label className={"label form__description"}>
                         Описание:
-                        <textarea name="description" onChange={this.controller.handleInputChange}
+                        <textarea rows={5} name="description" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.description}/>
                     </label>
 
-                    <input type={"submit"} value="Сохранить"/>
+                    <input className={"form__button"} type={"submit"} value="Сохранить"/>
                     {/*
                         this.store.isPopupVisible ?
                             <div className={"popup-wrapper"}>
