@@ -2,28 +2,31 @@ import {UserStore} from "../../components/user-store";
 import {RegistrationStore} from "./RegistrationStore";
 import {IRegistrationParams} from "../../services/transport/params";
 import {autobind} from "core-decorators";
+import {getQueryParams} from "../../services/utils";
+import {isUndefined} from "lodash";
+import {EPath} from "../../EPath";
+
 @autobind
 export class RegistrationController {
     private readonly store: RegistrationStore;
 
-    constructor(store: RegistrationStore){
+    constructor(store: RegistrationStore) {
         this.store = store;
     }
 
     onComponentWillMount(): void {
-        const parsedUrl = window.location.pathname.split("/");
-        if (parsedUrl.length < 2) {
+        let params = getQueryParams(window.location.search);
+        if (isUndefined(params.email) || isUndefined(params.token)) {
             return;
         }
-        UserStore.getInstance().token = parsedUrl[parsedUrl.length - 1];
-        history.replaceState("", "", "/user/invite");
-        this.store.transport.validateToken().then(this.store.onSuccessValidateToken);
+        history.replaceState("", "", EPath.INVITE_USER);
+        UserStore.getInstance().token = params.token;
+        this.store.email = params.email;
+        console.log(this.store.email)
     }
 
     onSubmit(): void {
         const params: IRegistrationParams = {
-            name: this.store.name,
-            token: UserStore.getInstance().token,
             password: this.store.password
         };
 

@@ -24,11 +24,7 @@ export class Registration extends React.Component {
                         <p className={"sub-header"}>Заполните поля для регистрации</p>
                         <div>
                             <p className={"field-name"}>Email</p>
-                            <InputField isReadOnly={true} defaultValue={this.store.email}/>
-                        </div>
-                        <div>
-                            <p className={"field-name"}>Имя</p>
-                            <InputField type={"text"} setValue={this.store.setName}/>
+                            <input className={"input__field read-only"} readOnly={true} value={this.store.email}/>
                         </div>
                         <div>
                             <p className={"field-name"}>Пароль</p>

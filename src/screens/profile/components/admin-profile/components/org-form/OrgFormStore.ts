@@ -35,7 +35,7 @@ export class OrgFormStore extends CommonProfileStore {
 
     onSuccess(response: AxiosResponse): void {
         console.log("[OrgFormStore.onSuccess]:", response);
-        this.popupText = this.isEditForm ? "Данные успешно изменены." : "Организауия успешно добавлена.";
+        this.popupText = this.isEditForm ? "Данные успешно изменены." : "Организация успешно добавлена.";
         this.isPopupVisible = true;
     }
 

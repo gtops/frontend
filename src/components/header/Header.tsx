@@ -26,7 +26,10 @@ export class Header extends React.Component {
                             <div className="header__logo-icon"/>
                             <span className="header__logo-text">ГТО - СЕРВИС</span>
                         </div>
-                        <a href={EPath.PROFILE} className="header__profile icon"/>
+                        <div>
+                            <a href={EPath.LOGIN} className="header__login icon"/>
+                            <a href={EPath.PROFILE} className="header__profile icon"/>
+                        </div>
                     </div>
                 </div>
                 <EventListener target={document} onClick={this.controller.onMenuOutsideClick} />

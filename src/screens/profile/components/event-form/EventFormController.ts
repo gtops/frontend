@@ -3,6 +3,7 @@ import {autobind} from "core-decorators";
 import * as React from "react";
 import {UserStore} from "../../../../components/user-store";
 import {isEmpty} from "lodash";
+import {getFormattedDate} from "../../../../services/utils";
 
 @autobind
 export class EventFormController {
@@ -15,13 +16,13 @@ export class EventFormController {
     setExpirationDate(date: Date | null, event: React.SyntheticEvent<any> | undefined): void {
         if (date === null) return;
 
-        this.store.formValues.expirationDate = this.store.getFormattedDate(date);
+        this.store.formValues.expirationDate = getFormattedDate(date);
     }
 
     setStartDate(date: Date | null, event: React.SyntheticEvent<any> | undefined): void {
         if (date === null) return;
 
-        this.store.formValues.startDate = this.store.getFormattedDate(date);
+        this.store.formValues.startDate = getFormattedDate(date);
     }
 
     handleSubmit(event: React.FormEvent<HTMLFormElement>): void {

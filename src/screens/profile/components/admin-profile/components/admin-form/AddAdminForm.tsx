@@ -6,6 +6,10 @@ import {observer} from "mobx-react";
 import classNames from "classnames";
 import Select from "react-select";
 import "./AddAdminForm.scss";
+import {EGender} from "../../../../../calculator/EGender";
+import {Radio} from "../../../../../../components/radio-button";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 @autobind
 @observer
@@ -18,6 +22,8 @@ export class AddAdminForm extends React.Component {
     }
 
     render(): React.ReactNode {
+        let date = this.store.adminValues.dateOfBirth == "" ? new Date() : new Date(this.store.adminValues.dateOfBirth);
+
         return (
             <form className={"form -type-admin"} onSubmit={this.controller.handleSubmit}>
                 <Select
@@ -48,20 +54,25 @@ export class AddAdminForm extends React.Component {
                     this.store.isAddChecked
                         ? <div className={"label__container"}>
                             <label>
-                                Имя:
+                                ФИО:
                                 <input className={"form__input"} name="name" onChange={this.controller.handleInputAdminChange}
                                        value={this.store.adminValues.name}/>
+                            </label>
+                            <div className={"gender"}>
+                                <span>Пол: </span>
+                                <Radio values={[EGender.MALE, EGender.FEMALE]} onChange={this.controller.onRadioChange}/>
+                            </div>
+                            <label className={"form__address label"}>
+                                Дата рожджения:
+                                <DatePicker
+                                    onChange={this.controller.setDateOfBirth}
+                                    selected={date}
+                                />
                             </label>
                             <label>
                                 Почта:
                                 <input className={"form__input"} name="email" onChange={this.controller.handleInputAdminChange}
-                                       value={this.store.adminValues.email}/>
-                            </label>
-                            <label>
-                                Пароль:
-                                <input className={"form__input"} name="password" type={"password"}
-                                       onChange={this.controller.handleInputAdminChange}
-                                       value={this.store.adminValues.password}/>
+                                       type={"email"} value={this.store.adminValues.email}/>
                             </label>
                         </div>
                         :

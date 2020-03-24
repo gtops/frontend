@@ -1,4 +1,6 @@
 export interface IInviteParams {
     email: string;
-    role: string;
+    name: string,
+    gender: number,
+    dateOfBirth: string
 }

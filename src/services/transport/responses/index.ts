@@ -1,3 +1,4 @@
+export {IGetTeamsResponse} from "./IGetTeamsResponse";
 export { IGetUserInfoResponse } from "./IGetUserInfoResponse";
 export { ILoginResponse } from "./ILoginResponse";
 export { ITrial, IGetTrialsResponse } from "./IGetTrialsResponse";
@@ -8,3 +9,9 @@ export {ICalculateResponse} from "./ICalculateResponse"
 export {IGetRolesResponse} from "./IGetRolesResponse"
 export {IGetOrgsListResponse} from "./IGetOrgsListResponse"
 export {IGetOrgEventsListResponse} from "./IGetOrgEventsListResponse"
+export {IRefreshResponse} from "./IRefreshResponse"
+export {IGetSecretaries} from "./IGetSecretaries"
+export {IGetEventResponse} from "./IGetEventResponse"
+export {IGetOrgInfoResponse} from "./IGetOrgInfoResponse"
+export {IGetLocalAdminsResponse} from "./IGetLocalAdminsResponse"
+export {IGetEventParticipantsResponse} from "./IGetEventParticipantsResponse"

@@ -20,7 +20,6 @@ export class AdminProfile extends CommonProfile {
                 <Tabs
                     tabs={[
                         {name: "Организации", component: <Organisations/>, isActive: true},
-                        {name: "Мероприятия", component: <Events/>}
                     ]}
                     isMain={true}
                 />

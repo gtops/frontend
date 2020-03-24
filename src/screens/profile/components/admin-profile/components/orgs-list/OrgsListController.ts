@@ -1,6 +1,7 @@
 import {CommonProfileController} from "../../../common-profile/CommonProfileController";
 import {OrgsListStore} from "./OrgsListStore";
 import {autobind} from "core-decorators";
+import {RequestWrapper} from "../../../../../../services/request";
 
 @autobind
 export class OrgsListController extends CommonProfileController {
@@ -16,6 +17,9 @@ export class OrgsListController extends CommonProfileController {
             .getOrgsList()
             .then(this.store.onSuccessGetOrgsList)
             .catch(this.store.onError);
+
+        let request = new RequestWrapper();
+        request.send(this.store.transport.getOrgsList())
     }
 
 

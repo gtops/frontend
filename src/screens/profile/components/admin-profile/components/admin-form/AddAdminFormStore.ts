@@ -4,13 +4,16 @@ import {IGetOrgsListResponse} from "../../../../../../services/transport/respons
 import {IAddAdminParams} from "../../../../../../services/transport/params";
 import {AxiosError, AxiosResponse} from "axios";
 import {autobind} from "core-decorators";
+import {EGender} from "../../../../../calculator/EGender";
+import {getFormattedDate} from "../../../../../../services/utils";
 
 @autobind
 export class AddAdminFormStore extends Store {
     EMPTY_ADMIN_VALUES: IAddAdminParams = {
         name: "",
         email: "",
-        password: ""
+        dateOfBirth: getFormattedDate(new Date()),
+        gender: 0,
     };
     @observable orgsList: IGetOrgsListResponse[] = [];
     @observable adminValues: IAddAdminParams = this.EMPTY_ADMIN_VALUES;
@@ -20,6 +23,7 @@ export class AddAdminFormStore extends Store {
     @observable popupText = "";
     @observable isPopupVisible = false;
     @observable isAddChecked = true;
+    @observable gender = EGender.MALE;
 
     onSuccess(response: AxiosResponse): void {
         console.log("[AddAdminFormStore.onSuccess]:", response);

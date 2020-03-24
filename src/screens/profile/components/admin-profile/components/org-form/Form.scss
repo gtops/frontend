@@ -12,6 +12,21 @@
     }
   }
 
+  &.-type-secretary {
+    .label {
+      width: 100%;
+    }
+
+    .label__container {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .react-datepicker-wrapper {
+      width: 100%;
+    }
+  }
+
   .label__container {
     max-width: 45%;
     width: 100%;

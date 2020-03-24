@@ -30,10 +30,6 @@ export class RegistrationStore extends Store {
         console.log("[RegistrationStore.onSuccessRegister]: ", response);
         UserStore.getInstance().token = "";
         this.isMessageShown = true;
-        setTimeout(() => window.location.replace(EPath.LOGIN), 7000);
-    }
-
-    onSuccessValidateToken(response: AxiosResponse<IValidateToken>): void {
-        this.email = response.data.email;
+        setTimeout(() => window.location.replace(EPath.LOGIN), 5000);
     }
 }

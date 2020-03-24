@@ -2,6 +2,9 @@ import * as React from "react";
 import {AddAdminFormStore} from "./AddAdminFormStore";
 import {isEmpty} from "lodash";
 import {autobind} from "core-decorators";
+import {EGender} from "../../../../../calculator/EGender";
+import {RequestWrapper} from "../../../../../../services/request";
+import {getFormattedDate} from "../../../../../../services/utils";
 
 @autobind
 export class AddAdminFormController {
@@ -28,6 +31,12 @@ export class AddAdminFormController {
 
     onChange(selectedOption: any): void {
         this.store.selectedOrgId = selectedOption.value;
+    }
+
+    setDateOfBirth(date: Date | null, event: React.SyntheticEvent<any> | undefined): void {
+        if (date === null) return;
+
+        this.store.adminValues.dateOfBirth = getFormattedDate(date);
     }
 
     handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -70,8 +79,14 @@ export class AddAdminFormController {
             return;
         }
         this.store.transport
-            .addLocalAdmin(this.store.adminValues, this.store.selectedOrgId)
-            .then(this.store.onSuccess)
+            .inviteUser(this.store.adminValues)
+            .then(() => {
+                    this.store.transport
+                        .addExistingLocalAdmin(this.store.adminValues.email, this.store.selectedOrgId)
+                        .then(this.store.onSuccess)
+                        .catch(this.store.onError)
+                }
+            )
             .catch(this.store.onError);
     }
 
@@ -87,7 +102,7 @@ export class AddAdminFormController {
 
     validateAdminForm(): boolean {
         let values = this.store.adminValues;
-        return !isEmpty(values.name) && !isEmpty(values.email) && !isEmpty(values.password)
+        return !isEmpty(values.name) && !isEmpty(values.email) && !isEmpty(values.dateOfBirth);
     }
 
 
@@ -97,6 +112,10 @@ export class AddAdminFormController {
         const name = target.name;
 
         this.store.adminValues[name] = value;
+    }
+
+    onRadioChange(value: string): void {
+        this.store.adminValues.gender = value == EGender.MALE ? 0 : 1;
     }
 
     handleInputEmailChange(event: React.ChangeEvent<HTMLInputElement>): void {

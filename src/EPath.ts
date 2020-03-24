@@ -5,4 +5,6 @@ export enum EPath {
     LOGIN = "/login",
     INVITE_USER = "/user/invite",
     PROFILE = "/profile",
+    EVENT_PROFILE = "/event/:orgId/:eventId",
+    ORGANISATION_PROFILE = "/organisation/:id",
 }

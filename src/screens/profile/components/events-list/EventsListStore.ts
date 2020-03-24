@@ -10,14 +10,25 @@ export class EventsListStore extends Store {
     @observable eventsList: ITableData[] = [];
 
     onSuccess(response: AxiosResponse<IGetOrgEventsListResponse[]>): void {
-        console.log(response);
+        console.log("[EventsListStore.onSuccess]: ", response);
         this.eventsList = response.data.map(item => {
             return (
                 {
                     isVisible: true,
-                    data: {eventName: item.name, eventStartDate: item.startDate, desc: item.description}
+                    data: {
+                        eventName: item.name,
+                        eventStartDate: item.startDate,
+                        desc: item.description,
+                        orgId: item.organizationId,
+                        id: item.id
+                    }
                 }
             )
         });
     }
+
+    onSuccessDelete(response: AxiosResponse): void {
+        console.log("[EventsListStore.onSuccessDelete]: ", response)
+    }
+
 }

@@ -30,16 +30,24 @@ export class UserStore {
         return localStorage.getItem("AccessToken") || "";
     }
 
+    set refreshToken(value: string) {
+        localStorage.setItem("RefreshToken", value);
+    }
+
+    get refreshToken() {
+        return localStorage.getItem("RefreshToken") || "";
+    }
+
     isLogin(): boolean {
         return !isEmpty(localStorage.getItem("AccessToken"));
     }
 
     set role(value: ERoles) {
-        this._role = value;
+        localStorage.setItem("role", value);
     }
 
     get role(): ERoles {
-        return this._role;
+        return localStorage.getItem("role") as ERoles;
     }
 
     set organizationId(value: number) {

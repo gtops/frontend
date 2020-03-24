@@ -4,6 +4,7 @@ import {observer} from "mobx-react";
 import {OrgsListController} from "./OrgsListController";
 import {OrgsListStore} from "./OrgsListStore";
 import {Table} from "../../../../../../components/table";
+import {EPath} from "../../../../../../EPath";
 
 @autobind
 @observer
@@ -18,7 +19,7 @@ export class OrgsList extends React.Component {
 
     setColumns(): void {
         this.store.orgColumns = [
-            {accessor: "orgName", title: "Название", className: "name"},
+            {accessor: "_orgName", title: "Название", className: "name", cell: this.setNameCell},
             {accessor: "orgAddress", title: "Адрес"},
             {accessor: "orgId", title: "ID"},
             {accessor: "delete", title: "", cell: this.setCell},
@@ -37,5 +38,9 @@ export class OrgsList extends React.Component {
     private setCell(data: any): React.ReactNode {
         return <span onClick={() => this.controller.deleteOrg(data.data.orgId)}
                      style={{transform: "rotate(90deg)", cursor: "pointer"}}>X</span>
+    }
+
+    private setNameCell(data: any): React.ReactNode {
+        return <a href={EPath.ORGANISATION_PROFILE.replace(":id", data.data.orgId)}>{data.data.orgName}</a>
     }
 }

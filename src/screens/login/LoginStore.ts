@@ -21,8 +21,8 @@ export class LoginStore extends Store {
     onSuccess(response: AxiosResponse<ILoginResponse>): void {
         console.log("Login.onSuccess", response);
         UserStore.getInstance().token = response.data.accessToken;
+        UserStore.getInstance().refreshToken = response.data.refreshToken;
         UserStore.getInstance().organizationId = response.data.organizationId || -1;
-        console.log(response.data.organizationId)
         switch (response.data.role) {
             case "Локальный администратор": localStorage.setItem("role", ERoles.LOCAL_ADMIN); break;
             case "Глобальный администратор": localStorage.setItem("role", ERoles.ADMIN); break;

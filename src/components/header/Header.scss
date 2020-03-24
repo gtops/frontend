@@ -21,6 +21,11 @@ a {
     padding: 0 10px;
   }
 
+  &__login {
+    background-image: url("./img/login.svg");
+    margin-right: 20px;
+  }
+
   &__menu {
     background-image: url("./img/menu.svg");
   }
@@ -77,6 +82,8 @@ a {
     width: 40px;
     background-repeat: no-repeat;
     background-position: center;
+    background-size: contain;
     cursor: pointer;
+    display: inline-block;
   }
 }

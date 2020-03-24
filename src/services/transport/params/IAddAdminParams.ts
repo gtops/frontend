@@ -1,6 +1,7 @@
 export interface IAddAdminParams {
     name: string,
-    password: string,
     email: string,
-    [key: string]: string,
+    dateOfBirth: string,
+    gender: number,
+    [key: string]: string | number,
 }
