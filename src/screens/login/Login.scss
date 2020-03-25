@@ -71,8 +71,9 @@
     justify-content: center;
     border-radius: 4px;
     border: 1px solid rgba(182,72,59, 0.4);
-    margin-top: 10px;
     user-select: none;
+    background: transparent;
+    margin: 20px auto 0 auto;
 
     &:hover {
       box-shadow: 0 6px 10px 0 rgba(182,72,59, 0.4);
@@ -81,5 +82,27 @@
 
   .form__content {
     padding: 0 30px;
+  }
+
+  .radio-form__button.checked {
+    border-color: rgba(182,72,59, 0.8);
+    box-shadow: 0 0 0 1px rgba(182,72,59, 0.8);
+  }
+
+  .message {
+    text-align: center;
+    margin-top: 10px;
+
+    &.-error {
+      color: red;
+    }
+  }
+
+  .link {
+    text-decoration: underline;
+    font-size: 12px;
+    display: block;
+    text-align: center;
+    margin-top: 20px;
   }
 }

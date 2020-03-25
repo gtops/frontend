@@ -1,35 +1,32 @@
-import {observable} from "mobx";
-import {autobind} from "core-decorators";
-import {AxiosResponse} from "axios";
-import {UserStore} from "../../components/user-store";
-import {EPath} from "../../EPath";
-import {IValidateToken} from "../../services/transport/responses";
 import {Store} from "../../components/store";
+import {observable} from "mobx";
+import {IAddAdminParams} from "../../services/transport/params";
+import {getFormattedDate} from "../../services/utils";
+import {autobind} from "core-decorators";
+import {AxiosError, AxiosResponse} from "axios";
 
 @autobind
 export class RegistrationStore extends Store {
-    @observable email: string = "";
-    @observable name: string = "";
-    @observable password: string = "";
-    @observable repeatPassword: string = "";
-    @observable isMessageShown = false;
+    EMPTY_VALUES: IAddAdminParams = {
+        name: "",
+        gender: 0,
+        email: "",
+        dateOfBirth: getFormattedDate(new Date())
+    };
 
-    setName(value: string): void {
-        this.name = value;
+    @observable formValues: IAddAdminParams = this.EMPTY_VALUES;
+    @observable message = "";
+
+    onSuccess(response: AxiosResponse): void {
+        console.log("[RegistrationStore.onSuccess]: ", response);
+        this.isError = false;
+        this.message = "Вы успешно зарегистрировались. Пройдите по ссылке из письма для завершения регистрации.";
     }
 
-    setPassword(value: string): void {
-        this.password = value;
-    }
-
-    setRepeatPassword(value: string): void {
-        this.repeatPassword = value;
-    }
-
-    onSuccessRegister(response: AxiosResponse): void {
-        console.log("[RegistrationStore.onSuccessRegister]: ", response);
-        UserStore.getInstance().token = "";
-        this.isMessageShown = true;
-        setTimeout(() => window.location.replace(EPath.LOGIN), 5000);
+    onErrorImpl(error: AxiosError): void {
+        this.isError = true;
+        let errors = error.response ? error.response.data.errors : [];
+        let message = errors.length > 0 ? errors[0].description : "";
+        this.message = `Произошла ошибка. ${message}`
     }
 }

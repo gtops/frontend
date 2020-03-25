@@ -1,10 +1,8 @@
-import {UserStore} from "../../components/user-store";
 import {RegistrationStore} from "./RegistrationStore";
-import {IRegistrationParams} from "../../services/transport/params";
+import * as React from "react";
 import {autobind} from "core-decorators";
-import {getQueryParams} from "../../services/utils";
-import {isUndefined} from "lodash";
-import {EPath} from "../../EPath";
+import {getFormattedDate} from "../../services/utils";
+import {EGender} from "../calculator/EGender";
 
 @autobind
 export class RegistrationController {
@@ -14,25 +12,33 @@ export class RegistrationController {
         this.store = store;
     }
 
-    onComponentWillMount(): void {
-        let params = getQueryParams(window.location.search);
-        if (isUndefined(params.email) || isUndefined(params.token)) {
-            return;
-        }
-        history.replaceState("", "", EPath.INVITE_USER);
-        UserStore.getInstance().token = params.token;
-        this.store.email = params.email;
-        console.log(this.store.email)
+    handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        this.store.formValues[name] = value;
     }
 
-    onSubmit(): void {
-        const params: IRegistrationParams = {
-            password: this.store.password
-        };
-
+    onSubmit(event: React.FormEvent<HTMLFormElement>): void {
+        event.preventDefault();
         this.store.transport
-            .register(params)
-            .then(this.store.onSuccessRegister)
-            .catch(this.store.onError);
+            .inviteUser(this.store.formValues)
+            .then(this.store.onSuccess)
+            .catch(this.store.onErrorImpl)
+    }
+
+    onRadioChange(value: string): void {
+        this.store.formValues.gender = value == EGender.MALE ? 0 : 1;
+    }
+
+    private validateForm(): boolean {
+        return true;
+    }
+
+    setDateOfBirth(date: Date | null, event: React.SyntheticEvent<any> | undefined): void {
+        if (date === null) return;
+
+        this.store.formValues.dateOfBirth = getFormattedDate(date);
     }
 }

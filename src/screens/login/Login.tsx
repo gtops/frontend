@@ -4,6 +4,7 @@ import {InputField} from "../../components/input-field";
 import {LoginStore} from "./LoginStore";
 import {autobind} from "core-decorators";
 import {LoginController} from "./LoginController";
+import {EPath} from "../../EPath";
 
 @autobind
 export class Login extends React.Component {
@@ -26,6 +27,7 @@ export class Login extends React.Component {
                             <InputField type={"password"} setValue={this.store.setPassword}/>
                         </div>
                         <div className={"login__button"} onClick={this.controller.onSubmit}>Войти</div>
+                        <a className={"link"} href={EPath.REGISTRATION}>Регистрация</a>
                     </div>
                 </div>
             </div>

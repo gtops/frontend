@@ -9,7 +9,7 @@ export class Events extends React.Component {
             <Tabs
                 tabs={[
                     {name: "Добавить мероприятие", isActive: true, component: <EventForm/>},
-                    {name: "Показать все мероприятия", component: <EventsList/>}
+                    {name: "Показать мои мероприятия", component: <EventsList/>}
                 ]}
                 classNameHeading = "-links"
             />
