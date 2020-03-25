@@ -103,7 +103,7 @@ export class EventProfileController {
 
     deleteParticipant(participantId: number): void {
         this.store.transport
-            .removeParticipant(this.store.eventId, participantId)
+            .removeParticipant(participantId)
             .then(this.store.onSuccessDeleteSecretary)
             .then(this.getParticipants)
             .catch(this.store.onErrorImpl);
@@ -111,7 +111,7 @@ export class EventProfileController {
 
     acceptParticipant(participantId: number): void {
         this.store.transport
-            .applyUserEventRequest(this.store.eventId, participantId)
+            .applyUserEventRequest(participantId)
             .then(this.store.onSuccessAccept)
             .then(this.getParticipants)
             .catch(this.store.onErrorImpl);

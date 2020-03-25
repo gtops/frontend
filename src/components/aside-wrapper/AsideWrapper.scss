@@ -22,6 +22,7 @@
     right: 0;
     background: rgba(0, 0, 0, 0.7);
     left: 0;
+    z-index: 1000;
 
     .aside-wrapper__close-button {
       cursor: pointer;

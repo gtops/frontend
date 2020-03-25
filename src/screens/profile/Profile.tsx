@@ -8,6 +8,7 @@ import {EPath} from "../../EPath";
 import {AdminProfile} from "./components/admin-profile";
 import {LocalAdminProfile} from "./components/local-admin-profile";
 import {UserProfile} from "./components/user-profile";
+import {SecretaryProfile} from "./components/secretary-profile";
 
 @autobind
 @observer
@@ -21,6 +22,7 @@ export class Profile extends React.Component {
             case ERoles.ADMIN: return <AdminProfile/>;
             case ERoles.LOCAL_ADMIN: return <LocalAdminProfile/>;
             case ERoles.USER: return <UserProfile/>;
+            case ERoles.SECRETARY: return <SecretaryProfile/>;
             default: return <div/>;
         }
     }

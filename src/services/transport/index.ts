@@ -175,6 +175,10 @@ export class Transport<T extends object = object> {
         return this.client.get(EApiRoutes.USER_EVENTS, Transport.getHeaderToken());
     }
 
+    async getSecretaryEvents(): Promise<AxiosResponse<IGetUserEventsResponse[]>> {
+        return this.client.get(EApiRoutes.SECRETARY_EVENTS, Transport.getHeaderToken());
+    }
+
     async getOrgEventsList(id: number): Promise<AxiosResponse<IGetOrgEventsListResponse[]>> {
         return this.client.get(`${EApiRoutes.EVENTS}`.replace("{:id}", id.toString()));
     }
@@ -203,21 +207,15 @@ export class Transport<T extends object = object> {
         return this.client.get(`${EApiRoutes.EVENT_PARTICIPANTS}`.replace("{:eventId}", eventId.toString()), Transport.getHeaderToken());
     }
 
-    async removeParticipant(eventId: number, participantId: number): Promise<AxiosResponse<IGetEventParticipantsResponse[]>> {
+    async removeParticipant(participantId: number): Promise<AxiosResponse<IGetEventParticipantsResponse[]>> {
         return this.client.delete(
-            `${EApiRoutes.EVENT_PARTICIPANT}`
-                .replace("{:eventId}", eventId.toString())
-                .replace("{:participantId}", participantId.toString()),
-            Transport.getHeaderToken()
+            `${EApiRoutes.EVENT_PARTICIPANT}`.replace("{:participantId}", participantId.toString()), Transport.getHeaderToken()
         );
     }
 
-    async applyUserEventRequest(eventId: number, participantId: number): Promise<AxiosResponse> {
-        return this.client.post(`${EApiRoutes.EVENT_PARTICIPANT}`
-            .replace("{:eventId}", eventId.toString())
-            .replace("{:participantId}", participantId.toString()),
-            {},
-            Transport.getHeaderToken()
+    async applyUserEventRequest(participantId: number): Promise<AxiosResponse> {
+        return this.client.post(
+            `${EApiRoutes.EVENT_PARTICIPANT}`.replace("{:participantId}", participantId.toString()), {}, Transport.getHeaderToken()
         );
     }
 
