@@ -18,7 +18,7 @@ export class UserProfile extends React.Component {
 
     render(): React.ReactNode {
         return (
-            <div className={"container"}>
+            <div>
                 <h3>Мои мероприятия</h3>
                 <Table
                     columns={[

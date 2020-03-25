@@ -16,14 +16,12 @@ export class AdminProfile extends CommonProfile {
 
     render() {
         return (
-            <div className={"container"}>
-                <Tabs
-                    tabs={[
-                        {name: "Организации", component: <Organisations/>, isActive: true},
-                    ]}
-                    isMain={true}
-                />
-            </div>
+            <Tabs
+                tabs={[
+                    {name: "Организации", component: <Organisations/>, isActive: true},
+                ]}
+                isMain={true}
+            />
         )
     }
 }

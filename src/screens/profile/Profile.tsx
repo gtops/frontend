@@ -9,6 +9,7 @@ import {AdminProfile} from "./components/admin-profile";
 import {LocalAdminProfile} from "./components/local-admin-profile";
 import {UserProfile} from "./components/user-profile";
 import {SecretaryProfile} from "./components/secretary-profile";
+import {render} from "react-dom";
 
 @autobind
 @observer
@@ -18,12 +19,20 @@ export class Profile extends React.Component {
             window.location.replace(EPath.LOGIN);
             return void 0;
         }
+        let profile: React.ReactNode = <div/>;
         switch (localStorage.getItem("role")) {
-            case ERoles.ADMIN: return <AdminProfile/>;
-            case ERoles.LOCAL_ADMIN: return <LocalAdminProfile/>;
-            case ERoles.USER: return <UserProfile/>;
-            case ERoles.SECRETARY: return <SecretaryProfile/>;
-            default: return <div/>;
+            case ERoles.ADMIN: profile = <AdminProfile/>; break;
+            case ERoles.LOCAL_ADMIN: profile = <LocalAdminProfile/>; break;
+            case ERoles.USER: profile = <UserProfile/>; break;
+            case ERoles.SECRETARY: profile = <SecretaryProfile/>; break;
+            default: profile = <div/>;
         }
+
+        return (
+            <div className={"container profile"}>
+                <p className={"profile-info-item"}>Роль: {UserStore.getInstance().role}</p>
+                {profile}
+            </div>
+        )
     }
 }
