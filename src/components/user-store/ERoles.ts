@@ -3,5 +3,6 @@ export enum ERoles {
     LOCAL_ADMIN = "local-admin",
     USER = "user",
     ORGANISATION = "organisation",
-    SECRETARY = "secretary"
+    SECRETARY = "secretary",
+    COACH = "coach"
 }

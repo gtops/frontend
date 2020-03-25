@@ -1,5 +1,7 @@
 export interface IGetTeamsResponse {
-    teamId: number,
+    id: number,
     eventId: number,
+    organizationId: number,
     name: string
+    nameOfEvent: string
 }

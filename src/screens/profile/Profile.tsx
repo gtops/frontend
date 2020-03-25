@@ -10,6 +10,7 @@ import {LocalAdminProfile} from "./components/local-admin-profile";
 import {UserProfile} from "./components/user-profile";
 import {SecretaryProfile} from "./components/secretary-profile";
 import {render} from "react-dom";
+import {CoachProfile} from "./components/coach-profile";
 
 @autobind
 @observer
@@ -25,6 +26,7 @@ export class Profile extends React.Component {
             case ERoles.LOCAL_ADMIN: profile = <LocalAdminProfile/>; break;
             case ERoles.USER: profile = <UserProfile/>; break;
             case ERoles.SECRETARY: profile = <SecretaryProfile/>; break;
+            case ERoles.COACH: profile = <CoachProfile/>; break;
             default: profile = <div/>;
         }
 

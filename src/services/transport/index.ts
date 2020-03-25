@@ -277,6 +277,10 @@ export class Transport<T extends object = object> {
         );
     }
 
+    async getCoachTeams(): Promise<AxiosResponse<IGetTeamsResponse[]>> {
+        return this.client.get(EApiRoutes.COACH_TEAMS, Transport.getHeaderToken());
+    }
+
     private static getHeaderToken() {
         return {headers: {Authorization: localStorage.getItem("AccessToken")}};
     }

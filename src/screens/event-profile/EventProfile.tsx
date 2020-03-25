@@ -96,7 +96,7 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                                 UserStore.getInstance().role == ERoles.LOCAL_ADMIN
                                 || UserStore.getInstance().role == ERoles.SECRETARY
                                     ? [
-                                        {accessor: "EventParticipantId", title: "id", className: "name"},
+                                        {accessor: "name", title: "имя", className: "name"},
                                         {accessor: "teamId", title: "команда"},
                                         {accessor: "_isConfirmed", title: "статус"},
                                         {accessor: "accept", title: "", cell: this.setParticipantAcceptCell},
