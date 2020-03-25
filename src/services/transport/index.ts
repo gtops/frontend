@@ -27,6 +27,7 @@ import {
     IGetSecretaries,
     IGetEventResponse,
     IGetOrgInfoResponse, IGetLocalAdminsResponse, IGetTeamsResponse, IGetEventParticipantsResponse,
+    IGetTeamCoachesResponse,
 } from "./responses";
 import {IGetUserEventsResponse} from "./responses/IGetUserEventsResponse";
 
@@ -279,6 +280,14 @@ export class Transport<T extends object = object> {
 
     async getCoachTeams(): Promise<AxiosResponse<IGetTeamsResponse[]>> {
         return this.client.get(EApiRoutes.COACH_TEAMS, Transport.getHeaderToken());
+    }
+
+    async getTeamCoaches(teamId: number): Promise<AxiosResponse<IGetTeamCoachesResponse[]>> {
+        return this.client.get(EApiRoutes.TEAM_COACHES.replace("{:teamId}", teamId.toString()));
+    }
+
+    async getTeamParticipants(teamId: number): Promise<AxiosResponse< IGetEventParticipantsResponse[]>> {
+        return this.client.get(EApiRoutes.TEAM_PARTICIPANT.replace("{:teamId}", teamId.toString()));
     }
 
     private static getHeaderToken() {

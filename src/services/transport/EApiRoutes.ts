@@ -27,4 +27,6 @@ export enum EApiRoutes {
     USER_EVENTS = "/api/v1/event/forUser",
     SECRETARY_EVENTS = "/api/v1/event/forSecretary",
     COACH_TEAMS = "/api/v1/team",
+    TEAM_COACHES = "/api/v1/team/{:teamId}/teamLead",
+    TEAM_PARTICIPANT = "/api/v1/team/{:teamId}/participant",
 }

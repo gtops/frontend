@@ -8,5 +8,6 @@ export enum EPath {
     CONFIRM_REGISTRATION = "/registration/confirm",
     PROFILE = "/profile",
     EVENT_PROFILE = "/event/:orgId/:eventId",
+    TEAM_PROFILE = "/team/:teamId",
     ORGANISATION_PROFILE = "/organisation/:id",
 }

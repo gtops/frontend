@@ -15,6 +15,7 @@ import {OrganisationProfile} from "./screens/organisation-profile";
 import {ConfirmRegistration} from "./screens/confirm-registration";
 import {Registration} from "./screens/registration";
 import {AllEvents} from "./screens/all-events";
+import {TeamProfile} from "./screens/team-profile";
 
 class App extends React.Component {
     render(): React.ReactNode {
@@ -31,6 +32,7 @@ class App extends React.Component {
                         <Route path={EPath.USER_RESULT} component={UserResult}/>
                         <Route path={EPath.CALCULATOR} component={Calculator}/>
                         <Route path={EPath.EVENT_PROFILE} component={EventProfile}/>
+                        <Route path={EPath.TEAM_PROFILE} component={TeamProfile}/>
                         <Route path={EPath.ORGANISATION_PROFILE} component={OrganisationProfile}/>
                         <Route path={EPath.EVENTS} component={AllEvents}/>
                         <Route component={NotFound}/>
