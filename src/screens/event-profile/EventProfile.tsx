@@ -36,15 +36,6 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                         <p>Начало: {this.store.event.startDate}</p>
                         <p>Завершение: {this.store.event.expirationDate}</p>
                         <div className={"button"} onClick={this.controller.sendEventRequest}>Подать заявку</div>
-                        <h2>Секретари</h2>
-                        <Table
-                            columns={[
-                                {accessor: "name", title: "Имя", className: "name"},
-                                {accessor: "dateOfBirth", title: "Дата рождения"},
-                                {accessor: "email", title: "Почта"},
-                                {accessor: "delete", title: "", cell: this.setCell},
-                            ]}
-                            data={this.store.secretariesData}/>
                         {
                             UserStore.getInstance().role == ERoles.LOCAL_ADMIN
                                 ?
@@ -64,6 +55,15 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                                         }
                                         onClose={this.controller.closeWrapper}
                                     />
+                                    <h2>Секретари</h2>
+                                    <Table
+                                        columns={[
+                                            {accessor: "name", title: "Имя", className: "name"},
+                                            {accessor: "dateOfBirth", title: "Дата рождения"},
+                                            {accessor: "email", title: "Почта"},
+                                            {accessor: "delete", title: "", cell: this.setCell},
+                                        ]}
+                                        data={this.store.secretariesData}/>
                                 </div>
                                 : void 0
                         }
@@ -103,7 +103,8 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                                         {accessor: "delete", title: "", cell: this.setParticipantCell},
                                     ]
                                     : [
-                                        {accessor: "EventParticipantId", title: "id", className: "name"},
+                                        {accessor: "name", title: "имя", className: "name"},
+                                        {accessor: "email", title: "почта", className: "name"},
                                         {accessor: "teamId", title: "команда"},
                                         {accessor: "_isConfirmed", title: "статус"},
                                     ]

@@ -28,6 +28,7 @@ import {
     IGetEventResponse,
     IGetOrgInfoResponse, IGetLocalAdminsResponse, IGetTeamsResponse, IGetEventParticipantsResponse,
 } from "./responses";
+import {IGetUserEventsResponse} from "./responses/IGetUserEventsResponse";
 
 export class Transport<T extends object = object> {
     private static BASE_URL: string;
@@ -168,6 +169,10 @@ export class Transport<T extends object = object> {
     //Event
     async addEvent(params: IAddEventParams, id: number): Promise<AxiosResponse> {
         return this.client.post(`${EApiRoutes.EVENTS}`.replace("{:id}", id.toString()), params, Transport.getHeaderToken());
+    }
+
+    async getUserEvents(): Promise<AxiosResponse<IGetUserEventsResponse[]>> {
+        return this.client.get(EApiRoutes.USER_EVENTS, Transport.getHeaderToken());
     }
 
     async getOrgEventsList(id: number): Promise<AxiosResponse<IGetOrgEventsListResponse[]>> {

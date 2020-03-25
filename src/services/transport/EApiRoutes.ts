@@ -24,4 +24,5 @@ export enum EApiRoutes {
     EVENT_REQUEST = "/api/v1/event/{:eventId}/apply",
     EVENT_PARTICIPANTS = "/api/v1/event/{:eventId}/participant",
     EVENT_PARTICIPANT = "/api/v1/event/{:eventId}/participant/{:participantId}",
+    USER_EVENTS = "/api/v1/event/forUser",
 }

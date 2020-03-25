@@ -26,6 +26,8 @@ export class LoginStore extends Store {
         switch (response.data.role) {
             case "Локальный администратор": localStorage.setItem("role", ERoles.LOCAL_ADMIN); break;
             case "Глобальный администратор": localStorage.setItem("role", ERoles.ADMIN); break;
+            case "Простой пользователь": localStorage.setItem("role", ERoles.USER); break;
+            case "Секретарь": localStorage.setItem("role", ERoles.SECRETARY); break;
             default: break;
         }
         window.location.replace("/profile");

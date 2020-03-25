@@ -6,6 +6,7 @@ import {IEventProfileProps} from "./IEventProfileProps";
 import {isUndefined} from "lodash";
 import {AxiosError, AxiosResponse} from "axios";
 import * as React from "react";
+import {ERoles, UserStore} from "../../components/user-store";
 
 @autobind
 export class EventProfileController {
@@ -23,7 +24,9 @@ export class EventProfileController {
     }
 
     onComponentDidMount(): void {
-        this.getSecretaries();
+        if (UserStore.getInstance().role == ERoles.LOCAL_ADMIN) {
+            this.getSecretaries();
+        }
         this.getTeams();
         this.getParticipants();
         this.store.transport
