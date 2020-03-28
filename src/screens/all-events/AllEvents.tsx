@@ -9,6 +9,7 @@ import {Table} from "../../components/table";
 import classNames from "classnames";
 import {Popup} from "../../components/popup/Popup";
 import {EPath} from "../../EPath";
+import {isEmpty} from "lodash";
 
 @autobind
 @observer
@@ -25,38 +26,44 @@ export class AllEvents extends React.Component {
             <div className={"container all-events"}>
                 {
                     this.store.orgsList.map(item => {
+                        let events = this.store.events.get(item.data.id);
                         return (
                             <div className={classNames({"org-item": true, "-open": item.isVisible})} key={item.data.id}>
                                 <div className={"org-item__heading"}
                                      onClick={() => this.controller.onItemClick(item.data.id)}>
                                     {item.data.name}
                                 </div>
-                                <Table
-                                    columns={
-                                        [
-                                            {
-                                                accessor: "_name",
-                                                title: "Название",
-                                                className: "name",
-                                                cell: this.setNameCell
-                                            },
-                                            {accessor: "startDate", title: "Дата начала"},
-                                            {accessor: "description", title: "Описание"},
-                                            {accessor: "", title: "", cell: this.setCell},
-                                        ]
+                                <div className={"org-item__body"}>
+                                    {isEmpty(events)
+                                        ? <p>У организации пока нет мероприятий</p>
+                                        : <Table
+                                            columns={
+                                                [
+                                                    {
+                                                        accessor: "_name",
+                                                        title: "Название",
+                                                        className: "name",
+                                                        cell: this.setNameCell
+                                                    },
+                                                    {accessor: "startDate", title: "Дата начала"},
+                                                    {accessor: "description", title: "Описание"},
+                                                    {accessor: "", title: "", cell: this.setCell},
+                                                ]
+                                            }
+                                            data={this.store.events.get(item.data.id)}
+                                        />
                                     }
-                                    data={this.store.events.get(item.data.id)}
-                                />
-                                <Popup
-                                    isVisible={this.store.popupText !== ""}
-                                    isError={this.store.isError}
-                                    popupText={this.store.popupText}
-                                    onClose={this.controller.handleClose}
-                                />
+                                </div>
                             </div>
                         )
                     })
                 }
+                <Popup
+                    isVisible={this.store.popupText !== ""}
+                    isError={this.store.isError}
+                    popupText={this.store.popupText}
+                    onClose={this.controller.handleClose}
+                />
             </div>
         )
     }

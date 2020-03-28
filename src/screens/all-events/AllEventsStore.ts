@@ -4,6 +4,7 @@ import {IGetOrgEventsListResponse, IGetOrgsListResponse} from "../../services/tr
 import {observable} from "mobx";
 import {AxiosError, AxiosResponse} from "axios";
 import {ITableData} from "../../components/table";
+import {getDateString} from "../../services/utils";
 
 interface IOrgsList {
     isVisible: boolean;
@@ -30,7 +31,10 @@ export class AllEventsStore extends Store {
         this.events.set(id, response.data.map(item => {
             return {
                 isVisible: true,
-                data: item,
+                data: {
+                    ...item,
+                    startDate: getDateString(item.startDate),
+                },
             }
         }));
     }
@@ -42,9 +46,6 @@ export class AllEventsStore extends Store {
     }
 
     onErrorImpl(error: AxiosError) {
-        let errors = error.response ? error.response.data.errors : [];
-        let message = errors && errors.length > 0 ? errors[0].description : "";
-        this.isError = true;
-        this.popupText = `Произошла ошибка. ${message}`
+        this.popupText = `Произошла ошибка. ${this.message}`
     }
 }

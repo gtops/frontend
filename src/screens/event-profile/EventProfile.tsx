@@ -12,6 +12,7 @@ import {SecretaryForm} from "./components/secretary-form";
 import "./EventProfile.scss";
 import classNames from "classnames";
 import {EPath} from "../../EPath";
+import {getDateString} from "../../services/utils";
 
 @autobind
 @observer
@@ -35,11 +36,19 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                     <div className={"container event-profile"}>
                         <h1>{this.store.event.name}</h1>
                         <p>Статус: {this.store.event.status}</p>
-                        <p>Начало: {this.store.event.startDate}</p>
-                        <p>Завершение: {this.store.event.expirationDate}</p>
+                        <p>Начало: {getDateString(this.store.event.startDate)}</p>
+                        <p>Завершение: {getDateString(this.store.event.expirationDate)}</p>
                         {
-                            !this.store.isParticipant
+                            !this.store.isParticipant && UserStore.getInstance().isLogin()
                                 ? <div className={"button"} onClick={this.controller.sendEventRequest}>Подать заявку</div>
+                                : void 0
+                        }
+                        {
+                            !UserStore.getInstance().isLogin()
+                                ? <p>
+                                    <a href={EPath.LOGIN}>Войдите</a> или <a href={EPath.REGISTRATION}>Зарегистрируйтесь</a>,
+                                    чтобы подать заявку на участие.
+                                </p>
                                 : void 0
                         }
                         {
@@ -97,14 +106,13 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                                 </div>
                                 : void 0
                         }
-                        <h2>Список участников</h2>
+                        <h2>Список участников (личный зачет)</h2>
                         <Table
                             columns={
                                 UserStore.getInstance().role == ERoles.LOCAL_ADMIN
                                 || UserStore.getInstance().role == ERoles.SECRETARY
                                     ? [
                                         {accessor: "name", title: "имя", className: "name"},
-                                        {accessor: "teamId", title: "команда"},
                                         {accessor: "_isConfirmed", title: "статус"},
                                         {accessor: "accept", title: "", cell: this.setParticipantAcceptCell},
                                         {accessor: "delete", title: "", cell: this.setParticipantCell},
@@ -112,7 +120,6 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                                     : [
                                         {accessor: "name", title: "имя", className: "name"},
                                         {accessor: "email", title: "почта", className: "name"},
-                                        {accessor: "teamId", title: "команда"},
                                         {accessor: "_isConfirmed", title: "статус"},
                                     ]
                             }

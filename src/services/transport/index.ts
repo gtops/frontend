@@ -75,6 +75,9 @@ export class Transport<T extends object = object> {
                         UserStore.getInstance().token = response.data.accessToken;
                         UserStore.getInstance().refreshToken = response.data.refreshToken;
                         return axios(originalRequest);
+                    }).catch(error => {
+                        window.location.replace(EPath.LOGIN);
+                        return Promise.reject(error);
                     });
                 }
                 return Promise.reject(error);

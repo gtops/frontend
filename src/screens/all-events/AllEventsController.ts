@@ -21,7 +21,7 @@ export class AllEventsController {
         this.store.transport
             .userEventRequest(id)
             .then(this.store.onSuccessSendRequest)
-            .catch(this.store.onErrorImpl)
+            .catch(this.store.onError)
     }
 
     handleClose(): void {

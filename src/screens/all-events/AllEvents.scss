@@ -2,7 +2,7 @@
   .org-item {
     cursor: pointer;
 
-    .table {
+    .org-item__body {
       display: none;
     }
 
@@ -22,7 +22,7 @@
     }
 
     &.-open {
-      .table {
+      .org-item__body {
         display: block;
       }
 

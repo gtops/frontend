@@ -7,6 +7,7 @@ import {autobind} from "core-decorators";
 import {HeaderController} from "./HeaderController";
 import EventListener from "react-event-listener";
 import {EPath} from "../../EPath";
+import {UserStore} from "../user-store";
 
 @observer
 @autobind
@@ -28,11 +29,19 @@ export class Header extends React.Component {
                         </div>
                         <div>
                             <a href={EPath.LOGIN} className="header__login icon"/>
-                            <a href={EPath.PROFILE} className="header__profile icon"/>
+                            {
+                                UserStore.getInstance().isLogin()
+                                    ?
+                                    <div className={"header__controls"}>
+                                        <a href={EPath.PROFILE} className="header__profile icon"/>
+                                        {/*Выйти*/}
+                                    </div>
+                                    : void  0
+                            }
                         </div>
                     </div>
                 </div>
-                <EventListener target={document} onClick={this.controller.onMenuOutsideClick} />
+                <EventListener target={document} onClick={this.controller.onMenuOutsideClick}/>
             </div>
         )
     }

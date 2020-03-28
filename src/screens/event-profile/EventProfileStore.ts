@@ -115,6 +115,6 @@ export class EventProfileStore extends Store {
                     }
                 }
             )
-        });
+        }).filter(value => value.data.teamId === null)
     }
 }
