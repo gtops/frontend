@@ -8,6 +8,7 @@ import {Tabs} from "../../components/tabs";
 import {Table} from "../../components/table";
 import classNames from "classnames";
 import {Popup} from "../../components/popup/Popup";
+import {EPath} from "../../EPath";
 
 @autobind
 @observer
@@ -33,7 +34,12 @@ export class AllEvents extends React.Component {
                                 <Table
                                     columns={
                                         [
-                                            {accessor: "name", title: "Название", className: "name"},
+                                            {
+                                                accessor: "_name",
+                                                title: "Название",
+                                                className: "name",
+                                                cell: this.setNameCell
+                                            },
                                             {accessor: "startDate", title: "Дата начала"},
                                             {accessor: "description", title: "Описание"},
                                             {accessor: "", title: "", cell: this.setCell},
@@ -58,5 +64,13 @@ export class AllEvents extends React.Component {
     private setCell(data: any): React.ReactNode {
         return <span style={{cursor: "pointer"}}
                      onClick={() => this.controller.sendRequest(data.data.id)}>Подать заявку</span>
+    }
+
+    private setNameCell(data: any): React.ReactNode {
+        return (
+            <a href={EPath.EVENT_PROFILE.replace(":orgId", data.data.organizationId).replace(":eventId", data.data.id)}>
+                {data.data.name}
+            </a>
+        )
     }
 }

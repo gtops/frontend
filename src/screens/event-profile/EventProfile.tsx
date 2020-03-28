@@ -11,6 +11,7 @@ import {AsideWrapper} from "../../components/aside-wrapper";
 import {SecretaryForm} from "./components/secretary-form";
 import "./EventProfile.scss";
 import classNames from "classnames";
+import {EPath} from "../../EPath";
 
 @autobind
 @observer
@@ -33,9 +34,14 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                 : (
                     <div className={"container event-profile"}>
                         <h1>{this.store.event.name}</h1>
+                        <p>Статус: {this.store.event.status}</p>
                         <p>Начало: {this.store.event.startDate}</p>
                         <p>Завершение: {this.store.event.expirationDate}</p>
-                        <div className={"button"} onClick={this.controller.sendEventRequest}>Подать заявку</div>
+                        {
+                            !this.store.isParticipant
+                                ? <div className={"button"} onClick={this.controller.sendEventRequest}>Подать заявку</div>
+                                : void 0
+                        }
                         {
                             UserStore.getInstance().role == ERoles.LOCAL_ADMIN
                                 ?
@@ -70,7 +76,7 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                         <h2>Список команд</h2>
                         <Table
                             columns={[
-                                {accessor: "name", title: "Название", className: "name"},
+                                {accessor: "_name", title: "Название", className: "name", cell: this.setTamNameCell},
                             ]}
                             data={this.store.teamsData}
                         />
@@ -133,12 +139,16 @@ export class EventProfile extends React.Component<IEventProfileProps> {
     //TODO.. fix type
     private setCell(data: any): React.ReactNode {
         return <span onClick={() => this.controller.deleteSecretary(data.data.secretaryId)}
-                     style={{transform: "rotate(90deg)", cursor: "pointer"}}>X</span>
+                     className={"delete-icon"}/>
     }
 
     private setParticipantCell(data: any): React.ReactNode {
         return <span onClick={() => this.controller.deleteParticipant(data.data.EventParticipantId)}
-                     style={{transform: "rotate(90deg)", cursor: "pointer"}}>X</span>
+                     className={"delete-icon"}/>
+    }
+
+    private setTamNameCell(data: any): React.ReactNode {
+        return <a href={EPath.TEAM_PROFILE.replace(":teamId", data.data.id)}>{data.data.name}</a>
     }
 
     private setParticipantAcceptCell(data: any): React.ReactNode {

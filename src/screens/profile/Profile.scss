@@ -25,5 +25,8 @@
     &--is-focused {
       background-color: rgba(182,72,59, 0.4);
     }
+    &--is-selected {
+      color: inherit;
+    }
   }
 }

@@ -17,7 +17,7 @@ export class SecretaryFormStore extends Store {
     orgId = -1;
     eventId = -1;
     onSuccessImpl?: () => void;
-    onErrorImpl?: (error: string) => void;
+    onErrorProp?: (error: string) => void;
     @observable isAddChecked = false;
     @observable email = "";
     @observable formValues: IAddSecretaryParams = this.EMPTY_FORM_VALUES;
@@ -30,6 +30,6 @@ export class SecretaryFormStore extends Store {
     onError(error: AxiosError): void {
         let errors = error.response ? error.response.data.errors : [];
         let message = errors.length > 0 ? errors[0].description : "";
-        attempt(this.onErrorImpl!, message)
+        attempt(this.onErrorProp!, message)
     }
 }

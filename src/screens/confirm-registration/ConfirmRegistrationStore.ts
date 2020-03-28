@@ -1,10 +1,11 @@
 import {observable} from "mobx";
 import {autobind} from "core-decorators";
-import {AxiosResponse} from "axios";
+import {AxiosError, AxiosResponse} from "axios";
 import {UserStore} from "../../components/user-store";
 import {EPath} from "../../EPath";
-import {IValidateToken} from "../../services/transport/responses";
+import {ILoginResponse, IValidateToken} from "../../services/transport/responses";
 import {Store} from "../../components/store";
+import {setProfileData} from "../../services/utils";
 
 @autobind
 export class ConfirmRegistrationStore extends Store {
@@ -12,7 +13,6 @@ export class ConfirmRegistrationStore extends Store {
     @observable name: string = "";
     @observable password: string = "";
     @observable repeatPassword: string = "";
-    @observable isMessageShown = false;
 
     setName(value: string): void {
         this.name = value;
@@ -28,8 +28,18 @@ export class ConfirmRegistrationStore extends Store {
 
     onSuccessRegister(response: AxiosResponse): void {
         console.log("[RegistrationStore.onSuccessRegister]: ", response);
-        UserStore.getInstance().token = "";
-        this.isMessageShown = true;
-        setTimeout(() => window.location.replace(EPath.LOGIN), 5000);
+        this.transport.login({
+            email: this.email,
+            password: this.password
+        }).then(this.onSuccessLogin).catch(this.onError);
+
+        this.isError = false;
+        this.message = "Вы успешно зарегистрировались и будете перенаправлены в пофиль";
+    }
+
+    private onSuccessLogin(response: AxiosResponse<ILoginResponse>): void {
+        console.log("ConfirmRegistrationStore.onSuccessLogin", response);
+        setProfileData(response.data);
+        setTimeout(() => window.location.replace(EPath.PROFILE), 3000);
     }
 }

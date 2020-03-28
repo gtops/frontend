@@ -36,8 +36,7 @@ export class OrgsList extends React.Component {
 
     //TODO.. fix type
     private setCell(data: any): React.ReactNode {
-        return <span onClick={() => this.controller.deleteOrg(data.data.orgId)}
-                     style={{transform: "rotate(90deg)", cursor: "pointer"}}>X</span>
+        return <span onClick={() => this.controller.deleteOrg(data.data.orgId)} className={"delete-icon"}/>
     }
 
     private setNameCell(data: any): React.ReactNode {

@@ -4,6 +4,7 @@ import {observer} from "mobx-react";
 import {autobind} from "core-decorators";
 import {ConfirmRegistrationStore} from "./ConfirmRegistrationStore";
 import {ConfirmRegistrationController} from "./ConfirmRegistrationController";
+import classNames from "classnames";
 
 @observer
 @autobind
@@ -34,10 +35,14 @@ export class ConfirmRegistration extends React.Component {
                             <p className={"field-name"}>Повторите пароль</p>
                             <InputField type={"password"} setValue={this.store.setRepeatPassword}/>
                         </div>
+                        <div onClick={this.controller.onSubmit} className={"button"}>Зарегестрироваться</div>
                         {
-                            this.store.isMessageShown
-                                ? <div>Вы успешно зарегистрировались и будете перенаправлены на экран входа</div>
-                                : <div onClick={this.controller.onSubmit} className={"button"}>Зарегестрироваться</div>
+                            this.store.message !== ""
+                                ? <div className={classNames({
+                                    "message": true,
+                                    "-error": this.store.isError
+                                })}>{this.store.message}</div>
+                                : void 0
                         }
                     </div>
                 </div>

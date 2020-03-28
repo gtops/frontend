@@ -7,6 +7,7 @@ import {
     IGetTeamsResponse
 } from "../../services/transport/responses";
 import {ITableData} from "../../components/table";
+import {UserStore} from "../../components/user-store";
 
 @autobind
 export class EventProfileStore extends Store {
@@ -17,13 +18,15 @@ export class EventProfileStore extends Store {
     @observable isPopupVisible = false;
     @observable popupText = "";
     @observable teamName = "";
+    @observable isParticipant = false;
     @observable event: IGetEventResponse = {
         id: -1,
         organizationId: -1,
         name: "",
         startDate: "",
         expirationDate: "",
-        description: ""
+        description: "",
+        status: ""
     };
 
     @observable secretariesData: ITableData[] = [];
@@ -76,6 +79,8 @@ export class EventProfileStore extends Store {
 
     onSuccessAddTeam(response: AxiosResponse): void {
         console.log("[EventProfileStore.onSuccessAddTeam]: ", response);
+        this.isError = false;
+        this.teamName = "";
         this.isPopupVisible = true;
         this.popupText = "Команда успешно добавлена.";
     }
@@ -98,6 +103,9 @@ export class EventProfileStore extends Store {
     onSuccessGetEventParticipants(response: AxiosResponse<IGetEventParticipantsResponse[]>): void {
         console.log("[EventProfileStore.onSuccessGetEventParticipants]: ", response);
         this.participantData = response.data.map(item => {
+            if (item.userId == UserStore.getInstance().id) {
+                this.isParticipant = true;
+            }
             return (
                 {
                     isVisible: true,

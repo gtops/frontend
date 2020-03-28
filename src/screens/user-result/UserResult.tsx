@@ -22,7 +22,7 @@ export class UserResult extends React.Component {
 
     componentDidMount(): void {
         const id = window.location.pathname.split("/")[2];
-        this.transport.getUserInfo(id).then(this.onSuccess).catch(this.onError)
+        this.transport.getParticipantInfo(id).then(this.onSuccess).catch(this.onError)
     }
 
     private onSuccess(response: AxiosResponse<IGetUserInfoResponse>): void {

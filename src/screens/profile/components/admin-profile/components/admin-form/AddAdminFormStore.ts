@@ -5,7 +5,7 @@ import {IAddAdminParams} from "../../../../../../services/transport/params";
 import {AxiosError, AxiosResponse} from "axios";
 import {autobind} from "core-decorators";
 import {EGender} from "../../../../../calculator/EGender";
-import {getFormattedDate} from "../../../../../../services/utils";
+import {getErrorMessage, getFormattedDate} from "../../../../../../services/utils";
 
 @autobind
 export class AddAdminFormStore extends Store {
@@ -36,11 +36,8 @@ export class AddAdminFormStore extends Store {
         this.orgsList = response.data;
     }
 
-    onError(error: AxiosError): void {
-        this.isError = true;
-        let errors = error.response ? error.response.data.errors : [];
-        let message = errors.length > 0 ? errors[0].description : "";
-        this.popupText = `Произошла ошибка. Статус: ${message}`;
+    onErrorImpl(error: AxiosError): void {
+        this.popupText = `Произошла ошибка. Статус: ${this.message}`;
         this.isPopupVisible = true;
     }
 }

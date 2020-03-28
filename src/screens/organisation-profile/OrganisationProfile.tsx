@@ -9,9 +9,9 @@ import {Table} from "../../components/table";
 
 @autobind
 @observer
-export class OrganisationProfile extends React.Component<IOrganisationProfileProps>  {
+export class OrganisationProfile extends React.Component<IOrganisationProfileProps> {
     private readonly store: OrganisationProfileStore = new OrganisationProfileStore();
-    private readonly controller:OrganisationProfileController = new OrganisationProfileController(this.store);
+    private readonly controller: OrganisationProfileController = new OrganisationProfileController(this.store);
 
     componentWillMount(): void {
         this.controller.onComponentWillMount(this.props);
@@ -60,6 +60,6 @@ export class OrganisationProfile extends React.Component<IOrganisationProfilePro
     //TODO.. fix type
     private setCell(data: any): React.ReactNode {
         return <span onClick={() => this.controller.deleteAdmin(data.data.organizationId, data.data.localAdminId)}
-                     style={{transform: "rotate(90deg)", cursor: "pointer"}}>X</span>
+                     className={"delete-icon"}/>
     }
 }

@@ -86,6 +86,7 @@ export class OrgFormController extends CommonProfileController {
             this.store.transport
                 .editOrgInfo(this.store.formValues, this.store.selectedOrgId)
                 .then(this.store.onSuccess)
+                .then(this.getOrgsList)
                 .catch(this.store.onError);
         } else {
             this.store.transport

@@ -4,5 +4,6 @@ export interface IGetEventResponse {
     name: string,
     startDate: string,
     expirationDate: string,
-    description: string
+    description: string,
+    status: string
 }

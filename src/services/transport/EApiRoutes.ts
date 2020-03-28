@@ -1,5 +1,5 @@
 export enum EApiRoutes {
-    GET_USER_INFO = "/api/participant/{:uid}",
+    GET_PARTICIPANT_INFO = "/api/participant/{:uid}",
     LOGIN = "/api/v1/auth/login",
     GET_TRIALS = "/api/v1/trial/{:age}/{:gender}",
     GET_CALCULATED_RESULT = "/api/v1/trial/{:trialId}/firstResult?firstResult={:firstResult}",
@@ -29,4 +29,5 @@ export enum EApiRoutes {
     COACH_TEAMS = "/api/v1/team",
     TEAM_COACHES = "/api/v1/team/{:teamId}/teamLead",
     TEAM_PARTICIPANT = "/api/v1/team/{:teamId}/participant",
+    USER_INFO = "/api/v1/auth/info",
 }

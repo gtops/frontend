@@ -10,6 +10,7 @@ export class UserStore {
     private readonly transport = new Transport();
     private roles: IRole[] = [];
     private _role: ERoles = ERoles.USER;
+    private _id: number = -1;
 
     constructor() {
         if (UserStore._instance){
@@ -55,9 +56,15 @@ export class UserStore {
     }
 
     get organizationId(): number {
-        console.log(localStorage.getItem("organizationId"));
-        console.log(isEmpty(localStorage.getItem("organizationId")));
         return isEmpty(localStorage.getItem("organizationId")) ? -1 : +localStorage.getItem("organizationId")!;
+    }
+
+    get id(): number {
+        return isEmpty(localStorage.getItem("id")) ? -1 : +localStorage.getItem("id")!;
+    }
+
+    set id(value: number) {
+        localStorage.setItem("id", value.toString());
     }
 }
 

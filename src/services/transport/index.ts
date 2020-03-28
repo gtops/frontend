@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import {get} from "lodash";
 import {EApiRoutes} from "./EApiRoutes";
 import {
@@ -27,9 +27,11 @@ import {
     IGetSecretaries,
     IGetEventResponse,
     IGetOrgInfoResponse, IGetLocalAdminsResponse, IGetTeamsResponse, IGetEventParticipantsResponse,
-    IGetTeamCoachesResponse,
+    IGetTeamCoachesResponse, IGetUserProfileInfo,
 } from "./responses";
 import {IGetUserEventsResponse} from "./responses/IGetUserEventsResponse";
+import {UserStore} from "../../components/user-store";
+import {EPath} from "../../EPath";
 
 export class Transport<T extends object = object> {
     private static BASE_URL: string;
@@ -41,43 +43,51 @@ export class Transport<T extends object = object> {
         const options = {baseURL: Transport.BASE_URL};
         this.client = axios.create(options);
 
-        // const test = axios.interceptors.request.use(
-        //     (config) => {
-        //         const token = localStorage.getItem('AccessToken');
-        //         if (token) {
-        //             config.headers = {Authorization: token};
-        //             axios.defaults.headers.common['Authorization'] = token;
-        //         } else {
-        //             window.location.replace("/login");
-        //         }
-        //         return config;
-        //     },
-        //     async (error) => {
-        //         return Promise.reject(error);
-        //     });
-        //
-        //
-        // const test1 = this.client.interceptors.response.use(
-        //     (response: AxiosResponse) => response,
-        //     async (error: AxiosError) => {
-        //         const status = error.response ? error.response.status : -1;
-        //         const originalRequest = error.config;
-        //         if (status == 401) {
-        //             this.refreshToken().then(response => {
-        //                 UserStore.getInstance().token = response.data.accessToken;
-        //                 UserStore.getInstance().refreshToken = response.data.refreshToken;
-        //                 return axios(originalRequest);
-        //             });
-        //         }
-        //         return Promise.reject(error);
-        //     },
-        // );
-        //
-        // axios.interceptors.request.eject(test1);
+        axios.interceptors.request.use(
+            (config) => {
+                const token = localStorage.getItem('AccessToken');
+                if (token) {
+                    config.headers = {Authorization: token};
+                    axios.defaults.headers.common['Authorization'] = token;
+                } else {
+                    window.location.replace(EPath.LOGIN);
+                }
+                return config;
+            },
+            async (error) => {
+                return Promise.reject(error);
+            });
+
+
+        this.client.interceptors.response.use(
+            (response: AxiosResponse) => {
+                let newResponse = response;
+                if (response.data == "") {
+                    newResponse.data = []
+                }
+                return newResponse;
+            },
+            async (error: AxiosError) => {
+                const status = error.response ? error.response.status : -1;
+                const originalRequest = error.config;
+                if (status == 401) {
+                    this.refreshToken().then(response => {
+                        UserStore.getInstance().token = response.data.accessToken;
+                        UserStore.getInstance().refreshToken = response.data.refreshToken;
+                        return axios(originalRequest);
+                    });
+                }
+                return Promise.reject(error);
+            },
+        );
     }
 
-    async getUserInfo(id: string): Promise<AxiosResponse<IGetUserInfoResponse>> {
-        return this.client.get(`${EApiRoutes.GET_USER_INFO}`.replace("{:uid}", id));
+    async getParticipantInfo(id: string): Promise<AxiosResponse<IGetUserInfoResponse>> {
+        return this.client.get(`${EApiRoutes.GET_PARTICIPANT_INFO}`.replace("{:uid}", id));
+    }
+
+    async getUserProfileInfo(): Promise<AxiosResponse<IGetUserProfileInfo>> {
+        return this.client.post(EApiRoutes.USER_INFO, {}, Transport.getHeaderToken());
     }
 
     async refreshToken(): Promise<AxiosResponse<IRefreshResponse>> {

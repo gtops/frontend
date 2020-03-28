@@ -121,6 +121,7 @@ export class EventProfileController {
         this.store.transport
             .userEventRequest(this.store.eventId)
             .then(this.store.onSuccessSendEventRequest)
+            .then(this.getParticipants)
             .catch(this.store.onErrorImpl)
     }
 

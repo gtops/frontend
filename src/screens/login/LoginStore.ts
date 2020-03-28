@@ -4,6 +4,8 @@ import {AxiosResponse} from "axios";
 import {ERoles, UserStore} from "../../components/user-store";
 import {Store} from "../../components/store";
 import {ILoginResponse} from "../../services/transport/responses";
+import {setProfileData} from "../../services/utils";
+import {EPath} from "../../EPath";
 
 @autobind
 export class LoginStore extends Store {
@@ -20,17 +22,7 @@ export class LoginStore extends Store {
 
     onSuccess(response: AxiosResponse<ILoginResponse>): void {
         console.log("Login.onSuccess", response);
-        UserStore.getInstance().token = response.data.accessToken;
-        UserStore.getInstance().refreshToken = response.data.refreshToken;
-        UserStore.getInstance().organizationId = response.data.organizationId || -1;
-        switch (response.data.role) {
-            case "Локальный администратор": localStorage.setItem("role", ERoles.LOCAL_ADMIN); break;
-            case "Глобальный администратор": localStorage.setItem("role", ERoles.ADMIN); break;
-            case "Простой пользователь": localStorage.setItem("role", ERoles.USER); break;
-            case "Секретарь": localStorage.setItem("role", ERoles.SECRETARY); break;
-            case "Тренер": localStorage.setItem("role", ERoles.COACH); break;
-            default: break;
-        }
-        window.location.replace("/profile");
+        setProfileData(response.data);
+        window.location.replace(EPath.PROFILE);
     }
 }

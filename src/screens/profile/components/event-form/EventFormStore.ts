@@ -3,7 +3,7 @@ import {observable} from "mobx";
 import {IAddEventParams} from "../../../../services/transport/params";
 import {autobind} from "core-decorators";
 import {AxiosError, AxiosResponse} from "axios";
-import {getFormattedDate} from "../../../../services/utils";
+import {getErrorMessage, getFormattedDate} from "../../../../services/utils";
 
 @autobind
 export class EventFormStore extends Store {
@@ -24,11 +24,10 @@ export class EventFormStore extends Store {
     }
 
     onError(error: AxiosError): void {
+        console.error(error);
         this.isError = true;
-        let errors = error.response ? error.response.data.errors : [];
-        let message = errors.length > 0 ? errors[0].description : "";
+        let message = getErrorMessage(error);
         this.popupText = `Произошла ошибка. Статус: ${message}`;
         this.isPopupVisible = true;
-        console.error(error);
     }
 }

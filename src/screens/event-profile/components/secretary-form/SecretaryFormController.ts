@@ -37,7 +37,7 @@ export class SecretaryFormController {
         this.store.eventId = props.eventId;
         this.store.orgId = props.orgId;
         this.store.onSuccessImpl = props.onSuccess;
-        this.store.onErrorImpl = props.onError;
+        this.store.onErrorProp = props.onError;
     }
 
     handleSubmit(event: React.FormEvent<HTMLFormElement>): void {

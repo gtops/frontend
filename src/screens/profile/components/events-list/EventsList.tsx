@@ -15,6 +15,7 @@ export class EventsList extends React.Component {
     componentDidMount(): void {
         this.controller.onComponentDidMount();
     }
+
     render(): React.ReactNode {
         return (
             <section className={"event-list-section"}>
@@ -31,12 +32,13 @@ export class EventsList extends React.Component {
     }
 
     private setNameCell(data: any): React.ReactNode {
-        return <a href={EPath.EVENT_PROFILE.replace(":orgId", data.data.orgId).replace(":eventId", data.data.id)}>{data.data.eventName}</a>
+        return <a
+            href={EPath.EVENT_PROFILE.replace(":orgId", data.data.orgId).replace(":eventId", data.data.id)}>{data.data.eventName}</a>
     }
 
     //TODO.. fix type
     private setCell(data: any): React.ReactNode {
         return <span onClick={() => this.controller.deleteEvent(data.data.orgId, data.data.id)}
-                     style={{transform: "rotate(90deg)", cursor: "pointer"}}>X</span>
+                     className={"delete-icon"}/>
     }
 }

@@ -4,6 +4,7 @@ import {AxiosResponse} from "axios";
 import {IGetOrgEventsListResponse} from "../../../../services/transport/responses";
 import {observable} from "mobx";
 import {ITableData} from "../../../../components/table";
+import {getDateString} from "../../../../services/utils";
 
 @autobind
 export class EventsListStore extends Store {
@@ -17,7 +18,7 @@ export class EventsListStore extends Store {
                     isVisible: true,
                     data: {
                         eventName: item.name,
-                        eventStartDate: item.startDate,
+                        eventStartDate: getDateString(item.startDate),
                         desc: item.description,
                         orgId: item.organizationId,
                         id: item.id
