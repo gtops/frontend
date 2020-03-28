@@ -82,6 +82,7 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                                     <h2>Добавить команду</h2>
                                     <form className={"form"} onSubmit={this.controller.handleSubmit}>
                                         <label className={"label"}>
+                                            Название команды:
                                             <input value={this.store.teamName}
                                                    onChange={this.controller.handleInputChange}/>
                                             <input className={"label form__button"} type={"submit"} value={"Сохранить"}/>
