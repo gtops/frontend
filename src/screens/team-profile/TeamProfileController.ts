@@ -2,6 +2,7 @@ import {TeamProfileStore} from "./TeamProfileStore";
 import {autobind} from "core-decorators";
 import {ITeamProfileProps} from "./ITeamProfileProps";
 import {isUndefined} from "lodash";
+import {UserStore} from "../../components/user-store";
 
 @autobind
 export class TeamProfileController {
@@ -11,9 +12,28 @@ export class TeamProfileController {
         this.store = store;
     }
 
+    acceptParticipant(participantId: number): void {
+        this.store.transport
+            .applyUserEventRequest(participantId)
+            .then(this.store.onSuccessAccept)
+            .then(this.getTeamParticipants)
+            .catch(this.store.onErrorImpl);
+    }
+
+    deleteParticipant(participantId: number): void {
+        this.store.transport
+            .removeParticipant(participantId)
+            .then(this.store.onSuccessDelete)
+            .then(this.getTeamParticipants)
+            .catch(this.store.onErrorImpl);
+    }
+
     onComponentDidMount(): void {
         this.store.transport.getTeamCoaches(this.store.teamId).then(this.store.onSuccess);
         this.getTeamParticipants();
+        if (!UserStore.getInstance().isLogin()) {
+            return;
+        }
         this.store.transport.getUserTeams().then(this.store.onSuccessGetUserTeams)
     }
 

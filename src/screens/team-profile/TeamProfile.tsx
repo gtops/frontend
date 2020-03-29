@@ -35,10 +35,19 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
                     ]} data={this.store.coaches}/>
                 <h2>Участники</h2>
                 <Table columns={
-                    [
-                        {accessor: "name", title: "Имя", className: "name"},
-                        {accessor: "email", title: "Почта"},
-                    ]} data={this.store.participants}/>
+                    this.store.canEditEvent ?
+                        [
+                            {accessor: "name", title: "Имя", className: "name"},
+                            {accessor: "email", title: "Почта"},
+                            {accessor: "status", title: "Статус"},
+                            {accessor: "", title: "Подтвердить", cell: this.setParticipantAcceptCell},
+                            {accessor: "delete", title: "", cell: this.setParticipantCell},
+                        ]
+                        : [
+                            {accessor: "name", title: "Имя", className: "name"},
+                            {accessor: "email", title: "Почта"},
+                            {accessor: "status", title: "Статус"},
+                        ]} data={this.store.participants}/>
                 {
                     this.store.canEditEvent
                         ? <div>
@@ -63,5 +72,17 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
                 }
             </div>
         )
+    }
+
+    private setParticipantCell(data: any): React.ReactNode {
+        return <span onClick={() => this.controller.deleteParticipant(data.data.EventParticipantId)}
+                     className={"delete-icon"}/>
+    }
+
+    private setParticipantAcceptCell(data: any): React.ReactNode {
+        if (!data.data) return;
+        if (data.data.isConfirmed) return <span>Подтвержден</span>;
+        return <span onClick={() => this.controller.acceptParticipant(data.data.EventParticipantId)}
+                     style={{cursor: "pointer"}}>Подтвердить</span>
     }
 }

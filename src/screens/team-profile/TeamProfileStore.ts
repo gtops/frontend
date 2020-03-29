@@ -35,12 +35,23 @@ export class TeamProfileStore extends Store {
         })
     }
 
+    onSuccessAccept(response: AxiosResponse): void {
+        console.log("[TeamProfileStore.onSuccessAccept]: ", response);
+    }
+
+    onSuccessDelete(response: AxiosResponse): void {
+        console.log("[TeamProfileStore.onSuccessDelete]: ", response);
+    }
+
     onSuccessGetParticipants(response: AxiosResponse<IGetEventParticipantsResponse[]>) {
         console.log("[TeamProfileStore.onSuccessGetParticipants]: ", response);
         this.participants = response.data.map(item => {
             return {
                 isVisible: true,
-                data: item,
+                data: {
+                    ...item,
+                    status: item.isConfirmed ? "подтвержден" : "не подтвержден"
+                },
             }
         })
     }
