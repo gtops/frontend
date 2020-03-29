@@ -77,7 +77,6 @@ export class Transport<T extends object = object> {
                         return axios(originalRequest);
                     }).catch(error => {
                         window.location.replace(EPath.LOGIN);
-                        return Promise.reject(error);
                     });
                 }
                 return Promise.reject(error);
@@ -291,7 +290,7 @@ export class Transport<T extends object = object> {
         );
     }
 
-    async getCoachTeams(): Promise<AxiosResponse<IGetTeamsResponse[]>> {
+    async getUserTeams(): Promise<AxiosResponse<IGetTeamsResponse[]>> {
         return this.client.get(EApiRoutes.COACH_TEAMS, Transport.getHeaderToken());
     }
 
@@ -299,8 +298,16 @@ export class Transport<T extends object = object> {
         return this.client.get(EApiRoutes.TEAM_COACHES.replace("{:teamId}", teamId.toString()));
     }
 
-    async getTeamParticipants(teamId: number): Promise<AxiosResponse< IGetEventParticipantsResponse[]>> {
+    async getTeamParticipants(teamId: number): Promise<AxiosResponse<IGetEventParticipantsResponse[]>> {
         return this.client.get(EApiRoutes.TEAM_PARTICIPANT.replace("{:teamId}", teamId.toString()));
+    }
+
+    async addTeamParticipant(teamId: number, email: string): Promise<AxiosResponse> {
+        return this.client.post(EApiRoutes.TEAM_PARTICIPANT.replace("{:teamId}", teamId.toString()), {email}, Transport.getHeaderToken());
+    }
+
+    async addPersonalParticipant(id: number, email: string): Promise<AxiosResponse> {
+        return this.client.post(EApiRoutes.EVENT_PARTICIPANTS.replace("{:eventId}", id.toString()), {email}, Transport.getHeaderToken());
     }
 
     private static getHeaderToken() {

@@ -33,7 +33,7 @@ export function getDateString(date: string): string {
 }
 
 interface IParams {
-    [key:string]: string
+    [key: string]: string
 }
 
 export function getQueryParams(path: string): object {
@@ -41,7 +41,7 @@ export function getQueryParams(path: string): object {
     if (parts.length < 2) return {};
 
     let paramsStr = parts[1];
-    let params= paramsStr.split('&');
+    let params = paramsStr.split('&');
     let paramsMap: IParams = {};
 
     params.map(item => {
@@ -58,11 +58,15 @@ export function setProfileData(data: ILoginResponse): void {
     UserStore.getInstance().token = data.accessToken;
     UserStore.getInstance().refreshToken = data.refreshToken;
     UserStore.getInstance().organizationId = data.organizationId || -1;
-    UserStore.getInstance().role = data.role as ERoles;
+    UserStore.getInstance().role = data.role == "Простой пользователь" ? ERoles.USER : data.role as ERoles;
     UserStore.getInstance().id = data.userId;
 }
 
 export function getErrorMessage(error: AxiosError): string {
     let errors = error.response ? error.response.data.errors : [];
     return errors && errors.length > 0 ? errors[0].description : "";
+}
+
+export function getErrorCode(error: AxiosError): number {
+    return error.response ? error.response.status : -1;
 }

@@ -4,6 +4,7 @@ import {observable} from "mobx";
 import {AxiosResponse} from "axios";
 import {IGetLocalAdminsResponse, IGetOrgInfoResponse} from "../../services/transport/responses";
 import {ITableData} from "../../components/table";
+import {getDateString} from "../../services/utils";
 
 @autobind
 export class OrganisationProfileStore extends Store {
@@ -36,7 +37,10 @@ export class OrganisationProfileStore extends Store {
             return (
                 {
                     isVisible: true,
-                    data: item
+                    data: {
+                        ...item,
+                        dateOfBirth: getDateString(item.dateOfBirth)
+                    }
                 }
             )
         })

@@ -3,6 +3,7 @@ import {autobind} from "core-decorators";
 import {IRole} from "./IRole";
 import {Transport} from "../../services/transport";
 import {ERoles} from "./ERoles";
+import {computed} from "mobx";
 
 @autobind
 export class UserStore {

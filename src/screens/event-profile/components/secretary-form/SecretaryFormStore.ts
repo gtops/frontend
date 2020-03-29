@@ -1,7 +1,7 @@
 import {autobind} from "core-decorators";
 import {Store} from "../../../../components/store";
 import {observable} from "mobx";
-import {IAddAdminParams, IAddSecretaryParams} from "../../../../services/transport/params";
+import {IAddSecretaryParams} from "../../../../services/transport/params";
 import {getFormattedDate} from "../../../../services/utils";
 import {AxiosError, AxiosResponse} from "axios";
 import {attempt} from "lodash";

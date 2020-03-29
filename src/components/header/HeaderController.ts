@@ -1,5 +1,6 @@
 import {HeaderStore} from "./HeaderStore";
 import {autobind} from "core-decorators";
+import {ERoles, UserStore} from "../user-store";
 
 @autobind
 export class HeaderController {
@@ -7,6 +8,13 @@ export class HeaderController {
 
     constructor(store: HeaderStore) {
         this.store = store;
+    }
+
+    logout(): void {
+        localStorage.clear();
+        if (window.location.pathname) {
+
+        }
     }
 
     onMenuOutsideClick(event: MouseEvent): void {

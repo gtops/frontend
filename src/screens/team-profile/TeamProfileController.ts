@@ -13,12 +13,33 @@ export class TeamProfileController {
 
     onComponentDidMount(): void {
         this.store.transport.getTeamCoaches(this.store.teamId).then(this.store.onSuccess);
-        this.store.transport.getTeamParticipants(this.store.teamId).then(this.store.onSuccessGetParticipants)
+        this.getTeamParticipants();
+        this.store.transport.getUserTeams().then(this.store.onSuccessGetUserTeams)
+    }
+
+    getTeamParticipants(): void {
+        this.store.transport
+            .getTeamParticipants(this.store.teamId)
+            .then(this.store.onSuccessGetParticipants)
+            .catch(this.store.onError)
     }
 
     onComponentWillMount(props: ITeamProfileProps): void {
         if (isUndefined(props.match)) return;
 
         this.store.teamId = props.match.params.teamId || -1;
+    }
+
+    showForm(): void {
+        this.store.isVisible = true;
+    }
+
+    closeForm(): void {
+        this.store.isVisible = false;
+    }
+
+    onSuccessAdd(): void {
+        this.getTeamParticipants();
+        this.store.isVisible = false;
     }
 }

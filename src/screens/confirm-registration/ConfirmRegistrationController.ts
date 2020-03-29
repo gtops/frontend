@@ -61,7 +61,7 @@ export class ConfirmRegistrationController {
         }
         const MIN_LEN = 6;
         if (this.store.password.length < MIN_LEN) {
-            this.store.message = "Слишком короткий пароль";
+            this.store.message = `Слишком короткий пароль. Минимальная длина ${MIN_LEN} символов`;
             return false;
         }
 

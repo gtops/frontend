@@ -13,6 +13,8 @@ import "./EventProfile.scss";
 import classNames from "classnames";
 import {EPath} from "../../EPath";
 import {getDateString} from "../../services/utils";
+import {UserForm} from "../../components/user-form/UserForm";
+import {EFormTypes} from "../../EFormTypes";
 
 @autobind
 @observer
@@ -29,47 +31,43 @@ export class EventProfile extends React.Component<IEventProfileProps> {
     }
 
     render(): React.ReactNode {
+        let wrapperTitle = this.store.formType == EFormTypes.SECRETARY ? "Добавить секретаря" : "Добавить участника (личный зачет)";
         return (
             this.store.eventId == -1 || this.store.orgId == -1
                 ? <Redirect to={"/"}/>
                 : (
                     <div className={"container event-profile"}>
                         <h1>{this.store.event.name}</h1>
-                        <p>Статус: {this.store.event.status}</p>
+                        <p>Статус: <span className={"event-status"}>{this.store.event.status}</span></p>
                         <p>Начало: {getDateString(this.store.event.startDate)}</p>
                         <p>Завершение: {getDateString(this.store.event.expirationDate)}</p>
+                        {this.getRequestBlock()}
                         {
-                            !this.store.isParticipant && UserStore.getInstance().isLogin()
-                                ? <div className={"button"} onClick={this.controller.sendEventRequest}>Подать заявку</div>
-                                : void 0
+                            (UserStore.getInstance().role == ERoles.LOCAL_ADMIN || UserStore.getInstance().role == ERoles.SECRETARY)
+                            && this.store.canEditEvent
+                                ? (
+                                    <div>
+                                        <div className={"button-fixed-container"}>
+                                            <div className={"button"} onClick={this.controller.showForm}>Добавить секретаря
+                                            </div>
+                                            <div className={"button"} onClick={this.controller.showUserForm}>Добавить участника
+                                                (личный зачет)
+                                            </div>
+                                        </div>
+                                        <AsideWrapper
+                                            title={wrapperTitle}
+                                            isVisible={this.store.isVisible}
+                                            component={this.getForm()}
+                                            onClose={this.controller.closeWrapper}
+                                        />
+                                    </div>
+                                ) : void 0
                         }
-                        {
-                            !UserStore.getInstance().isLogin()
-                                ? <p>
-                                    <a href={EPath.LOGIN}>Войдите</a> или <a href={EPath.REGISTRATION}>Зарегистрируйтесь</a>,
-                                    чтобы подать заявку на участие.
-                                </p>
-                                : void 0
-                        }
+
                         {
                             UserStore.getInstance().role == ERoles.LOCAL_ADMIN
                                 ?
                                 <div>
-                                    <div className={"button -fixed"} onClick={this.controller.showForm}>Добавить секретаря
-                                    </div>
-                                    <AsideWrapper
-                                        title={"Добавить секретаря"}
-                                        isVisible={this.store.isVisible}
-                                        component={
-                                            <SecretaryForm
-                                                onSuccess={this.controller.onSuccessAddSecretary}
-                                                onError={this.controller.onErrorAddSecretary}
-                                                eventId={this.store.eventId}
-                                                orgId={this.store.orgId}
-                                            />
-                                        }
-                                        onClose={this.controller.closeWrapper}
-                                    />
                                     <h2>Секретари</h2>
                                     <Table
                                         columns={[
@@ -143,6 +141,23 @@ export class EventProfile extends React.Component<IEventProfileProps> {
         )
     }
 
+    private getRequestBlock(): React.ReactNode {
+        if (!UserStore.getInstance().isLogin()) {
+            return (
+                <p>
+                    <a href={EPath.LOGIN}>Войдите</a> или <a href={EPath.REGISTRATION}>Зарегистрируйтесь</a>,
+                    чтобы подать заявку на участие.
+                </p>
+            )
+        } else if (this.store.isParticipant) {
+            if (this.store.isConfirmed) {
+                return <p>Ваша заявка на участие одобрена.</p>
+            }
+            return <p>Заявка на рассмотрении.</p>
+        }
+        return <div className={"button"} onClick={this.controller.sendEventRequest}>Подать заявку</div>
+    }
+
     //TODO.. fix type
     private setCell(data: any): React.ReactNode {
         return <span onClick={() => this.controller.deleteSecretary(data.data.secretaryId)}
@@ -163,5 +178,27 @@ export class EventProfile extends React.Component<IEventProfileProps> {
         if (data.data.isConfirmed) return <span>Подтвержден</span>;
         return <span onClick={() => this.controller.acceptParticipant(data.data.EventParticipantId)}
                      style={{cursor: "pointer"}}>Подтвердить</span>
+    }
+
+    private getForm(): React.ReactNode {
+        if (this.store.formType == EFormTypes.SECRETARY) {
+            return (
+                <SecretaryForm
+                    onSuccess={this.controller.onSuccessAddSecretary}
+                    onError={this.controller.onErrorAddSecretary}
+                    eventId={this.store.eventId}
+                    orgId={this.store.orgId}
+                />
+            )
+        }
+
+        return (
+            <UserForm
+                successMessage={"Пользователь успешно приглашен"}
+                formType={EFormTypes.USER}
+                id={this.store.eventId}
+                onSuccess={this.controller.onSuccessAddUser}
+            />
+        )
     }
 }

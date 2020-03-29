@@ -4,6 +4,7 @@ import {IGetUserEventsResponse} from "../../../../services/transport/responses/I
 import {AxiosResponse} from "axios";
 import {observable} from "mobx";
 import {ITableData} from "../../../../components/table";
+import {getDateString} from "../../../../services/utils";
 
 @autobind
 export class SecretaryProfileStore extends Store {
@@ -15,7 +16,10 @@ export class SecretaryProfileStore extends Store {
             return(
                 {
                     isVisible: true,
-                    data: item
+                    data: {
+                        ...item,
+                        startDate: getDateString(item.startDate),
+                    }
                 }
             )
         })

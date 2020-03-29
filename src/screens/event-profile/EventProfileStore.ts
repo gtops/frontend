@@ -3,11 +3,13 @@ import {autobind} from "core-decorators";
 import {observable} from "mobx";
 import {AxiosError, AxiosResponse} from "axios";
 import {
-    IGetEventParticipantsResponse, IGetEventResponse, IGetSecretaries,
+    IGetEventParticipantsResponse, IGetEventResponse, IGetOrgEventsListResponse, IGetSecretaries,
     IGetTeamsResponse
 } from "../../services/transport/responses";
 import {ITableData} from "../../components/table";
 import {UserStore} from "../../components/user-store";
+import {EFormTypes} from "../../EFormTypes";
+import {IGetUserEventsResponse} from "../../services/transport/responses/IGetUserEventsResponse";
 
 @autobind
 export class EventProfileStore extends Store {
@@ -18,7 +20,8 @@ export class EventProfileStore extends Store {
     @observable isPopupVisible = false;
     @observable popupText = "";
     @observable teamName = "";
-    @observable isParticipant = false;
+    @observable isParticipant = true;
+    @observable isConfirmed = true;
     @observable event: IGetEventResponse = {
         id: -1,
         organizationId: -1,
@@ -32,6 +35,8 @@ export class EventProfileStore extends Store {
     @observable secretariesData: ITableData[] = [];
     @observable teamsData: ITableData[] = [];
     @observable participantData: ITableData[] = [];
+    @observable formType = EFormTypes.USER;
+    @observable canEditEvent = false;
 
     onSuccessGetSecretaries(response: AxiosResponse<IGetSecretaries[]>): void {
         console.log("[EventProfileStore.onSuccessGetSecretaries]: ", response);
@@ -62,6 +67,14 @@ export class EventProfileStore extends Store {
         this.event = response.data;
     }
 
+    onSuccessGetUserEvents(response: AxiosResponse<IGetUserEventsResponse[]> | AxiosResponse<IGetOrgEventsListResponse[]>): void {
+        response.data.forEach((value: IGetUserEventsResponse | IGetOrgEventsListResponse) => {
+            if (value.id == this.eventId) {
+                this.canEditEvent = true;
+            }
+        })
+    }
+
     onSuccessDeleteSecretary(response: AxiosResponse): void {
         console.log("[EventProfileStore.onSuccessDeleteSecretary]: ", response);
     }
@@ -73,7 +86,7 @@ export class EventProfileStore extends Store {
     onSuccessSendEventRequest(response: AxiosResponse): void {
         console.log("[EventProfileStore.onSuccessSendEventRequest]: ", response);
         this.isError = false;
-        this.popupText = "Заявка успешно отправлена и будет расммотрена.";
+        this.popupText = "Заявка успешно отправлена и будет рассмотрена.";
         this.isPopupVisible = true;
     }
 
@@ -84,6 +97,8 @@ export class EventProfileStore extends Store {
         this.isPopupVisible = true;
         this.popupText = "Команда успешно добавлена.";
     }
+
+
 
     onErrorImpl(error: string | AxiosError): void {
         let errText = '';
@@ -102,9 +117,11 @@ export class EventProfileStore extends Store {
 
     onSuccessGetEventParticipants(response: AxiosResponse<IGetEventParticipantsResponse[]>): void {
         console.log("[EventProfileStore.onSuccessGetEventParticipants]: ", response);
+        this.isParticipant = false;
         this.participantData = response.data.map(item => {
             if (item.userId == UserStore.getInstance().id) {
                 this.isParticipant = true;
+                this.isConfirmed = item.isConfirmed;
             }
             return (
                 {

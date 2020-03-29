@@ -39,10 +39,8 @@ export class OrgFormStore extends CommonProfileStore {
         this.isPopupVisible = true;
     }
 
-    onError(error: AxiosError): void {
-        this.isError = true;
-        let res = error.response ? error.response.statusText : "";
-        this.popupText = "Произошла ошибка. Статус: " + res;
+    onErrorImpl(error: AxiosError): void {
         this.isPopupVisible = true;
+        this.popupText = "Произошла ошибка. Статус: " + this.message;
     }
 }

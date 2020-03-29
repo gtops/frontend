@@ -5,6 +5,10 @@ import {TeamProfileStore} from "./TeamProfileStore";
 import {TeamProfileController} from "./TeamProfileController";
 import {ITeamProfileProps} from "./ITeamProfileProps";
 import {Table} from "../../components/table";
+import {AsideWrapper} from "../../components/aside-wrapper";
+import {UserForm} from "../../components/user-form/UserForm";
+import {ERoles} from "../../components/user-store";
+import {EFormTypes} from "../../EFormTypes";
 
 @autobind
 @observer
@@ -35,6 +39,28 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
                         {accessor: "name", title: "Имя", className: "name"},
                         {accessor: "email", title: "Почта"},
                     ]} data={this.store.participants}/>
+                {
+                    this.store.canEditEvent
+                        ? <div>
+                            <AsideWrapper
+                                title={"Добавить участника"}
+                                isVisible={this.store.isVisible}
+                                component={
+                                    <UserForm
+                                        formType={EFormTypes.TEAM_USER}
+                                        successMessage="Участник успешно добавлен."
+                                        id={this.store.teamId}
+                                        onSuccess={this.controller.onSuccessAdd}
+                                    />
+                                }
+                                onClose={this.controller.closeForm}
+                            />
+                            <div className={"button -fixed"} onClick={this.controller.showForm}>
+                                Добавить участника
+                            </div>
+                        </div>
+                        : void 0
+                }
             </div>
         )
     }

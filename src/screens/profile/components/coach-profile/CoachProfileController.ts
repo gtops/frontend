@@ -11,7 +11,7 @@ export class CoachProfileController {
 
     onComponentDidMount(): void {
         this.store.transport
-            .getCoachTeams()
+            .getUserTeams()
             .then(this.store.onSuccessGetTeams)
             .catch(this.store.onError)
     }

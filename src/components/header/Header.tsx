@@ -28,15 +28,15 @@ export class Header extends React.Component {
                             <span className="header__logo-text">ГТО - СЕРВИС</span>
                         </div>
                         <div>
-                            <a href={EPath.LOGIN} className="header__login icon"/>
                             {
                                 UserStore.getInstance().isLogin()
                                     ?
                                     <div className={"header__controls"}>
+                                        <a href={EPath.LOGIN} className="header__login icon"/>
                                         <a href={EPath.PROFILE} className="header__profile icon"/>
-                                        {/*Выйти*/}
+                                        {/*<span onClick={this.controller.logout} className="header__logout icon"/>*/}
                                     </div>
-                                    : void  0
+                                    : <a href={EPath.LOGIN} className="header__login icon"/>
                             }
                         </div>
                     </div>

@@ -2,7 +2,7 @@ import {autobind} from "core-decorators";
 import {computed, observable} from "mobx";
 import {Transport} from "../../services/transport";
 import {AxiosError} from "axios";
-import {getErrorMessage} from "../../services/utils";
+import {getErrorCode, getErrorMessage} from "../../services/utils";
 import {attempt} from "lodash";
 
 @autobind
@@ -11,6 +11,7 @@ export class Store {
     @observable private _isCorrectData = false;
     @observable private _isError = false;
     @observable private _message = "";
+    @observable private _errorCode = -1;
 
     get transport(): Transport {
         return this._transport;
@@ -48,6 +49,9 @@ export class Store {
         console.error(error);
         this._isError = true;
         this._message = getErrorMessage(error);
+        this._errorCode = getErrorCode(error);
+        if (this._errorCode == 401) return;
+
         attempt(this.onErrorImpl!, error)
     }
 

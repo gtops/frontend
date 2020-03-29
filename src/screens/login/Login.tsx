@@ -5,8 +5,11 @@ import {LoginStore} from "./LoginStore";
 import {autobind} from "core-decorators";
 import {LoginController} from "./LoginController";
 import {EPath} from "../../EPath";
+import classNames from "classnames";
+import {observer} from "mobx-react";
 
 @autobind
+@observer
 export class Login extends React.Component {
     private readonly store = new LoginStore();
     private readonly controller = new LoginController(this.store);
@@ -28,6 +31,14 @@ export class Login extends React.Component {
                         </div>
                         <div className={"login__button"} onClick={this.controller.onSubmit}>Войти</div>
                         <a className={"link"} href={EPath.REGISTRATION}>Регистрация</a>
+                        {
+                            this.store.message !== ""
+                                ? <div className={classNames({
+                                    "message": true,
+                                    "-error": this.store.isError
+                                })}>{this.store.message}</div>
+                                : void 0
+                        }
                     </div>
                 </div>
             </div>

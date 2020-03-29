@@ -34,6 +34,16 @@ a {
     background-image: url("./img/profile.svg");
   }
 
+  &__controls {
+    position: relative;
+    display: inline;
+  }
+
+  &__logout {
+    background-image: url("./img/logout.png");
+    margin-left: 10px;
+  }
+
   &__logo {
     display: flex;
     align-items: center;
@@ -85,10 +95,5 @@ a {
     background-size: contain;
     cursor: pointer;
     display: inline-block;
-  }
-
-  .header__controls {
-    position: relative;
-    display: inline;
   }
 }

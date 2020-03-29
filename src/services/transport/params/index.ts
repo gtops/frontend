@@ -8,3 +8,4 @@ export {IEditOrgParams} from "./IEditOrgParams";
 export {IAddAdminParams} from "./IAddAdminParams";
 export {IAddEventParams} from "./IAddEventParams";
 export {IAddSecretaryParams} from "./IAddSecretaryParams";
+export {IAddUserParams} from "./IAddUserParams";

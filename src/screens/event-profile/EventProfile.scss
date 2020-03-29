@@ -1,10 +1,15 @@
 .event-profile {
-  .button.-fixed {
+  .button-fixed-container {
     position: fixed;
     bottom: 60px;
     right: 120px;
     padding: 20px;
     z-index: 999;
+    display: flex;
+
+    .button {
+      margin: 0 10px;
+    }
   }
 
   .form {
@@ -21,5 +26,9 @@
         margin-top: 20px;
       }
     }
+  }
+
+  .event-status {
+    text-transform: capitalize;
   }
 }

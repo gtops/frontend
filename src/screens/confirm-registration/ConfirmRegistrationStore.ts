@@ -34,7 +34,7 @@ export class ConfirmRegistrationStore extends Store {
         }).then(this.onSuccessLogin).catch(this.onError);
 
         this.isError = false;
-        this.message = "Вы успешно зарегистрировались и будете перенаправлены в пофиль";
+        this.message = "Вы успешно зарегистрировались и будете перенаправлены в профиль";
     }
 
     private onSuccessLogin(response: AxiosResponse<ILoginResponse>): void {

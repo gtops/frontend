@@ -7,6 +7,7 @@ import {isUndefined} from "lodash";
 import {AxiosError, AxiosResponse} from "axios";
 import * as React from "react";
 import {ERoles, UserStore} from "../../components/user-store";
+import {EFormTypes} from "../../EFormTypes";
 
 @autobind
 export class EventProfileController {
@@ -29,10 +30,20 @@ export class EventProfileController {
         }
         this.getTeams();
         this.getParticipants();
+        this.getUserEvents();
         this.store.transport
             .getEvent(this.store.orgId, this.store.eventId)
             .then(this.store.onSuccessGetEvent)
             .catch(this.store.onError)
+    }
+
+    private getUserEvents(): void {
+        if (UserStore.getInstance().role == ERoles.SECRETARY) {
+            this.store.transport.getSecretaryEvents().then(this.store.onSuccessGetUserEvents)
+        }
+        if (UserStore.getInstance().role == ERoles.LOCAL_ADMIN) {
+            this.store.transport.getOrgEventsList(this.store.orgId).then(this.store.onSuccessGetUserEvents)
+        }
     }
 
     private getParticipants(): void {
@@ -127,9 +138,20 @@ export class EventProfileController {
 
     showForm(): void {
         this.store.isVisible = true;
+        this.store.formType = EFormTypes.SECRETARY
+    }
+
+    showUserForm(): void {
+        this.store.isVisible = true;
+        this.store.formType = EFormTypes.USER
     }
 
     closeWrapper(): void {
+        this.store.isVisible = false;
+    }
+
+    onSuccessAddUser(): void {
+        this.getParticipants();
         this.store.isVisible = false;
     }
 }
