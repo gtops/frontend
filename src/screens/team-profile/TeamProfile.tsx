@@ -25,14 +25,22 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
     }
 
     render(): React.ReactNode {
+        let wrapperTitle = this.store.formType == EFormTypes.COACH ? "Добавить тренера" : "Добавить участника";
+        let successMessage = this.store.formType == EFormTypes.COACH ? "Тренер успешно добавлен" : "Участник успешно добавлен";
         return (
             <div className={"container"}>
                 <h2>Тренеры</h2>
                 <Table columns={
-                    [
-                        {accessor: "name", title: "Имя", className: "name"},
-                        {accessor: "email", title: "Почта"},
-                    ]} data={this.store.coaches}/>
+                    this.store.canEditEvent ?
+                        [
+                            {accessor: "name", title: "Имя", className: "name"},
+                            {accessor: "email", title: "Почта"},
+                            {accessor: "", title: "", cell: this.setDeleteCoachCell},
+                        ]
+                        : [
+                            {accessor: "name", title: "Имя", className: "name"},
+                            {accessor: "email", title: "Почта"},
+                        ]} data={this.store.coaches}/>
                 <h2>Участники</h2>
                 <Table columns={
                     this.store.canEditEvent ?
@@ -52,26 +60,34 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
                     this.store.canEditEvent
                         ? <div>
                             <AsideWrapper
-                                title={"Добавить участника"}
+                                title={wrapperTitle}
                                 isVisible={this.store.isVisible}
                                 component={
                                     <UserForm
-                                        formType={EFormTypes.TEAM_USER}
-                                        successMessage="Участник успешно добавлен."
+                                        formType={this.store.formType}
+                                        successMessage={successMessage}
                                         id={this.store.teamId}
                                         onSuccess={this.controller.onSuccessAdd}
                                     />
                                 }
                                 onClose={this.controller.closeForm}
                             />
-                            <div className={"button -fixed"} onClick={this.controller.showForm}>
+                            <div className={"button -fixed"} onClick={this.controller.showUserForm}>
                                 Добавить участника
+                            </div>
+                            <div className={"button -fixed"} onClick={this.controller.showCoachForm}>
+                                Добавить тренера
                             </div>
                         </div>
                         : void 0
                 }
             </div>
         )
+    }
+
+    private setDeleteCoachCell(data: any): React.ReactNode {
+        return <span onClick={() => this.controller.deleteCoach(data.data.teamLeadId)}
+                     className={"delete-icon"}/>
     }
 
     private setParticipantCell(data: any): React.ReactNode {

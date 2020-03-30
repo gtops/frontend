@@ -1,4 +1,41 @@
 .event-profile {
+  .button.-small {
+    font-size: 14px;
+    padding: 5px 15px;
+    margin-left: 20px;
+  }
+
+  .edit-link {
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  .input__field.-name {
+    margin-top: 30px;
+  }
+
+  .event-name {
+    position: relative;
+    display: inline-block;
+    padding-right: 30px;
+
+    &.-editable {
+      &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        background-image: url("./img/icons-edit.svg");
+        background-size: contain;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
   .button-fixed-container {
     position: fixed;
     bottom: 60px;

@@ -1,4 +1,4 @@
-import {GetIdFromPathname} from "../../services/utils"
+import {getFormattedDate, GetIdFromPathname} from "../../services/utils"
 import {autobind} from "core-decorators";
 import {EventProfileStore} from "./EventProfileStore";
 import {ReactNode} from "react";
@@ -31,10 +31,74 @@ export class EventProfileController {
         this.getTeams();
         this.getParticipants();
         this.getUserEvents();
+        this.getEventInfo();
+    }
+
+    getEventInfo(): void {
         this.store.transport
             .getEvent(this.store.orgId, this.store.eventId)
             .then(this.store.onSuccessGetEvent)
             .catch(this.store.onError)
+    }
+
+    setStartDate(date: Date | null, event: React.SyntheticEvent<any> | undefined): void {
+        if (date === null) return;
+
+        this.store.startDate = getFormattedDate(date);
+    }
+
+    setExpirationDate(date: Date | null, event: React.SyntheticEvent<any> | undefined): void {
+        if (date === null) return;
+
+        this.store.expirationDate = getFormattedDate(date);
+    }
+
+    editName(): void {
+        this.store.isChangingName = true;
+    }
+
+    changeStartDate(): void {
+        this.store.transport
+            .editEvent({
+                name: this.store.event.name,
+                startDate: this.store.startDate,
+                expirationDate: getFormattedDate(new Date(this.store.event.expirationDate)),
+                description: this.store.event.description
+            }, this.store.orgId, this.store.eventId)
+            .then(this.store.onSuccessChangeStartDate)
+            .then(this.getEventInfo)
+            .catch(this.store.onError)
+    }
+
+    changeExpirationDate(): void {
+        this.store.transport
+            .editEvent({
+                name: this.store.event.name,
+                startDate: getFormattedDate(new Date(this.store.event.startDate)),
+                expirationDate: this.store.expirationDate,
+                description: this.store.event.description
+            }, this.store.orgId, this.store.eventId)
+            .then(this.store.onSuccessChangeExpirationDate)
+            .then(this.getEventInfo)
+            .catch(this.store.onError)
+    }
+
+    changeEventName(): void {
+        this.store.transport
+            .editEvent({
+                name: this.store.newName,
+                startDate: getFormattedDate(new Date(this.store.event.startDate)),
+                expirationDate: getFormattedDate(new Date(this.store.expirationDate)),
+                description: this.store.event.description
+            }, this.store.orgId, this.store.eventId)
+            .then(this.store.onSuccessChangeName)
+            .then(this.getEventInfo)
+            .catch(this.store.onError)
+    }
+
+    cancelNameChanging(): void {
+        this.store.isChangingName = false;
+        this.store.newName = this.store.event.name;
     }
 
     private getUserEvents(): void {
@@ -87,6 +151,10 @@ export class EventProfileController {
 
     handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
         this.store.teamName = event.target.value;
+    }
+
+    setNewName(event: React.ChangeEvent<HTMLInputElement>): void {
+        this.store.newName = event.target.value;
     }
 
     handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
@@ -153,5 +221,13 @@ export class EventProfileController {
     onSuccessAddUser(): void {
         this.getParticipants();
         this.store.isVisible = false;
+    }
+
+    toggleChangeStartDate(): void {
+        this.store.showChangeStartDate = !this.store.showChangeStartDate;
+    }
+
+    toggleChangeExpirationDate(): void {
+        this.store.showChangeExpirationDate = !this.store.showChangeExpirationDate;
     }
 }

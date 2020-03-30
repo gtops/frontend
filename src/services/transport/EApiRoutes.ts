@@ -30,4 +30,5 @@ export enum EApiRoutes {
     TEAM_COACHES = "/api/v1/team/{:teamId}/teamLead",
     TEAM_PARTICIPANT = "/api/v1/team/{:teamId}/participant",
     USER_INFO = "/api/v1/auth/info",
+    COACH = "/api/v1/teamLead/{:teamLeadId}",
 }

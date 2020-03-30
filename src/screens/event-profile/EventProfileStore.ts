@@ -7,21 +7,13 @@ import {
     IGetTeamsResponse
 } from "../../services/transport/responses";
 import {ITableData} from "../../components/table";
-import {UserStore} from "../../components/user-store";
+import {ERoles, UserStore} from "../../components/user-store";
 import {EFormTypes} from "../../EFormTypes";
 import {IGetUserEventsResponse} from "../../services/transport/responses/IGetUserEventsResponse";
+import {getFormattedDate} from "../../services/utils";
 
 @autobind
 export class EventProfileStore extends Store {
-    @observable orgId = -1;
-    @observable eventId = -1;
-    @observable isVisible = false;
-    @observable isAddTeamFormVisible = false;
-    @observable isPopupVisible = false;
-    @observable popupText = "";
-    @observable teamName = "";
-    @observable isParticipant = true;
-    @observable isConfirmed = true;
     @observable event: IGetEventResponse = {
         id: -1,
         organizationId: -1,
@@ -31,12 +23,26 @@ export class EventProfileStore extends Store {
         description: "",
         status: ""
     };
-
+    @observable orgId = -1;
+    @observable eventId = -1;
+    @observable isVisible = false;
+    @observable showChangeStartDate = false;
+    @observable showChangeExpirationDate = false;
+    @observable isAddTeamFormVisible = false;
+    @observable isPopupVisible = false;
+    @observable popupText = "";
+    @observable teamName = "";
+    @observable isParticipant = true;
+    @observable isConfirmed = true;
     @observable secretariesData: ITableData[] = [];
     @observable teamsData: ITableData[] = [];
     @observable participantData: ITableData[] = [];
     @observable formType = EFormTypes.USER;
     @observable canEditEvent = false;
+    @observable startDate = this.event.startDate;
+    @observable expirationDate = this.event.expirationDate;
+    @observable isChangingName = false;
+    @observable newName = "";
 
     onSuccessGetSecretaries(response: AxiosResponse<IGetSecretaries[]>): void {
         console.log("[EventProfileStore.onSuccessGetSecretaries]: ", response);
@@ -65,6 +71,9 @@ export class EventProfileStore extends Store {
     onSuccessGetEvent(response: AxiosResponse<IGetEventResponse>): void {
         console.log("[EventProfileStore.onSuccessGetEvent]: ", response);
         this.event = response.data;
+        this.startDate = getFormattedDate(new Date(response.data.startDate));
+        this.expirationDate = getFormattedDate(new Date(response.data.expirationDate));
+        this.newName = response.data.name;
     }
 
     onSuccessGetUserEvents(response: AxiosResponse<IGetUserEventsResponse[]> | AxiosResponse<IGetOrgEventsListResponse[]>): void {
@@ -75,8 +84,28 @@ export class EventProfileStore extends Store {
         })
     }
 
+    canEdit(): boolean {
+        return (UserStore.getInstance().role == ERoles.LOCAL_ADMIN || UserStore.getInstance().role == ERoles.SECRETARY)
+            && this.canEditEvent;
+    }
+
     onSuccessDeleteSecretary(response: AxiosResponse): void {
         console.log("[EventProfileStore.onSuccessDeleteSecretary]: ", response);
+    }
+
+    onSuccessChangeExpirationDate(response: AxiosResponse): void {
+        console.log("[EventProfileStore.onSuccessChangeExpirationDate]: ", response);
+        this.showChangeExpirationDate = false;
+    }
+
+    onSuccessChangeName(response: AxiosResponse): void {
+        console.log("[EventProfileStore.onSuccessChangeName]: ", response);
+        this.isChangingName = false;
+    }
+
+    onSuccessChangeStartDate(response: AxiosResponse): void {
+        console.log("[EventProfileStore.onSuccessChangeExpirationDate]: ", response);
+        this.showChangeStartDate = false;
     }
 
     onSuccessAccept(response: AxiosResponse): void {

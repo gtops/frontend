@@ -46,12 +46,22 @@ export class UserFormController {
             case EFormTypes.USER:
                 this.addPersonalUser();
                 break;
+            case EFormTypes.COACH:
+                this.addCoach();
+                break;
         }
     }
 
     addPersonalUser(): void {
         this.store.transport
             .addPersonalParticipant(this.store.id, this.store.formValues.email)
+            .then(this.store.onSuccess)
+            .catch(this.store.onError)
+    }
+
+    addCoach(): void {
+        this.store.transport
+            .addCoach(this.store.id, this.store.formValues.email)
             .then(this.store.onSuccess)
             .catch(this.store.onError)
     }

@@ -24,6 +24,11 @@ export class UserForm extends React.Component<IUserFormProps> {
         this.store.onSuccessImpl = this.props.onSuccess;
     }
 
+    componentDidUpdate(prevProps: IUserFormProps): void {
+        if (prevProps.formType == this.store.formType) return;
+        this.store.formType = this.props.formType;
+    }
+
     render(): React.ReactNode {
         let date = this.store.formValues.dateOfBirth == "" ? new Date() : new Date(this.store.formValues.dateOfBirth);
         return (

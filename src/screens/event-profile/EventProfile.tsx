@@ -15,6 +15,8 @@ import {EPath} from "../../EPath";
 import {getDateString} from "../../services/utils";
 import {UserForm} from "../../components/user-form/UserForm";
 import {EFormTypes} from "../../EFormTypes";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 @autobind
 @observer
@@ -37,31 +39,31 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                 ? <Redirect to={"/"}/>
                 : (
                     <div className={"container event-profile"}>
-                        <h1>{this.store.event.name}</h1>
-                        <p>Статус: <span className={"event-status"}>{this.store.event.status}</span></p>
-                        <p>Начало: {getDateString(this.store.event.startDate)}</p>
-                        <p>Завершение: {getDateString(this.store.event.expirationDate)}</p>
+                        {this.getInfoBlock()}
                         {this.getRequestBlock()}
                         {
-                            (UserStore.getInstance().role == ERoles.LOCAL_ADMIN || UserStore.getInstance().role == ERoles.SECRETARY)
-                            && this.store.canEditEvent
-                                ? (
-                                    <div>
-                                        <div className={"button-fixed-container"}>
-                                            <div className={"button"} onClick={this.controller.showForm}>Добавить секретаря
-                                            </div>
-                                            <div className={"button"} onClick={this.controller.showUserForm}>Добавить участника
-                                                (личный зачет)
-                                            </div>
+                            this.store.canEdit() ? (
+                                <div>
+                                    <div className={"button-fixed-container"}>
+                                        {
+                                            UserStore.getInstance().role == ERoles.LOCAL_ADMIN
+                                                ? (<div className={"button"} onClick={this.controller.showForm}>Добавить
+                                                    секретаря
+                                                </div>)
+                                                : void 0
+                                        }
+                                        <div className={"button"} onClick={this.controller.showUserForm}>Добавить участника
+                                            (личный зачет)
                                         </div>
-                                        <AsideWrapper
-                                            title={wrapperTitle}
-                                            isVisible={this.store.isVisible}
-                                            component={this.getForm()}
-                                            onClose={this.controller.closeWrapper}
-                                        />
                                     </div>
-                                ) : void 0
+                                    <AsideWrapper
+                                        title={wrapperTitle}
+                                        isVisible={this.store.isVisible}
+                                        component={this.getForm()}
+                                        onClose={this.controller.closeWrapper}
+                                    />
+                                </div>
+                            ) : void 0
                         }
 
                         {
@@ -138,6 +140,67 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                         }
                     </div>
                 )
+        )
+    }
+
+    private getInfoBlock(): React.ReactNode {
+        let startDate = this.store.startDate == "" ? new Date() : new Date(this.store.startDate);
+        let expirationDate = this.store.expirationDate == "" ? new Date() : new Date(this.store.expirationDate);
+        return (
+            <div>
+                {
+                    this.store.isChangingName
+                        ?
+                        <div>
+                            <input onChange={this.controller.setNewName} className={"input__field -name"}
+                                   value={this.store.newName}/>
+                            <div className={"button -small"} onClick={this.controller.changeEventName}>Сохранить</div>
+                            <div className={"button -small"} onClick={this.controller.cancelNameChanging}>Отменить</div>
+                        </div>
+                        : <h1
+                            onClick={this.controller.editName}
+                            className={classNames({"event-name": true, "-editable": this.store.canEdit()})}>
+                            {this.store.event.name}
+                        </h1>
+
+                }
+                <p>Статус: <span className={"event-status"}>{this.store.event.status}</span></p>
+                <p>
+                    Начало: {getDateString(this.store.event.startDate)}
+                    <span className={"edit-link"} onClick={this.controller.toggleChangeStartDate}>(Изменить)</span>
+                </p>
+                {
+                    this.store.showChangeStartDate
+                        ? <div>
+                            <DatePicker
+                                onChange={this.controller.setStartDate}
+                                selected={startDate}
+                                maxDate={new Date(this.store.event.expirationDate)}
+                                className="input__field"
+                            />
+                            <div className={"button -small"} onClick={this.controller.changeStartDate}>Сохранить</div>
+                        </div>
+                        : void 0
+                }
+
+                <p>
+                    Завершение: {getDateString(this.store.event.expirationDate)}
+                    <span className={"edit-link"} onClick={this.controller.toggleChangeExpirationDate}>(Изменить)</span>
+                </p>
+                {
+                    this.store.showChangeExpirationDate
+                        ? <div>
+                            <DatePicker
+                                onChange={this.controller.setExpirationDate}
+                                selected={expirationDate}
+                                minDate={new Date(this.store.event.startDate)}
+                                className="input__field"
+                            />
+                            <div className={"button -small"} onClick={this.controller.changeExpirationDate}>Сохранить</div>
+                        </div>
+                        : void 0
+                }
+            </div>
         )
     }
 

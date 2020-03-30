@@ -7,6 +7,7 @@ import {
     IGetTeamsResponse
 } from "../../services/transport/responses";
 import {ITableData} from "../../components/table";
+import {EFormTypes} from "../../EFormTypes";
 
 @autobind
 export class TeamProfileStore extends Store {
@@ -15,6 +16,7 @@ export class TeamProfileStore extends Store {
     @observable participants: ITableData[] = [];
     @observable isVisible = false;
     @observable canEditEvent = false;
+    @observable formType = EFormTypes.TEAM_USER;
 
     onSuccess(response: AxiosResponse<IGetTeamCoachesResponse[]>) {
         console.log("[TeamProfileStore.onSuccess]: ", response);
