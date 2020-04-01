@@ -27,7 +27,7 @@ import {
     IGetSecretaries,
     IGetEventResponse,
     IGetOrgInfoResponse, IGetLocalAdminsResponse, IGetTeamsResponse, IGetEventParticipantsResponse,
-    IGetTeamCoachesResponse, IGetUserProfileInfo,
+    IGetTeamCoachesResponse, IGetUserProfileInfo, IGetTeamInfoResponse,
 } from "./responses";
 import {IGetUserEventsResponse} from "./responses/IGetUserEventsResponse";
 import {UserStore} from "../../components/user-store";
@@ -325,6 +325,18 @@ export class Transport<T extends object = object> {
 
     async addCoach(teamId: number, email: string): Promise<AxiosResponse> {
         return this.client.post(EApiRoutes.TEAM_COACHES.replace("{:teamId}", teamId.toString()), {email}, Transport.getHeaderToken());
+    }
+
+    async getTeamInfo(teamId: number): Promise<AxiosResponse<IGetTeamInfoResponse>> {
+        return this.client.get(EApiRoutes.TEAM.replace("{:teamId}", teamId.toString()));
+    }
+
+    async editTeamInfo(teamId: number, name: string): Promise<AxiosResponse<IGetTeamInfoResponse>> {
+        return this.client.put(EApiRoutes.TEAM.replace("{:teamId}", teamId.toString()), {name}, Transport.getHeaderToken());
+    }
+
+    async acceptAllTeam(teamId: number): Promise<AxiosResponse> {
+        return this.client.post(EApiRoutes.TEAM_ACCEPT.replace("{:teamId}", teamId.toString()), {}, Transport.getHeaderToken());
     }
 
     private static getHeaderToken() {

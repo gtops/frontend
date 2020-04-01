@@ -44,7 +44,7 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                         {
                             this.store.canEdit() ? (
                                 <div>
-                                    <div className={"button-fixed-container"}>
+                                    <div className={"button-container"}>
                                         {
                                             UserStore.getInstance().role == ERoles.LOCAL_ADMIN
                                                 ? (<div className={"button"} onClick={this.controller.showForm}>Добавить
@@ -67,7 +67,7 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                         }
 
                         {
-                            UserStore.getInstance().role == ERoles.LOCAL_ADMIN
+                            UserStore.getInstance().role == ERoles.LOCAL_ADMIN && this.store.canEdit()
                                 ?
                                 <div>
                                     <h2>Секретари</h2>
@@ -86,13 +86,12 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                         <Table
                             columns={[
                                 {accessor: "_name", title: "Название", className: "name", cell: this.setTamNameCell},
+                                {accessor: "countOfPlayers", title: "Количество участников"},
                             ]}
                             data={this.store.teamsData}
                         />
                         {
-                            UserStore.getInstance().role == ERoles.LOCAL_ADMIN
-                            || UserStore.getInstance().role == ERoles.SECRETARY
-                                ?
+                            this.store.canEdit() ?
                                 <div>
                                     <h2>Добавить команду</h2>
                                     <form className={"form"} onSubmit={this.controller.handleSubmit}>
@@ -167,7 +166,12 @@ export class EventProfile extends React.Component<IEventProfileProps> {
                 <p>Статус: <span className={"event-status"}>{this.store.event.status}</span></p>
                 <p>
                     Начало: {getDateString(this.store.event.startDate)}
-                    <span className={"edit-link"} onClick={this.controller.toggleChangeStartDate}>(Изменить)</span>
+                    {
+                        this.store.canEdit()
+                            ? <span className={"edit-link"}
+                                    onClick={this.controller.toggleChangeStartDate}>(Изменить)</span>
+                            : void 0
+                    }
                 </p>
                 {
                     this.store.showChangeStartDate
@@ -185,7 +189,12 @@ export class EventProfile extends React.Component<IEventProfileProps> {
 
                 <p>
                     Завершение: {getDateString(this.store.event.expirationDate)}
-                    <span className={"edit-link"} onClick={this.controller.toggleChangeExpirationDate}>(Изменить)</span>
+                    {
+                        this.store.canEdit()
+                            ? <span className={"edit-link"}
+                                    onClick={this.controller.toggleChangeExpirationDate}>(Изменить)</span>
+                            : void 0
+                    }
                 </p>
                 {
                     this.store.showChangeExpirationDate

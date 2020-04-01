@@ -10,7 +10,7 @@ import {ITableData} from "../../components/table";
 import {ERoles, UserStore} from "../../components/user-store";
 import {EFormTypes} from "../../EFormTypes";
 import {IGetUserEventsResponse} from "../../services/transport/responses/IGetUserEventsResponse";
-import {getFormattedDate} from "../../services/utils";
+import {getDateString, getFormattedDate} from "../../services/utils";
 
 @autobind
 export class EventProfileStore extends Store {
@@ -50,7 +50,10 @@ export class EventProfileStore extends Store {
             return (
                 {
                     isVisible: true,
-                    data: item
+                    data: {
+                        ...item,
+                        dateOfBirth: getDateString(item.dateOfBirth)
+                    }
                 }
             )
         });

@@ -25,12 +25,9 @@ export class EventProfileController {
     }
 
     onComponentDidMount(): void {
-        if (UserStore.getInstance().role == ERoles.LOCAL_ADMIN) {
-            this.getSecretaries();
-        }
+        this.getUserEvents();
         this.getTeams();
         this.getParticipants();
-        this.getUserEvents();
         this.getEventInfo();
     }
 
@@ -54,6 +51,7 @@ export class EventProfileController {
     }
 
     editName(): void {
+        if (!this.store.canEdit()) return;
         this.store.isChangingName = true;
     }
 
@@ -106,7 +104,14 @@ export class EventProfileController {
             this.store.transport.getSecretaryEvents().then(this.store.onSuccessGetUserEvents)
         }
         if (UserStore.getInstance().role == ERoles.LOCAL_ADMIN) {
-            this.store.transport.getOrgEventsList(this.store.orgId).then(this.store.onSuccessGetUserEvents)
+            this.store.transport
+                .getOrgEventsList(UserStore.getInstance().organizationId)
+                .then(this.store.onSuccessGetUserEvents)
+                .then(() => {
+                    if (this.store.canEditEvent) {
+                        this.getSecretaries();
+                    }
+                })
         }
     }
 

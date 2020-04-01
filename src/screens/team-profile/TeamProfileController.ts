@@ -4,6 +4,8 @@ import {ITeamProfileProps} from "./ITeamProfileProps";
 import {isUndefined} from "lodash";
 import {UserStore} from "../../components/user-store";
 import {EFormTypes} from "../../EFormTypes";
+import * as React from "react";
+import {getFormattedDate} from "../../services/utils";
 
 @autobind
 export class TeamProfileController {
@@ -38,12 +40,17 @@ export class TeamProfileController {
     }
 
     onComponentDidMount(): void {
+        this.getTeamInfo();
         this.getCoaches();
         this.getTeamParticipants();
         if (!UserStore.getInstance().isLogin()) {
             return;
         }
         this.store.transport.getUserTeams().then(this.store.onSuccessGetUserTeams)
+    }
+
+    getTeamInfo(): void {
+        this.store.transport.getTeamInfo(this.store.teamId).then(this.store.onSuccessGetInfo).catch(this.store.onError)
     }
 
     getCoaches(): void {
@@ -66,6 +73,35 @@ export class TeamProfileController {
     showUserForm(): void {
         this.store.isVisible = true;
         this.store.formType = EFormTypes.TEAM_USER
+    }
+
+    acceptAllTeam(): void {
+        this.store.transport
+            .acceptAllTeam(this.store.teamId)
+            .then(this.store.onSuccessAccept)
+            .then(this.getTeamParticipants)
+            .catch(this.store.onError)
+    }
+
+    setNewName(event: React.ChangeEvent<HTMLInputElement>): void {
+        this.store.newName = event.target.value;
+    }
+
+    editName(): void {
+        if (!this.store.canEditEvent) return;
+        this.store.isChangingName = true;
+    }
+
+    cancelNameChanging(): void {
+        this.store.isChangingName = false;
+    }
+
+    changeTeamName(): void {
+        this.store.transport
+            .editTeamInfo(this.store.teamId, this.store.newName)
+            .then(this.store.onSuccessChangeName)
+            .then(this.getTeamInfo)
+            .catch(this.store.onError)
     }
 
     showCoachForm(): void {

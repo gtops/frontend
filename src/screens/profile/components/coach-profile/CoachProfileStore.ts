@@ -10,7 +10,7 @@ export class CoachProfileStore extends Store {
     @observable data: ITableData[] = [];
 
     onSuccessGetTeams(response: AxiosResponse<IGetTeamsResponse[]>) {
-        console.log("[UserProfileStore.onSuccessGetEvents]: ", response);
+        console.log("[CoachProfileStore.onSuccessGetTeams]: ", response);
         this.data = response.data.map(item => {
             return(
                 {

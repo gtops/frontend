@@ -3,7 +3,7 @@ import {autobind} from "core-decorators";
 import {observable} from "mobx";
 import {AxiosResponse} from "axios";
 import {
-    IGetEventParticipantsResponse, IGetTeamCoachesResponse,
+    IGetEventParticipantsResponse, IGetTeamCoachesResponse, IGetTeamInfoResponse,
     IGetTeamsResponse
 } from "../../services/transport/responses";
 import {ITableData} from "../../components/table";
@@ -17,6 +17,14 @@ export class TeamProfileStore extends Store {
     @observable isVisible = false;
     @observable canEditEvent = false;
     @observable formType = EFormTypes.TEAM_USER;
+    @observable name = "";
+    @observable newName = "";
+    @observable isChangingName = false;
+
+    onSuccessChangeName(response: AxiosResponse): void {
+        console.log("[EventProfileStore.onSuccessChangeName]: ", response);
+        this.isChangingName = false;
+    }
 
     onSuccess(response: AxiosResponse<IGetTeamCoachesResponse[]>) {
         console.log("[TeamProfileStore.onSuccess]: ", response);
@@ -26,6 +34,12 @@ export class TeamProfileStore extends Store {
                 data: item,
             }
         })
+    }
+
+    onSuccessGetInfo(response: AxiosResponse<IGetTeamInfoResponse>) {
+        console.log("[TeamProfileStore.onSuccessGetInfo]: ", response);
+        this.name = response.data.name;
+        this.newName = this.name;
     }
 
     onSuccessGetUserTeams(response: AxiosResponse<IGetTeamsResponse[]>) {
