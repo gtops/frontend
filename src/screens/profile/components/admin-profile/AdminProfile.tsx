@@ -5,7 +5,6 @@ import {AdminProfileStore} from "./AdminProfileStore";
 import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
 import {Tabs} from "../../../../components/tabs";
-import {Events} from "../events";
 import {Organisations} from "./components/organisations";
 
 @autobind

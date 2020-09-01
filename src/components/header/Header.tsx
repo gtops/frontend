@@ -8,6 +8,7 @@ import {HeaderController} from "./HeaderController";
 import EventListener from "react-event-listener";
 import {EPath} from "../../EPath";
 import {UserStore} from "../user-store";
+import {ConfirmPopup} from "../confirm-popup";
 
 @observer
 @autobind
@@ -32,9 +33,8 @@ export class Header extends React.Component {
                                 UserStore.getInstance().isLogin()
                                     ?
                                     <div className={"header__controls"}>
-                                        <a href={EPath.LOGIN} className="header__login icon"/>
                                         <a href={EPath.PROFILE} className="header__profile icon"/>
-                                        {/*<span onClick={this.controller.logout} className="header__logout icon"/>*/}
+                                        <span onClick={this.controller.logout} className="header__logout icon"/>
                                     </div>
                                     : <a href={EPath.LOGIN} className="header__login icon"/>
                             }

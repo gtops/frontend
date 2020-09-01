@@ -5,16 +5,24 @@ import {observable} from "mobx";
 import {AxiosError, AxiosResponse} from "axios";
 import {ITableData} from "../../components/table";
 import {getDateString} from "../../services/utils";
+import {IGetUserEventsResponse} from "../../services/transport/responses/IGetUserEventsResponse";
 
 interface IOrgsList {
     isVisible: boolean;
     data: IGetOrgsListResponse
 }
+
+interface IUserEvent {
+    id: number,
+    isConfirmed: boolean
+}
+
 @autobind
 export class AllEventsStore extends Store {
     @observable orgsList: IOrgsList[] = [];
     @observable events: Map<number, ITableData[]> = new Map<number, ITableData[]>();
     @observable popupText = "";
+    @observable userEvents: IUserEvent[] = [];
 
     onSuccessGetOrgsList(response: AxiosResponse<IGetOrgsListResponse[]>): void {
         console.log("[AllEventsStore.onSuccessGetOrgsList]: ", response);
@@ -22,6 +30,16 @@ export class AllEventsStore extends Store {
             return {
                 isVisible: false,
                 data: item,
+            }
+        });
+    }
+
+    onSuccessGetUserEvents(response: AxiosResponse<IGetUserEventsResponse[]>) {
+        console.log("[UserProfileStore.onSuccessGetEvents]: ", response);
+        this.userEvents = response.data.map(value => {
+            return {
+                id: value.id,
+                isConfirmed: value.userConfirmed
             }
         });
     }
@@ -42,10 +60,10 @@ export class AllEventsStore extends Store {
     onSuccessSendRequest(response: AxiosResponse) {
         console.log("[AllEventsStore.onSuccessSendRequest]: ", response);
         this.isError = false;
-        this.popupText = "Заявка отправлена и будет рассмотрена"
+        this.popupText = "Заявка отправлена."
     }
 
     onErrorImpl(error: AxiosError) {
-        this.popupText = `Произошла ошибка. ${this.message}`
+        this.popupText = this.message
     }
 }

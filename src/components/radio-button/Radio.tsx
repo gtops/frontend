@@ -2,7 +2,7 @@ import React from "react";
 import {IRadioProps} from "./IRadioProps";
 import {autobind} from "core-decorators";
 import {RadioStore} from "./RadioStore";
-import {isEmpty, isEqual} from "lodash";
+import {isEmpty, isEqual, isUndefined} from "lodash";
 import "./Radio.scss";
 import classNames from "classnames";
 import {observer} from "mobx-react";
@@ -13,6 +13,12 @@ export class Radio extends React.Component<IRadioProps> {
     private readonly store = new RadioStore();
 
     componentDidMount(): void {
+        if (this.props.valuesObject) {
+            this.store.items = this.props.valuesObject;
+            return;
+        }
+
+        if (isUndefined(this.props.values)) return;
         this.store.items = this.props.values.map(value => {
             return {title: value, isChecked: false}
         });

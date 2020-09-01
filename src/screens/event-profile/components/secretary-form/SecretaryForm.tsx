@@ -8,6 +8,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import {observer} from "mobx-react";
 import {ISecretaryFormProps} from "./ISecretaryFormProps";
+import {Popup} from "../../../../components/popup/Popup";
+import ru from "date-fns/locale/ru";
 
 @autobind
 @observer
@@ -16,7 +18,7 @@ export class SecretaryForm extends React.Component<ISecretaryFormProps> {
     private readonly controller = new SecretaryFormController(this.store);
 
     componentDidMount(): void {
-       this.controller.onComponentDidMount(this.props);
+        this.controller.onComponentDidMount(this.props);
     }
 
     render(): React.ReactNode {
@@ -24,15 +26,15 @@ export class SecretaryForm extends React.Component<ISecretaryFormProps> {
 
         return (
             <div>
-                <form className={"form -type-secretary"} onSubmit={this.controller.handleSubmit}>
-                    <div className={"form-toggle"}>
-                        <label>
-                            Пригласить нового пользователя
+                <form className={"form -shadowed"} onSubmit={this.controller.handleSubmit}>
+                    <div className={"form__toggle"}>
+                        <label className={this.store.isAddChecked ? "toggle-item -active" : "toggle-item"}>
+                            Новый пользователь
                             <input type={"radio"} checked={this.store.isAddChecked}
                                    onChange={this.controller.onChangeRadio}/>
                         </label>
-                        <label>
-                            Выбрать существующего пользователя
+                        <label className={!this.store.isAddChecked ? "toggle-item -active" : "toggle-item"}>
+                            Зарегестрированный пользователь
                             <input type={"radio"} checked={!this.store.isAddChecked}
                                    onChange={this.controller.onChangeRadio}/>
                         </label>
@@ -41,40 +43,49 @@ export class SecretaryForm extends React.Component<ISecretaryFormProps> {
                         this.store.isAddChecked
                             ?
                             <div className={"label__container"}>
-                                <div className={"gender"}>
-                                    <span>Пол: </span>
-                                    <Radio values={[EGender.MALE, EGender.FEMALE]}
-                                           onChange={this.controller.onChangeGender}/>
-                                </div>
-                                <label className={"label"}>
-                                    ФИО:
-                                    <input className={"form__input"} name="name"
-                                           onChange={this.controller.handleInputChange}
+                                <label className={"form__field"}>
+                                    ФИО
+                                    <input name="name" onChange={this.controller.handleInputChange}
                                            value={this.store.formValues.name}/>
                                 </label>
-                                <label className={"form__address label"}>
-                                    Дата рожджения:
-                                    <DatePicker
-                                        onChange={this.controller.setDateOfBirth}
-                                        selected={date}
-                                    />
-                                </label>
-                                <label className={"label"}>
-                                    Почта:
-                                    <input className={"form__input"} name="email" type={"email"}
+                                <div className={"form__line"}>
+                                    <label className={"form__field"}>
+                                        Дата рождения
+                                        <DatePicker
+                                            onChange={this.controller.setDateOfBirth}
+                                            selected={date}
+                                            locale={ru}
+                                            dateFormat="dd.MM.yyyy"
+                                        />
+                                    </label>
+                                    <div className={"gender form__field"}>
+                                        <span>Пол </span>
+                                        <Radio values={[EGender.MALE, EGender.FEMALE]}
+                                               onChange={this.controller.onChangeGender}/>
+                                    </div>
+                                </div>
+                                <label className={"form__field"}>
+                                    Почта
+                                    <input name="email" type={"email"}
                                            onChange={this.controller.handleInputChange}
                                            value={this.store.formValues.email}/>
                                 </label>
                             </div>
-                            : <label className={"label"}>
-                                E-mail:
+                            : <label className={"form__field"}>
+                                E-mail
                                 <input name="email" type={"email"}
                                        onChange={this.controller.handleInputEmailChange}
                                        value={this.store.email}/>
                             </label>
                     }
-                    <input className={"label form__button"} type={"submit"} value={"Сохранить"}/>
+                    <input className={"form__button"} type={"submit"} value={"Сохранить"}/>
                 </form>
+                <Popup
+                    popupText={this.store.message}
+                    isVisible={this.store.message !== ""}
+                    isError={this.store.isError}
+                    onClose={this.controller.onPopupClose}
+                />
             </div>
         )
     }

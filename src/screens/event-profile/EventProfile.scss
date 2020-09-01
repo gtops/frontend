@@ -1,32 +1,142 @@
 .event-profile {
-  .edit-link {
-    text-decoration: underline;
-    cursor: pointer;
-    margin-left: 10px;
+  .tab {
+    font-size: 22px;
+    padding-bottom: 5px;
+
+    &.-active {
+      border-bottom: 2px solid #010E8A;
+      text-decoration: none!important;
+    }
+
+    &:hover {
+      text-decoration: none!important;
+    }
+
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+      background-size: 24px;
+    }
+
+    &.-table {
+      &:before {
+        background-image: url("./img/table.png");
+      }
+    }
+
+    &.-trials {
+      &:before {
+        background-image: url("./img/trophy.png");
+      }
+    }
+
+    &.-participant {
+      &:before {
+        background-image: url("./img/user.png");
+      }
+    }
+
+    &.-team {
+      &:before {
+        background-image: url("./img/collaboration.png");
+      }
+    }
+
+    &.-secretary {
+      &:before {
+        background-image: url("./img/note.png");
+      }
+    }
+
+    &.-clock {
+      &:before {
+        background-image: url("./img/stopwatch.png");
+      }
+    }
   }
 
   .input__field.-name {
     margin-top: 30px;
   }
 
-  .form {
-    .label {
-      input.form__button {
-        background: rgba(1, 14, 138, .75);
-        border: none;
-        color: #fff;
-        padding: 10px 25px;
-        cursor: pointer;
-        width: auto;
-        height: auto;
-        border-radius: 0;
-        margin-top: 20px;
-      }
+  .simple-select {
+    .react-selectize-control {
+      background-color: #fff!important;
+      background-image: none!important;;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 20px;
     }
   }
 
+  //.form {
+  //  justify-content: left;
+  //  align-items: flex-end;
+  //
+  //  &.-type-admin {
+  //    align-items: flex-start;
+  //
+  //    .form__button {
+  //      padding: 10px 20px;
+  //      margin-top: 10px;
+  //    }
+  //  }
+  //
+  //  .label {
+  //    input.form__button {
+  //      background: rgba(1, 14, 138, .75);
+  //      border: none;
+  //      color: #fff;
+  //      padding: 10px 25px;
+  //      cursor: pointer;
+  //      width: auto;
+  //      height: auto;
+  //      border-radius: 0;
+  //      margin-top: 20px;
+  //    }
+  //  }
+  //
+  //  .label {
+  //    width: auto;
+  //    margin: 0;
+  //
+  //    &:not(:last-child) {
+  //      margin-bottom: 20px;
+  //    }
+  //  }
+  //
+  //  .button {
+  //    margin-left: 30px;
+  //    padding: 7px 20px;
+  //    font-size: 14px;
+  //    margin-bottom: 20px;
+  //  }
+  //
+  //  input {
+  //    padding: 0 10px;
+  //  }
+  //}
+
   .event-status {
     text-transform: capitalize;
+  }
+
+  .message {
+    margin-bottom: 0;
+    opacity: 0.7;
+    color: green;
+
+    &.-type-error {
+      color: red;
+    }
+  }
+
+  .table {
+    margin-top: 20px;
   }
 }
 
@@ -49,16 +159,27 @@
 
 .button {
   margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  border: none !important;
+  height: auto !important;
+  width: auto !important;
 }
+
 .button.-small {
   font-size: 14px;
   padding: 5px 15px;
   margin-left: 20px;
 }
+
 .event-name {
   position: relative;
   display: inline-block;
   padding-right: 30px;
+  font-weight: 100;
+  color: black;
+  text-transform: capitalize;
+  margin: 0;
 
   &.-editable {
     &:after {
@@ -73,5 +194,23 @@
       top: 50%;
       transform: translateY(-50%);
     }
+  }
+}
+
+.back-link {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  color: #010E8A;
+  margin-bottom: 30px;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-image: url("./img/left-arrow.png");
+    background-size: 10px;
+    margin-right: 5px;
   }
 }

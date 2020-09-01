@@ -10,6 +10,7 @@ import {EGender} from "../../../../../calculator/EGender";
 import {Radio} from "../../../../../../components/radio-button";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import ru from "date-fns/locale/ru";
 
 @autobind
 @observer
@@ -25,7 +26,7 @@ export class AddAdminForm extends React.Component {
         let date = this.store.adminValues.dateOfBirth == "" ? new Date() : new Date(this.store.adminValues.dateOfBirth);
 
         return (
-            <form className={"form -type-admin"} onSubmit={this.controller.handleSubmit}>
+            <form className={"form"} onSubmit={this.controller.handleSubmit}>
                 <Select
                     isSearchable={true}
                     options={
@@ -40,44 +41,48 @@ export class AddAdminForm extends React.Component {
                     placeholder={"Выберите организацию"}
                     onChange={this.controller.onChange}
                 />
-                <div className={"form-toggle"}>
-                    <label>
-                        Пригласить нового администратора
+                <div className={"form__toggle"}>
+                    <label className={this.store.isAddChecked ? "toggle-item -active" : "toggle-item"}>
+                        Новый пользователь
                         <input type={"radio"} checked={this.store.isAddChecked} onChange={this.controller.onChangeRadio}/>
                     </label>
-                    <label>
-                        Выбрать существующего администратора
+                    <label className={!this.store.isAddChecked ? "toggle-item -active" : "toggle-item"}>
+                        Зарегестрированный пользователь
                         <input type={"radio"} checked={!this.store.isAddChecked} onChange={this.controller.onChangeRadio}/>
                     </label>
                 </div>
                 {
                     this.store.isAddChecked
                         ? <div className={"label__container"}>
-                            <label>
-                                ФИО:
-                                <input className={"form__input"} name="name" onChange={this.controller.handleInputAdminChange}
+                            <label className={"form__field"}>
+                                ФИО
+                                <input name="name" onChange={this.controller.handleInputAdminChange}
                                        value={this.store.adminValues.name}/>
                             </label>
-                            <div className={"gender"}>
-                                <span>Пол: </span>
-                                <Radio values={[EGender.MALE, EGender.FEMALE]} onChange={this.controller.onRadioChange}/>
-                            </div>
-                            <label className={"form__address label"}>
-                                Дата рожджения:
-                                <DatePicker
-                                    onChange={this.controller.setDateOfBirth}
-                                    selected={date}
-                                />
-                            </label>
-                            <label>
-                                Почта:
-                                <input className={"form__input"} name="email" onChange={this.controller.handleInputAdminChange}
+                            <label className={"form__field"}>
+                                Почта
+                                <input name="email" onChange={this.controller.handleInputAdminChange}
                                        type={"email"} value={this.store.adminValues.email}/>
                             </label>
+                            <div className={"form__line"}>
+                                <label className={"form__field"}>
+                                    Дата рождения
+                                    <DatePicker
+                                        onChange={this.controller.setDateOfBirth}
+                                        selected={date}
+                                        locale={ru}
+                                        dateFormat="dd.MM.yyyy"
+                                    />
+                                </label>
+                                <div className={"form__field"}>
+                                    Пол
+                                    <Radio values={[EGender.MALE, EGender.FEMALE]} onChange={this.controller.onRadioChange}/>
+                                </div>
+                            </div>
                         </div>
                         :
-                        <label className={"label"}>
-                            E-mail:
+                        <label className={"form__field"}>
+                            Почта
                             <input name="email" type={"email"}
                                    onChange={this.controller.handleInputEmailChange}
                                    value={this.store.email}/>

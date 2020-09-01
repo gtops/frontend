@@ -1,0 +1,1 @@
+export {SportObjectCatalog} from "./SportObjectCatalog"

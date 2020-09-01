@@ -24,40 +24,70 @@ export class AllEvents extends React.Component {
     render(): React.ReactNode {
         return (
             <div className={"container all-events"}>
-                {
-                    this.store.orgsList.map(item => {
-                        let events = this.store.events.get(item.data.id);
-                        return (
-                            <div className={classNames({"org-item": true, "-open": item.isVisible})} key={item.data.id}>
-                                <div className={"org-item__heading"}
-                                     onClick={() => this.controller.onItemClick(item.data.id)}>
-                                    {item.data.name}
-                                </div>
-                                <div className={"org-item__body"}>
-                                    {isEmpty(events)
-                                        ? <p>У организации пока нет мероприятий</p>
-                                        : <Table
-                                            columns={
-                                                [
-                                                    {
-                                                        accessor: "_name",
-                                                        title: "Название",
-                                                        className: "name",
-                                                        cell: this.setNameCell
-                                                    },
-                                                    {accessor: "startDate", title: "Дата начала"},
-                                                    {accessor: "description", title: "Описание"},
-                                                    {accessor: "", title: "", cell: this.setCell},
-                                                ]
-                                            }
-                                            data={this.store.events.get(item.data.id)}
+                <h1>Список организаций и мероприятий</h1>
+                <p>Всего организаций: {this.store.orgsList.length}</p>
+                <div className={"orgs-list"}>
+                    {
+                        this.store.orgsList.map(item => {
+                            let events = this.store.events.get(item.data.id);
+                            return (
+                                <div className={classNames({"org-item": true, "-open": item.isVisible})}
+                                     key={item.data.id}>
+                                    <div className={"org-item__heading"}>
+                                        <div className={"org-item__heading-item"}>
+                                            <span className={"label"}>Организация</span>
+                                            <span className={"value -name"}>{item.data.name}</span>
+                                        </div>
+                                        <div className={"org-item__heading-item"}>
+                                            <span className={"label"}>Руководитель</span>
+                                            <span className={"value"}>{item.data.leader}</span>
+                                        </div>
+                                        <div className={"org-item__heading-item"}>
+                                            <span className={"label"}>Всего мероприятий</span>
+                                            <span className={"value"}>{item.data.countOfAllEvents}</span>
+                                        </div>
+                                        <div className={"org-item__heading-item"}>
+                                            <span className={"label"}>Активных мероприятий</span>
+                                            <span className={"value -name"}>{item.data.countOfActiveEvents}</span>
+                                        </div>
+                                    </div>
+                                    <div className={"org-item__body"}>
+                                        <Table columns={[
+                                            {
+                                                accessor: "_name",
+                                                title: "Название",
+                                                className: "name",
+                                                cell: this.setNameCell
+                                            },
+                                            {accessor: "startDate", title: "Дата начала"},
+                                            {accessor: "status", title: "Статус"},
+                                            {accessor: "", title: "", cell: this.setCell},
+                                        ]}
+                                               data={this.store.events.get(item.data.id)}
+                                               className={"-type-orgs"}
                                         />
+                                    </div>
+                                    {
+                                        item.data.countOfAllEvents === 0
+                                            ? void 0
+                                            : <div
+                                                onClick={() => this.controller.onItemClick(item.data.id)}
+                                                className={
+                                                    classNames({
+                                                        "link": true,
+                                                        "-open": !item.isVisible,
+                                                        "-close": item.isVisible
+                                                    })
+                                                }
+                                            >
+                                                {item.isVisible ? "Свернуть" :"Посмотреть мероприятия"}
+                                            </div>
                                     }
                                 </div>
-                            </div>
-                        )
-                    })
-                }
+                            )
+                        })
+                    }
+                </div>
                 <Popup
                     isVisible={this.store.popupText !== ""}
                     isError={this.store.isError}
@@ -69,7 +99,25 @@ export class AllEvents extends React.Component {
     }
 
     private setCell(data: any): React.ReactNode {
-        return <span style={{cursor: "pointer"}}
+        let isConfirmed = false;
+        let isParticipant = false;
+        this.store.userEvents.forEach(value => {
+            if (value.id !== data.data.id) return;
+            isParticipant = true;
+            isConfirmed = value.isConfirmed;
+        });
+
+        if (isParticipant) {
+            if (isConfirmed) {
+                return (
+                    <span style={{color: "green"}}>Заявка одобрена</span>
+                )
+            }
+            return (
+                <span>Заявка на рассмотрении</span>
+            )
+        }
+        return <span style={{cursor: "pointer", margin: 0}} className={"button -small"}
                      onClick={() => this.controller.sendRequest(data.data.id)}>Подать заявку</span>
     }
 

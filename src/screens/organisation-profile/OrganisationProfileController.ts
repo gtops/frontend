@@ -2,6 +2,7 @@ import {OrganisationProfileStore} from "./OrganisationProfileStore";
 import {autobind} from "core-decorators";
 import {IOrganisationProfileProps} from "./IOrganisationProfileProps";
 import {isUndefined} from "lodash";
+import {UserStore} from "../../components/user-store";
 
 @autobind
 export class OrganisationProfileController {
@@ -23,6 +24,11 @@ export class OrganisationProfileController {
             .catch(this.store.onError);
 
         this.getAdminsList();
+    }
+
+    onDelete(): void {
+        this.deleteAdmin(this.store.id, this.store.selectedId);
+        this.store.closePopup();
     }
 
     deleteAdmin(orgId: number, adminId: number): void {

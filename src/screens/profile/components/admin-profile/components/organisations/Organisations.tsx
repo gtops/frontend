@@ -11,9 +11,9 @@ export class Organisations extends React.Component {
         return (
             <Tabs
                 tabs={[
-                    {name: "Добавить организацию", component: <OrgForm isEditForm={false}/>, isActive: true},
+                    {name: "Все организации", component: <OrgsList/>, isActive: true},
+                    {name: "Добавить организацию", component: <OrgForm isEditForm={false}/>},
                     {name: "Редактировать организацию", component: <OrgForm isEditForm={true}/>},
-                    {name: "Посмотреть все организации", component: <OrgsList/>},
                     {name: "Пригласить администратора", component: <AddAdminForm/>},
                 ]}
                 isMain={false}

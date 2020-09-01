@@ -8,14 +8,24 @@
   justify-content: flex-end;
   transition: right 0.25s linear;
   min-height: 100vh;
+  z-index: 999;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 40px;
+  }
 
   .content {
     background: white;
-    width: 400px;
+    width: 500px;
     right: 0;
     flex: none;
     position: relative;
-    padding: 60px;
+    padding: 30px 60px;
+
+    .form {
+      margin: 0 auto;
+    }
   }
 
   &.-shown {
@@ -24,11 +34,18 @@
     left: 0;
     z-index: 1000;
 
-    .aside-wrapper__close-button {
-      cursor: pointer;
+    .delete-icon {
       position: absolute;
       right: 20px;
       top: 20px;
+      height: 25px;
+      width: 25px;
+
+      &::before,
+      &::after {
+        height: 2px;
+        background: black;
+      }
     }
   }
 }

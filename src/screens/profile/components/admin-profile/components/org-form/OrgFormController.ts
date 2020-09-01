@@ -4,6 +4,7 @@ import {CommonProfileController} from "../../../common-profile/CommonProfileCont
 import {OrgFormStore} from "./OrgFormStore";
 import {IOrgFormProps} from "./IOrgFormProps";
 import {isEmpty} from "lodash";
+import {OptionValue} from "react-selectize";
 
 @autobind
 export class OrgFormController extends CommonProfileController {
@@ -48,6 +49,27 @@ export class OrgFormController extends CommonProfileController {
         }
     }
 
+    onChangeOrg(selectedOption: OptionValue): void {
+        let id = selectedOption.value;
+        this.store.selectedOrg = selectedOption;
+        let value = this.store.orgsList.find((item) => item.id == id);
+        this.store.selectedOrgId = id;
+
+        if (!value) return;
+
+        this.store.formValues = {
+            phoneNumber: value.phone_number,
+            oqrn: value.OQRN,
+            paymentAccount: value.payment_account,
+            correspondentAccount: value.correspondent_account,
+            name: value.name,
+            bik: value.bik,
+            branch: value.branch,
+            address: value.address,
+            leader: value.leader
+        }
+    }
+
     handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         const target = event.target;
         const value = target.value;
@@ -60,6 +82,7 @@ export class OrgFormController extends CommonProfileController {
         this.store.isPopupVisible = false;
         if (!this.store.isError) {
             this.store.formValues = this.store.EMPTY_FORM_VALUES;
+            this.store.selectedOrg = {value: "", label: ""};
         }
         this.store.popupText = "";
         this.store.isError = false;

@@ -1,3 +1,5 @@
+import {from} from "rxjs/index";
+
 export {IGetTeamsResponse} from "./IGetTeamsResponse";
 export { IGetUserInfoResponse } from "./IGetUserInfoResponse";
 export { ILoginResponse } from "./ILoginResponse";
@@ -18,3 +20,12 @@ export {IGetEventParticipantsResponse} from "./IGetEventParticipantsResponse"
 export {IGetTeamCoachesResponse} from "./IGetTeamCoachesResponse"
 export {IGetUserProfileInfo} from "./IGetUserProfileInfo"
 export {IGetTeamInfoResponse} from "./IGetTeamInfoResponse"
+export {IGetSportObjectResponse} from "./IGetSportObjectResponse"
+export {IGetJudgesResponse} from "./IGetJudgesResponse"
+export {IGetTablesResponse} from "./IGetTablesResponse"
+export {IGetEventTrialsResponse} from "./IGetEventTrialsResponse"
+export {IGetEventAddedTrialsResponse} from "./IGetEventAddedTrialsResponse"
+export {IGetCurrentTableResponse} from "./IGetCurrentTableResponse"
+export {IGetUserResultResponse} from "./IGetUserResultResponse"
+export {IGetTrialResultResponse, IParticipant} from "./IGetTrialResultResponse"
+export {IGetEventResultsResponse} from "./IGetEventResultsResponse"

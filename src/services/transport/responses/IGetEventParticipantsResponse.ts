@@ -1,7 +1,12 @@
 export interface IGetEventParticipantsResponse {
     EventParticipantId: number,
     userId: number,
-    eventId: number,
     teamId: number,
-    isConfirmed: boolean
+    eventId: number,
+    isConfirmed: boolean,
+    name: string,
+    email: string,
+    gender: number,
+    dateOfBirth: string,
+    isActivity: number,
 }

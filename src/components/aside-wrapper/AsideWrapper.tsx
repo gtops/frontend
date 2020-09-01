@@ -10,9 +10,7 @@ export class AsideWrapper extends React.Component<IAsideWrapperProps> {
                 <div className={"content"}>
                     <h2>{this.props.title}</h2>
                     {this.props.component}
-                    <div className={"aside-wrapper__close-button"} onClick={this.props.onClose}>
-                        X
-                    </div>
+                    <div className={"delete-icon"} onClick={this.props.onClose}/>
                 </div>
             </div>
         )

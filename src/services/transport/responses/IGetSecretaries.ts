@@ -10,4 +10,5 @@ export interface IGetSecretaries {
     organizationId: number,
     eventId: number,
     secretaryId: number
+    secretaryOnOrganizationId?: number
 }

@@ -12,6 +12,8 @@ export class Store {
     @observable private _isError = false;
     @observable private _message = "";
     @observable private _errorCode = -1;
+    @observable private _selectedId = -1;
+    @observable private _isConfirmPopupVisible = false;
 
     get transport(): Transport {
         return this._transport;
@@ -45,6 +47,22 @@ export class Store {
         this._message = value;
     }
 
+    get selectedId(): number {
+        return this._selectedId;
+    }
+
+    set selectedId(value: number) {
+        this._selectedId = value;
+    }
+
+    get isConfirmPopupVisible(): boolean {
+        return this._isConfirmPopupVisible;
+    }
+
+    set isConfirmPopupVisible(value: boolean) {
+        this._isConfirmPopupVisible = value;
+    }
+
     onError(error: AxiosError): void {
         console.error(error);
         this._isError = true;
@@ -53,6 +71,16 @@ export class Store {
         if (this._errorCode == 401) return;
 
         attempt(this.onErrorImpl!, error)
+    }
+
+    closePopup(): void {
+        this.selectedId = -1;
+        this.isConfirmPopupVisible = false;
+    }
+
+    showPopup(id: number): void {
+        this.selectedId = id;
+        this.isConfirmPopupVisible = true;
     }
 
     onErrorImpl?(error: AxiosError): void;

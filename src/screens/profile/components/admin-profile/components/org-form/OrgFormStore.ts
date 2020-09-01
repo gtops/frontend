@@ -5,6 +5,7 @@ import * as React from "react";
 import {IAddAdminParams, IAddOrgParams} from "../../../../../../services/transport/params";
 import {IGetOrgsListResponse} from "../../../../../../services/transport/responses";
 import {CommonProfileStore} from "../../../common-profile/CommonProfileStore";
+import {OptionValue} from "react-selectize";
 
 
 @autobind
@@ -27,6 +28,7 @@ export class OrgFormStore extends CommonProfileStore {
     @observable orgsList: IGetOrgsListResponse[] = [];
     @observable isEditForm? = false;
     @observable popupText = "";
+    @observable selectedOrg: OptionValue = {value: "", label: ""};
 
     onSuccessGetOrgsList(response: AxiosResponse<IGetOrgsListResponse[]>): void {
         console.log("[OrgFormStore.onSuccessGetOrgsList]:", response);
@@ -41,6 +43,6 @@ export class OrgFormStore extends CommonProfileStore {
 
     onErrorImpl(error: AxiosError): void {
         this.isPopupVisible = true;
-        this.popupText = "Произошла ошибка. Статус: " + this.message;
+        this.popupText = this.message;
     }
 }

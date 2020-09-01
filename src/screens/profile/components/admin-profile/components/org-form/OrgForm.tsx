@@ -7,6 +7,8 @@ import {autobind} from "core-decorators";
 import {observer} from "mobx-react";
 import "./Form.scss";
 import classNames from "classnames";
+import {SimpleSelect} from "react-selectize";
+import {values} from "mobx";
 
 @autobind
 @observer
@@ -19,72 +21,76 @@ export class OrgForm extends React.Component<IOrgFormProps> {
     }
 
     render(): React.ReactNode {
+        let selectedOrg = this.store.selectedOrg.value == "" ? undefined : this.store.selectedOrg;
         return (
             <section className={"invite-section"}>
                 <form className={"form"} onSubmit={this.controller.handleSubmit}>
                     {
                         this.store.isEditForm ?
-                            <Select
-                                isSearchable={true}
-                                options={
-                                    this.store.orgsList.map(item => {
-                                        return {
-                                            value: item.id, label: item.name
-                                        }
-                                    })
-                                }
-                                className="react-select-container"
-                                classNamePrefix="react-select"
-                                placeholder={"Выберите организацию"}
-                                onChange={this.controller.onChange}
+                            <SimpleSelect
+                                options={this.store.orgsList.map(item => {
+                                    return {
+                                        value: item.id, label: item.name
+                                    }
+                                })}
+                                placeholder="Выберите организацию"
+                                onValueChange={this.controller.onChangeOrg}
+                                value={selectedOrg}
                             />
                             : void 0
                     }
-                    <label className={"form__name label"}>
-                        Название:
+                    <label className={"form__field"}>
+                        Название
                         <input name="name" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.name}/>
                     </label>
-                    <label className={"form__address label"}>
-                        Адрес:
+                    <label className={"form__field"}>
+                        Адрес
                         <input name="address" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.address}/>
                     </label>
-                    <label className={"form__leader label"}>
-                        Ответственное лицо:
+                    <label className={"form__field"}>
+                        Ответственное лицо
                         <input name="leader" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.leader}/>
                     </label>
-                    <label className={"label"}>
-                        Номер телефона:
+                    <label className={"form__field"}>
+                        Номер телефона
                         <input name="phoneNumber" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.phoneNumber}/>
                     </label>
-                    <label className={"label"}>
-                        ОГРН:
-                        <input name="oqrn" onChange={this.controller.handleInputChange}
-                               value={this.store.formValues.oqrn}/>
-                    </label>
-                    <label className={"label"}>
-                        Лицевой счёт:
-                        <input name="paymentAccount" onChange={this.controller.handleInputChange}
-                               value={this.store.formValues.paymentAccount}/>
-                    </label>
-                    <label className={"label"}>
-                        Филиал:
+                    <label className={"form__field"}>
+                        Филиал
                         <input name="branch" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.branch}/>
                     </label>
-                    <label className={"label"}>
-                        БИК:
-                        <input name="bik" onChange={this.controller.handleInputChange}
-                               value={this.store.formValues.bik}/>
-                    </label>
-                    <label className={"label"}>
-                        Расчётный счёт:
-                        <input name="correspondentAccount" onChange={this.controller.handleInputChange}
-                               value={this.store.formValues.correspondentAccount}/>
-                    </label>
+
+                    <div className={"form__line"}>
+                        <label className={"form__field"}>
+                            ОГРН
+                            <input name="oqrn" onChange={this.controller.handleInputChange}
+                                   value={this.store.formValues.oqrn}/>
+                        </label>
+                        <label className={"form__field"}>
+                            Лицевой счёт
+                            <input name="paymentAccount" onChange={this.controller.handleInputChange}
+                                   value={this.store.formValues.paymentAccount}/>
+                        </label>
+                    </div>
+
+                    <div className={"form__line"}>
+
+                        <label className={"form__field"}>
+                            БИК
+                            <input name="bik" onChange={this.controller.handleInputChange}
+                                   value={this.store.formValues.bik}/>
+                        </label>
+                        <label className={"form__field"}>
+                            Расчётный счёт
+                            <input name="correspondentAccount" onChange={this.controller.handleInputChange}
+                                   value={this.store.formValues.correspondentAccount}/>
+                        </label>
+                    </div>
 
                     <input type={"submit"} className={"form__button"} value="Сохранить"/>
                     {
@@ -104,4 +110,20 @@ export class OrgForm extends React.Component<IOrgFormProps> {
             </section>
         )
     }
+}
+
+{/*<Select
+                                isSearchable={true}
+                                options={
+                                    this.store.orgsList.map(item => {
+                                        return {
+                                            value: item.id, label: item.name
+                                        }
+                                    })
+                                }
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                                placeholder={"Выберите организацию"}
+                                onChange={this.controller.onChange}
+                            />*/
 }

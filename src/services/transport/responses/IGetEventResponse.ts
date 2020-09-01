@@ -1,3 +1,5 @@
+import {EEventStatus} from "../../../screens/event-profile/EEventStatus";
+
 export interface IGetEventResponse {
     id: number,
     organizationId: number,
@@ -5,5 +7,5 @@ export interface IGetEventResponse {
     startDate: string,
     expirationDate: string,
     description: string,
-    status: string
+    status: EEventStatus
 }

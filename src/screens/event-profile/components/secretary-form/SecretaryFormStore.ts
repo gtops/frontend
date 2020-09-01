@@ -15,21 +15,15 @@ export class SecretaryFormStore extends Store {
         gender: 0
     };
     orgId = -1;
-    eventId = -1;
-    onSuccessImpl?: () => void;
-    onErrorProp?: (error: string) => void;
-    @observable isAddChecked = false;
+    onSuccessProp?: () => void;
+    @observable isAddChecked = true;
     @observable email = "";
     @observable formValues: IAddSecretaryParams = this.EMPTY_FORM_VALUES;
 
     onSuccess(response: AxiosResponse): void {
-        attempt(this.onSuccessImpl!);
         console.log("[SecretaryFormStore.onSuccess]: ", response);
-    }
-
-    onError(error: AxiosError): void {
-        let errors = error.response ? error.response.data.errors : [];
-        let message = errors.length > 0 ? errors[0].description : "";
-        attempt(this.onErrorProp!, message)
+        this.isError = false;
+        this.message = "Секретарь успешно добвален.";
+        attempt(this.onSuccessProp!)
     }
 }

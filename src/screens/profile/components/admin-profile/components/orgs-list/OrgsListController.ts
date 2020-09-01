@@ -26,4 +26,9 @@ export class OrgsListController extends CommonProfileController {
     deleteOrg(id: number) {
         this.store.transport.deleteOrg(id).then(this.onComponentDidMount).catch(console.log)
     }
+
+    onDelete(): void {
+        this.deleteOrg(this.store.selectedId);
+        this.store.closePopup();
+    }
 }

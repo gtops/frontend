@@ -42,7 +42,7 @@ export class Registration extends React.Component {
                                                    name={"name"} value={this.store.formValues.name}/>
                                         </div>
                                         <div className={"date"}>
-                                            <p className={"field-name"}>Дата рожджения:</p>
+                                            <p className={"field-name"}>Дата рождения:</p>
                                             <DatePicker
                                                 onChange={this.controller.setDateOfBirth}
                                                 selected={date}

@@ -5,4 +5,6 @@ export interface ITab {
     name: string;
     component: React.ReactNode;
     isActive?: boolean;
+    isVisible?: boolean;
+    className?: string
 }

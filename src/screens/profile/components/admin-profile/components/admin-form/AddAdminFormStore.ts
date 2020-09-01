@@ -37,7 +37,7 @@ export class AddAdminFormStore extends Store {
     }
 
     onErrorImpl(error: AxiosError): void {
-        this.popupText = `Произошла ошибка. Статус: ${this.message}`;
+        this.popupText = this.message;
         this.isPopupVisible = true;
     }
 }

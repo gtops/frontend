@@ -6,6 +6,7 @@ import {OrganisationProfileStore} from "./OrganisationProfileStore";
 import {OrganisationProfileController} from "./OrganisationProfileController";
 import {IOrganisationProfileProps} from "./IOrganisationProfileProps";
 import {Table} from "../../components/table";
+import {ConfirmPopup} from "../../components/confirm-popup";
 
 @autobind
 @observer
@@ -39,19 +40,12 @@ export class OrganisationProfile extends React.Component<IOrganisationProfilePro
                                 {accessor: "delete", title: "", cell: this.setCell},
                             ]}
                             data={this.store.admins}/>
-                        {/*
-                            this.store.isPopupVisible ?
-                                <div className={"popup-wrapper"}>
-                                    <div className={classNames({
-                                        "popup": true,
-                                        "-type-error": this.store.isError
-                                    })}>
-                                        {this.store.popupText}
-                                        <div className={"popup__close-icon"} onClick={this.controller.handleCloseClick}/>
-                                    </div>
-                                </div>
-                                : void 0
-                        */}
+                        <ConfirmPopup
+                            isVisible={this.store.isConfirmPopupVisible}
+                            onSubmit={this.controller.onDelete}
+                            onCancel={this.store.closePopup}
+                            popupText={"Вы действительно хотите удалить администратора орагнизации?"}
+                        />
                     </div>
                 )
         )
@@ -59,7 +53,6 @@ export class OrganisationProfile extends React.Component<IOrganisationProfilePro
 
     //TODO.. fix type
     private setCell(data: any): React.ReactNode {
-        return <span onClick={() => this.controller.deleteAdmin(data.data.organizationId, data.data.localAdminId)}
-                     className={"delete-icon"}/>
+        return <span onClick={() => this.store.showPopup(data.data.localAdminId)} className={"delete-icon"}/>
     }
 }

@@ -1,36 +1,92 @@
 .all-events {
+
+  .orgs-list {
+    margin-top: 40px;
+  }
+
   .org-item {
-    cursor: pointer;
+    cursor: default;
+    max-width: 991px;
+    background: white;
+    margin: 0 auto 20px auto;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding-bottom: 20px;
+
+    .link {
+      color: #010E8A;
+      text-decoration: underline;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      padding-left: 20px;
+
+      &:after {
+        display: inline-block;
+        content: ">";
+        margin-left: 5px;
+      }
+
+      &.-open {
+        display: block;
+        &:after {
+          transform: rotate(90deg) scale(1.1, 1.5);
+        }
+      }
+
+      &.-close {
+        &:after {
+          transform: rotate(-90deg) scale(1.1, 1.5);
+        }
+      }
+    }
 
     .org-item__body {
-      display: none;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0;
+      transition: max-height .5s, padding .5s;
     }
 
     .org-item__heading {
-      border-bottom: 1px solid;
-      padding: 15px 0;
-      font-size: 20px;
-      text-transform: capitalize;
+      padding: 15px 20px;
       position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
 
-      &:after {
-        content: ">";
-        transform: rotate(90deg) translateY(50%) scale(1, 2);
-        position: absolute;
-        right: 30px;
+      &-item {
+        flex: 1;
+
+        .label, .value {
+          display: block;
+        }
+
+        .value {
+          color: black;
+          &.-name {
+            color: rgba(#010E8A, .7);
+            font-weight: bold;
+            text-transform: capitalize;
+          }
+        }
+
+        .label {
+          font-size: 12px;
+          color: gray;
+          margin-bottom: 5px;
+        }
       }
     }
 
     &.-open {
       .org-item__body {
-        display: block;
+        padding-bottom: 20px;
+        max-height: 1000px;
       }
 
       .org-item__heading {
-        &:after {
-          transform: rotate(-90deg) translateY(50%) scale(1, 2);
-          right: 53px;
-        }
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
       }
     }
   }

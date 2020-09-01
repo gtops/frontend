@@ -1,9 +1,84 @@
 .user-result {
-   .error {
-     width: 500px;
-     padding: 0 20px;
-     font-size: 20px;
-     text-align: center;
-     margin: 20px auto 0;
-   }
- }
+  min-height: calc(100vh - 95px);
+  background-color: #f5f9fc;
+
+  h1 {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .info-count {
+    display: inline-flex;
+    margin-right: 20px;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+
+    &::before {
+      content: '';
+      width: 50px;
+      height: 50px;
+      display: inline-block;
+      background-size: 50px;
+      margin-right: 5px;
+    }
+
+    &.-gold:before {
+      background-image: url("./img/gold.png");
+    }
+
+    &.-bronze:before {
+      background-image: url("./img/bronze.png");
+    }
+
+    &.-silver:before {
+      background-image: url("./img/silver.png");
+    }
+  }
+
+  .error {
+    width: 500px;
+    padding: 0 20px;
+    font-size: 20px;
+    text-align: center;
+    margin: 20px auto 0;
+  }
+
+  .table {
+    max-width: 100%;
+    margin: 0 auto;
+
+    input {
+      text-align: right;
+      font-size: 16px;
+      max-width: 90px;
+      background-color: transparent;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      padding: 10px 5px;
+
+      //&:focus {
+      //  outline: none;
+      //  border: 1px solid lightgray;
+      //}
+    }
+
+    .result {
+      background-size: 50px;
+      width: 50px;
+      height: 50px;
+      margin: 0 auto;
+      &.-gold {
+        background-image: url("./img/gold.png");
+      }
+
+      &.-bronze {
+        background-image: url("./img/bronze.png");
+      }
+
+      &.-silver {
+        background-image: url("./img/silver.png");
+      }
+    }
+  }
+}

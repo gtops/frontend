@@ -18,11 +18,27 @@ export class UserFormController {
     handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
 
-        if (this.store.isAddChecked) {
+        if (this.store.isEditForm) {
+            this.editUser();
+        } else if (this.store.isAddChecked) {
             this.addNewUser();
         } else {
             this.addExistingUser();
         }
+    }
+
+    private editUser(): void {
+        if (!this.validateForm()) {
+            this.store.isError = true;
+            this.store.message = "Все поля должны быть заполнены.";
+            this.store.isPopupVisible = true;
+            return;
+        }
+        this.store.transport
+            .editTeamParticipant(this.store.userId, this.store.formValues)
+            .then(this.store.onSuccess)
+            .catch(this.store.onError)
+        ;
     }
 
     private addNewUser(): void {
@@ -49,7 +65,17 @@ export class UserFormController {
             case EFormTypes.COACH:
                 this.addCoach();
                 break;
+            case EFormTypes.JUDGE:
+                this.addJudge();
+                break;
         }
+    }
+
+    addJudge(): void {
+        this.store.transport
+            .addJudge(this.store.id, this.store.formValues.email)
+            .then(this.store.onSuccess)
+            .catch(this.store.onError)
     }
 
     addPersonalUser(): void {
@@ -74,7 +100,7 @@ export class UserFormController {
     }
 
     validateForm(): boolean {
-        return !isEmpty(this.store.formValues.name) && !isEmpty(this.store.formValues.email)
+        return !isEmpty(this.store.formValues.name.replace(" ", "")) && !isEmpty(this.store.formValues.email.replace(" ", ""))
             && !isEmpty(this.store.formValues.dateOfBirth)
     }
 

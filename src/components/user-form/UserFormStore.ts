@@ -16,12 +16,14 @@ export class UserFormStore extends Store {
         dateOfBirth: getFormattedDate(new Date()),
         gender: 0
     };
-    @observable isAddChecked = false;
+    @observable isAddChecked = true;
     @observable formValues: IAddUserParams = this.EMPTY_FORM_VALUES;
     @observable isPopupVisible = false;
+    @observable isEditForm = false;
     formType?: EFormTypes;
     successMessage = "Успешно.";
     id = -1;
+    userId = -1;
     onSuccessImpl?: () => void;
 
     onSuccess(response: AxiosResponse): void {

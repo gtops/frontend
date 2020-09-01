@@ -9,6 +9,7 @@ import {getDateString} from "../../../../services/utils";
 @autobind
 export class EventsListStore extends Store {
     @observable eventsList: ITableData[] = [];
+    @observable isConfirmPopupVisible = false;
 
     onSuccess(response: AxiosResponse<IGetOrgEventsListResponse[]>): void {
         console.log("[EventsListStore.onSuccess]: ", response);
@@ -21,7 +22,8 @@ export class EventsListStore extends Store {
                         eventStartDate: getDateString(item.startDate),
                         desc: item.description,
                         orgId: item.organizationId,
-                        id: item.id
+                        id: item.id,
+                        status: item.status
                     }
                 }
             )

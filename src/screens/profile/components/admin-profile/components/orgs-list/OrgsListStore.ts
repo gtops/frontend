@@ -15,7 +15,7 @@ export class OrgsListStore extends CommonProfileStore {
         this.orgData = response.data.map(item => {
             return {
                 isVisible: true,
-                data: {orgName: item.name, orgAddress: item.address, orgId: item.id}
+                data: {orgName: item.name, orgAddress: item.address, orgId: item.id, countOfAllEvents: item.countOfAllEvents}
             }
         });
     }

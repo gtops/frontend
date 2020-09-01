@@ -26,8 +26,7 @@ export class EventFormStore extends Store {
     onError(error: AxiosError): void {
         console.error(error);
         this.isError = true;
-        let message = getErrorMessage(error);
-        this.popupText = `Произошла ошибка. Статус: ${message}`;
+        this.popupText = getErrorMessage(error);
         this.isPopupVisible = true;
     }
 }

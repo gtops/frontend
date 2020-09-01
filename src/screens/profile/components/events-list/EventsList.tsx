@@ -5,6 +5,7 @@ import {EventsListStore} from "./EventsListStore";
 import {EventsListController} from "./EventsListController";
 import {observer} from "mobx-react";
 import {EPath} from "../../../../EPath";
+import {ConfirmPopup} from "../../../../components/confirm-popup";
 
 @autobind
 @observer
@@ -23,10 +24,17 @@ export class EventsList extends React.Component {
                     columns={[
                         {accessor: "_eventName", title: "Название", className: "name", cell: this.setNameCell},
                         {accessor: "eventStartDate", title: "Дата начала"},
+                        {accessor: "status", title: "Статус"},
                         {accessor: "desc", title: "Описание"},
                         {accessor: "delete", title: "", cell: this.setCell},
                     ]}
                     data={this.store.eventsList}/>
+                <ConfirmPopup
+                    isVisible={this.store.isConfirmPopupVisible}
+                    onSubmit={this.controller.onDelete}
+                    onCancel={this.controller.closePopup}
+                    popupText={"Вы действительно хотите удалить мероприятие?"}
+                />
             </section>
         )
     }
@@ -38,7 +46,6 @@ export class EventsList extends React.Component {
 
     //TODO.. fix type
     private setCell(data: any): React.ReactNode {
-        return <span onClick={() => this.controller.deleteEvent(data.data.orgId, data.data.id)}
-                     className={"delete-icon"}/>
+        return <span onClick={() => this.store.showPopup(data.data.id)} className={"delete-icon"}/>
     }
 }

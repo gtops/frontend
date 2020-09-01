@@ -14,6 +14,19 @@ export class EventsListController {
         this.getEventsList();
     }
 
+    onDelete(): void {
+        this.deleteEvent(UserStore.getInstance().organizationId, this.store.selectedId);
+        this.store.closePopup();
+    }
+
+    closePopup(): void {
+        this.store.isConfirmPopupVisible = false
+    }
+
+    showPopup(): void {
+        this.store.isConfirmPopupVisible = true
+    }
+
     private getEventsList(): void {
         this.store.transport
             .getOrgEventsList(UserStore.getInstance().organizationId)

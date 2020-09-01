@@ -6,6 +6,7 @@ import {EventFormController} from "./EventFormController";
 import {Popup} from "../../../../components/popup/Popup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ru from "date-fns/locale/ru";
 
 @autobind
 @observer
@@ -19,31 +20,36 @@ export class EventForm extends React.Component {
         return (
             <section className={"add-event-section"}>
                 <form className={"form"} onSubmit={this.controller.handleSubmit}>
-                    <label className={"form__name label"}>
-                        Название:
+                    <label className={"form__field"}>
+                        Название
                         <input name="name" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.name}/>
                     </label>
-                    <label className={"form__address label"}>
-                        Дата начала:
-                        <DatePicker
-                            onChange={this.controller.setStartDate}
-                            selected={startDate}
-                        />
-                    </label>
-                    <label className={"form__leader label"}>
-                        Дата окончания:
-                        <DatePicker
-                            onChange={this.controller.setExpirationDate}
-                            selected={expirationDate}
-                        />
-                    </label>
-                    <label className={"label form__description"}>
-                        Описание:
+                    <div className={"form__line"}>
+                        <label className={"form__field"}>
+                            Дата начала
+                            <DatePicker
+                                onChange={this.controller.setStartDate}
+                                selected={startDate}
+                                locale={ru}
+                                dateFormat="dd.MM.yyyy"
+                            />
+                        </label>
+                        <label className={"form__field"}>
+                            Дата окончания
+                            <DatePicker
+                                onChange={this.controller.setExpirationDate}
+                                selected={expirationDate}
+                                locale={ru}
+                                dateFormat="dd.MM.yyyy"
+                            />
+                        </label>
+                    </div>
+                    <label className={"form__field"}>
+                        Описание
                         <textarea rows={5} name="description" onChange={this.controller.handleInputChange}
                                value={this.store.formValues.description}/>
                     </label>
-
                     <input className={"form__button"} type={"submit"} value="Сохранить"/>
                     <Popup
                         isVisible={this.store.isPopupVisible}

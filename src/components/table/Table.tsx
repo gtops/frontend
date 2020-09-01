@@ -6,6 +6,7 @@ import {get, attempt} from "lodash";
 import "./Table.scss";
 import {ITableProps} from "./ITableProps";
 import {isUndefined, isEqual} from "lodash";
+import {keys} from "mobx";
 
 @autobind
 @observer
@@ -34,7 +35,7 @@ export class Table extends React.Component<ITableProps> {
 
     render(): React.ReactNode {
         return (
-            <div className={"table"}>
+            <div className={`table ${this.props.className}`}>
                 <div className={"table__header"}>
                     {this.getColumns()}
                 </div>
@@ -82,7 +83,7 @@ export class Table extends React.Component<ITableProps> {
                         return void 0
                     }
                 }
-                return <div className={"table__sub-header"}>{get(line, "header")}</div>
+                return <div key={index} className={"table__sub-header"}>{get(line, "header")}</div>
             })
         )
     }

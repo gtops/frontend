@@ -1,0 +1,16 @@
+.all-results {
+  table {
+    margin:  0 auto;
+
+    th {
+      text-align: left;
+      padding: 5px;
+      max-width: 500px;
+    }
+  }
+
+  table, th, td {
+    border: 1px solid black;
+  }
+}
+

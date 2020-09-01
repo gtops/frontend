@@ -4,4 +4,5 @@ import {ITableData} from "./ITableData";
 export interface ITableProps {
     columns?: ITableColumn[];
     data?: ITableData[];
+    className?: string;
 }

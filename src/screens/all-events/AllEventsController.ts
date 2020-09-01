@@ -1,6 +1,7 @@
 import {AllEventsStore} from "./AllEventsStore";
 import {autobind} from "core-decorators";
 import {isUndefined} from "lodash";
+import {UserStore} from "../../components/user-store";
 
 @autobind
 export class AllEventsController {
@@ -11,9 +12,20 @@ export class AllEventsController {
     }
 
     onComponentDidMount(): void {
+        if (UserStore.getInstance().isLogin()) {
+            this.getUserEvents();
+        }
+
         this.store.transport
             .getOrgsList()
             .then(this.store.onSuccessGetOrgsList)
+            .catch(this.store.onError)
+    }
+
+    getUserEvents(): void {
+        this.store.transport
+            .getUserEvents()
+            .then(this.store.onSuccessGetUserEvents)
             .catch(this.store.onError)
     }
 
@@ -40,7 +52,10 @@ export class AllEventsController {
         });
 
         if (!isEmptyData) return;
+        this.getList(id);
+    }
 
+    getList(id: number): void {
         this.store.transport
             .getOrgEventsList(id)
             .then((response) => this.store.onSuccessGetEvents(response, id))

@@ -8,8 +8,8 @@ export class Events extends React.Component {
         return (
             <Tabs
                 tabs={[
-                    {name: "Добавить мероприятие", isActive: true, component: <EventForm/>},
-                    {name: "Показать мои мероприятия", component: <EventsList/>}
+                    {name: "Мои мероприятия", component: <EventsList/>, isActive: true},
+                    {name: "Добавить мероприятие", component: <EventForm/>},
                 ]}
                 classNameHeading = "-links"
             />

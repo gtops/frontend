@@ -6,6 +6,8 @@ import {UserStore} from "../../components/user-store";
 import {EFormTypes} from "../../EFormTypes";
 import * as React from "react";
 import {getFormattedDate} from "../../services/utils";
+import {IAddUserParams} from "../../services/transport/params";
+import {IGetEventParticipantsResponse} from "../../services/transport/responses/IGetEventParticipantsResponse";
 
 @autobind
 export class TeamProfileController {
@@ -39,6 +41,24 @@ export class TeamProfileController {
             .catch(this.store.onError);
     }
 
+    showPopup(id: number, type: string): void {
+        this.store.submitHandler = type === "coach" ? this.deleteCoach : this.deleteParticipant;
+        this.store.selectedId = id;
+        this.store.isConfirmPopupVisible = true;
+        this.store.popupText = "Вы уверены, что хотите удалить ";
+        this.store.popupText += type === "coach" ? "тренера?" : "участинка из команды?";
+    }
+
+    onDelete(): void {
+        this.store.submitHandler(this.store.selectedId);
+        this.store.selectedId = -1;
+        this.store.isConfirmPopupVisible = false;
+    }
+
+    closePopup(): void {
+        this.store.isConfirmPopupVisible = false;
+    }
+
     onComponentDidMount(): void {
         this.getTeamInfo();
         this.getCoaches();
@@ -49,8 +69,32 @@ export class TeamProfileController {
         this.store.transport.getUserTeams().then(this.store.onSuccessGetUserTeams)
     }
 
+    showForm(data: IGetEventParticipantsResponse): void {
+        this.store.isVisible = true;
+        this.store.formType = EFormTypes.USER;
+        this.store.isEditForm = true;
+        this.store.data = {
+            id: data.EventParticipantId,
+            name: data.name,
+            email: data.email,
+            dateOfBirth: data.dateOfBirth,
+            gender: data.gender
+        };
+    }
+
     getTeamInfo(): void {
-        this.store.transport.getTeamInfo(this.store.teamId).then(this.store.onSuccessGetInfo).catch(this.store.onError)
+        this.store.transport
+            .getTeamInfo(this.store.teamId)
+            .then(this.store.onSuccessGetInfo)
+            .then(this.getEventInfo)
+            .catch(this.store.onError)
+    }
+
+    getEventInfo(): void {
+        this.store.transport
+            .getEvent(this.store.orgId, this.store.eventId)
+            .then(this.store.onSuccessGetEventInfo)
+            .catch(this.store.onError)
     }
 
     getCoaches(): void {
@@ -105,12 +149,14 @@ export class TeamProfileController {
     }
 
     showCoachForm(): void {
+        this.store.formType = EFormTypes.COACH;
         this.store.isVisible = true;
-        this.store.formType = EFormTypes.COACH
     }
 
     closeForm(): void {
         this.store.isVisible = false;
+        this.store.data = undefined;
+        this.store.isEditForm = false;
     }
 
     onSuccessAdd(): void {

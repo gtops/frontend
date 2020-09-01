@@ -1,0 +1,64 @@
+.popup-wrapper {
+  z-index: 999;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .popup {
+    border-radius: 6px;
+    background: white;
+    padding: 30px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 767px;
+    text-align: center;
+
+    &:before {
+      content: '';
+      display: block;
+      background-size: contain;
+      background-repeat: no-repeat;
+      margin-right: 20px;
+      width: 40px;
+      height: 40px;
+      background-image: url("./img/success.png");
+    }
+
+    &.-type-error {
+      &:before {
+        background-image: url("./img/fail.png");
+      }
+    }
+
+    &.-type-confirm {
+      font-size: 20px;
+      flex-direction: column;
+
+      .button {
+        margin: 10px 10px 0 10px;
+      }
+
+      &:before {
+        content: none;
+      }
+    }
+
+    .popup__close-icon {
+      background-image: url("./img/close.png");
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+      background-size: contain;
+      position: absolute;
+      right: 15px;
+      top: 15px;
+    }
+  }
+}

@@ -3,7 +3,7 @@ import {observer} from "mobx-react";
 import {autobind} from "core-decorators";
 import {TabsStore} from "./TabsStore";
 import {ITabsProps} from "./ITabsProps";
-import {isEmpty} from "lodash";
+import {isEmpty, isEqual} from "lodash";
 import "./Tabs.scss";
 import {TabsController} from "./TabsController";
 import classNames from "classnames";
@@ -15,6 +15,15 @@ export class Tabs extends React.Component<ITabsProps> {
     private readonly controller = new TabsController(this.store);
 
     componentDidMount(): void {
+        this.updateTabs();
+    }
+
+    componentDidUpdate(prevProps: ITabsProps): void {
+        if (isEqual(prevProps.tabs, this.props.tabs)) return;
+        this.updateTabs();
+    }
+
+    private updateTabs(): void {
         this.store.tabs = this.props.tabs.map(item => {
             let id = item.id;
             if (isEmpty(id)) {
@@ -41,9 +50,16 @@ export class Tabs extends React.Component<ITabsProps> {
                 <div className={tabClasses}>
                     {
                         this.store.tabs.map(item => {
+                            if (item.isVisible === false) return void 0;
+                            let propsTabClass = item.className || "";
+                            let tabClasses = classNames({
+                                "tab": true,
+                                "-active": item.isActive,
+                                [propsTabClass]: true
+                            });
                             return (
                                 <div
-                                    className={item.isActive ? "tab -active" : "tab"}
+                                    className={tabClasses}
                                     onClick={() => this.controller.switchTab(item.id)}
                                     key={item.id}
                                 >{item.name}

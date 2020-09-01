@@ -7,7 +7,9 @@ export interface IGetOrgsListResponse {
     OQRN: string,
     payment_account: string,
     branch: string,
-    bik: string
+    bik: string,
+    countOfAllEvents: number,
+    countOfActiveEvents: number,
     correspondent_account: string;
     [key: string]: string | number;
 }

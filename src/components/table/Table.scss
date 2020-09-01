@@ -30,17 +30,128 @@
     border-bottom: 1px solid $main-color;
     min-height: 50px;
     align-items: center;
+
+    background-color: white;
+    &:nth-child(even) {
+      background-color: #f5f9fc;
+    }
   }
 
   &-item {
     display: flex;
     align-items: center;
-    justify-content: center;
     height: 100%;
     flex: 1;
     color: $text-color;
     text-transform: uppercase;
     font-family: 'Noto Sans', sans-serif;
+    justify-content: center;
     text-align: center;
+    padding: 5px 0;
+
+    &.delete {
+      max-width: 50px;
+    }
+
+    &.name {
+      justify-content: left;
+      padding-left: 20px;
+      text-align: left;
+    }
+
+    a {
+      color: #010E8A;
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.-type-result {
+    .table-item {
+      justify-content: flex-start;
+      text-align: left;
+      padding: 10px 20px;
+      text-transform: none;
+      position: relative;
+
+      &.-type-number {
+        flex: 100px 0 0;
+        max-width: 100px;
+      }
+
+      &.-type-medal {
+        flex: 70px 0 0;
+      }
+
+      &.-color {
+        background-color: aliceblue;
+        border-color: white!important;
+        //position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+    }
+
+    .table__header {
+      color: #cccdd6;
+      height: auto;
+      align-items: center;
+
+      .table-item {
+        font-size: 14px;
+        font-weight: bold;
+
+        &.-color {
+          background-color: inherit;
+          color: #010E8A;
+        }
+      }
+    }
+
+    .table__line {
+      background-color: white;
+      margin-bottom: 10px;
+      min-height: 70px;
+
+      .table-item {
+        min-height: 50px;
+        color: black;
+
+        &:not(:last-child) {
+          border-right: 1px solid;
+          border-color: #f5f9fc;
+        }
+
+        &.-type-number {
+          justify-content: flex-end;
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  &.-type-orgs {
+    .table-item {
+      text-transform: none;
+      color: black;
+    }
+
+    .table__header {
+      background-color: white;
+      font-weight: bold;
+      font-size: 13px;
+
+      .table-item {
+        color: gray;
+      }
+    }
+
+    .table__line {
+      background-color: white;
+      border: none;
+    }
   }
 }

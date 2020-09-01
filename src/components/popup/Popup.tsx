@@ -6,6 +6,7 @@ import {PopupStore} from "./PopupStore";
 import {PopupController} from "./PopupController";
 import {attempt} from "lodash";
 import {observer} from "mobx-react";
+import "./Popup.scss";
 
 @autobind
 @observer
@@ -40,6 +41,5 @@ export class Popup extends React.Component<IPopupProps> {
     private handleCloseClick(): void {
         attempt(this.props.onClose!);
         this.controller.handleCloseClick();
-
     }
 }

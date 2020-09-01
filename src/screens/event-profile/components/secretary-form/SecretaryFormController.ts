@@ -34,10 +34,8 @@ export class SecretaryFormController {
     }
 
     onComponentDidMount(props: ISecretaryFormProps): void {
-        this.store.eventId = props.eventId;
         this.store.orgId = props.orgId;
-        this.store.onSuccessImpl = props.onSuccess;
-        this.store.onErrorProp = props.onError;
+        this.store.onSuccessProp = props.onSuccess;
     }
 
     handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
@@ -51,26 +49,26 @@ export class SecretaryFormController {
 
     private addExistingSecretary(): void {
         if (isEmpty(this.store.email)) {
-            attempt(this.store.onErrorImpl!, "Введите почту.");
+            this.store.message = "Введите почту.";
             return;
         }
 
         this.store.transport
-            .addExistingSecretary(this.store.email, this.store.orgId, this.store.eventId)
+            .addExistingSecretary(this.store.email, this.store.orgId)
             .then(this.store.onSuccess)
             .catch(this.store.onError);
     }
 
     private addNewSecretary(): void {
         if (!this.validateForm()) {
-            attempt(this.store.onErrorImpl!, "Все поля должны быть заполнены");
+            this.store.message = "Все поля должны быть заполнены";
             return;
         }
         this.store.transport
             .inviteUser(this.store.formValues)
             .then(() => {
                 this.store.transport
-                    .addExistingSecretary(this.store.formValues.email, this.store.orgId, this.store.eventId)
+                    .addExistingSecretary(this.store.formValues.email, this.store.orgId)
                     .then(this.store.onSuccess)
                     .catch(this.store.onError);
             })
@@ -88,5 +86,13 @@ export class SecretaryFormController {
 
     onChangeRadio(): void {
         this.store.isAddChecked = !this.store.isAddChecked;
+    }
+
+    onPopupClose(): void {
+        if (!this.store.isError) {
+            this.store.formValues = this.store.EMPTY_FORM_VALUES;
+        }
+        this.store.isError = false;
+        this.store.message = "";
     }
 }

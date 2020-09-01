@@ -11,6 +11,9 @@ import {ERoles, UserStore} from "../../components/user-store";
 import {EFormTypes} from "../../EFormTypes";
 import {isEmpty} from "lodash";
 import classNames from "classnames";
+import {ConfirmPopup} from "../../components/confirm-popup";
+import {EPath} from "../../EPath";
+import {getEventLink} from "../../services/utils";
 
 @autobind
 @observer
@@ -27,10 +30,11 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
     }
 
     render(): React.ReactNode {
-        let wrapperTitle = this.store.formType == EFormTypes.COACH ? "Добавить тренера" : "Добавить участника";
-        let successMessage = this.store.formType == EFormTypes.COACH ? "Тренер успешно добавлен" : "Участник успешно добавлен";
         return (
-            <div className={"container"}>
+            <div className={"container team-profile"}>
+                <a className={"back-link"}
+                   href={getEventLink(this.store.orgId, this.store.eventId)}>Вернуться
+                    на страницу мероприятия</a>
                 {
                     this.store.isChangingName
                         ?
@@ -42,22 +46,22 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
                         </div>
                         : <h1
                             onClick={this.controller.editName}
-                            className={classNames({"event-name": true, "-editable": this.store.canEditEvent})}>
+                            className={classNames({"event-name": true, "-editable": this.store.canEdit()})}>
                             {this.store.name}
                         </h1>
 
                 }
                 {
-                    this.store.canEditEvent
+                    this.store.canEdit()
                         ? <div>
                             <div className={"button-container"}>
-                                <div className={"button -fixed"} onClick={this.controller.showUserForm}>
+                                <div className={"add-button -closed"} onClick={this.controller.showUserForm}>
                                     Добавить участника
                                 </div>
                                 {
                                     UserStore.getInstance().role == ERoles.LOCAL_ADMIN || UserStore.getInstance().role == ERoles.SECRETARY
                                         ? (
-                                            <div className={"button -fixed"} onClick={this.controller.showCoachForm}>
+                                            <div className={"add-button -closed"} onClick={this.controller.showCoachForm}>
                                                 Добавить тренера
                                             </div>
                                         )
@@ -65,14 +69,16 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
                                 }
                             </div>
                             <AsideWrapper
-                                title={wrapperTitle}
+                                title={this.store.getWrapperTitle()}
                                 isVisible={this.store.isVisible}
                                 component={
                                     <UserForm
                                         formType={this.store.formType}
-                                        successMessage={successMessage}
+                                        successMessage={this.store.getSuccessMessage()}
                                         id={this.store.teamId}
                                         onSuccess={this.controller.onSuccessAdd}
+                                        isEditForm={this.store.isEditForm}
+                                        data={this.store.data}
                                     />
                                 }
                                 onClose={this.controller.closeForm}
@@ -85,7 +91,7 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
                     isEmpty(this.store.coaches)
                         ? <p>У команды пока нет тренеров.</p>
                         : <Table columns={
-                            this.store.canEditEvent &&
+                            this.store.canEdit() &&
                             (UserStore.getInstance().role == ERoles.LOCAL_ADMIN || UserStore.getInstance().role == ERoles.SECRETARY)
                                 ? [
                                     {accessor: "name", title: "Имя", className: "name"},
@@ -105,7 +111,7 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
                         : <div>
                             <Table columns={this.getColumns()} data={this.store.participants}/>
                             {
-                                this.store.canEditEvent &&
+                                this.store.canEdit() &&
                                 (UserStore.getInstance().role == ERoles.LOCAL_ADMIN || UserStore.getInstance().role == ERoles.SECRETARY)
                                     ? <div className={"button"} onClick={this.controller.acceptAllTeam}>
                                         Подтвердить всех
@@ -114,30 +120,41 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
                             }
                         </div>
                 }
+                <ConfirmPopup
+                    isVisible={this.store.isConfirmPopupVisible}
+                    onSubmit={this.controller.onDelete}
+                    onCancel={this.controller.closePopup}
+                    popupText={this.store.popupText}
+                />
             </div>
         )
     }
 
     private getColumns(): ITableColumn[] {
-        if (this.store.canEditEvent) {
+        if (this.store.canEdit()) {
             if (UserStore.getInstance().role == ERoles.SECRETARY || UserStore.getInstance().role == ERoles.LOCAL_ADMIN) {
                 return ([
+                    {accessor: "_userId", title: "ID участника", className: "name", cell: this.setIdCell},
                     {accessor: "name", title: "Имя", className: "name"},
                     {accessor: "email", title: "Почта"},
+                    {accessor: "dateOfBirth", title: "Дата рождения"},
                     {accessor: "status", title: "Статус"},
                     {accessor: "", title: "Подтвердить", cell: this.setParticipantAcceptCell},
-                    {accessor: "delete", title: "", cell: this.setParticipantCell}
+                    {accessor: "delete", title: "", cell: this.setParticipantCell, className: "delete"}
                 ])
             } else if (UserStore.getInstance().role == ERoles.COACH) {
                 return ([
-                    {accessor: "name", title: "Имя", className: "name"},
+                    {accessor: "_userId", title: "ID участника", className: "name", cell: this.setIdCell},
+                    {accessor: "_name", title: "Имя", cell: this.setNameCell},
                     {accessor: "email", title: "Почта"},
+                    {accessor: "dateOfBirth", title: "Дата рождения"},
                     {accessor: "status", title: "Статус"},
-                    {accessor: "delete", title: "", cell: this.setDeleteParticipantCell},
+                    {accessor: "delete", title: "", cell: this.setDeleteParticipantCell, className: "delete"},
                 ])
             }
         }
         return [
+            {accessor: "_userId", title: "ID участника", className: "name", cell: this.setIdCell},
             {accessor: "name", title: "Имя", className: "name"},
             {accessor: "email", title: "Почта"},
             {accessor: "status", title: "Статус"},
@@ -148,18 +165,37 @@ export class TeamProfile extends React.Component<ITeamProfileProps> {
         if (data.data.isConfirmed) {
             return <span>удаление недоступно</span>
         }
-        return <span onClick={() => this.controller.deleteParticipant(data.data.EventParticipantId)}
+        return <span onClick={() => this.controller.showPopup(data.data.EventParticipantId, "participant")}
                      className={"delete-icon"}/>
     }
 
+    private setIdCell(data: any): React.ReactNode {
+        return (
+            <a href={EPath.USER_RESULT.replace(":eventId", data.data.eventId).replace(":userId", data.data.userId)}>
+                {data.data.userId}
+            </a>
+        )
+    }
+
     private setDeleteCoachCell(data: any): React.ReactNode {
-        return <span onClick={() => this.controller.deleteCoach(data.data.teamLeadId)}
+        return <span onClick={() => this.controller.showPopup(data.data.teamLeadId, "coach")}
                      className={"delete-icon"}/>
     }
 
     private setParticipantCell(data: any): React.ReactNode {
-        return <span onClick={() => this.controller.deleteParticipant(data.data.EventParticipantId)}
+        return <span onClick={() => this.controller.showPopup(data.data.EventParticipantId, "participant")}
                      className={"delete-icon"}/>
+    }
+
+    private setNameCell(data: any): React.ReactNode {
+        return (
+            <span
+                onClick={() => this.controller.showForm(data.data)}
+                className={"event-name -editable"}
+            >
+                {data.data.name}
+            </span>
+        )
     }
 
     private setParticipantAcceptCell(data: any): React.ReactNode {

@@ -1,4 +1,4 @@
-import axios, {AxiosError, AxiosResponse} from "axios";
+    import axios, {AxiosError, AxiosResponse} from "axios";
 import {get} from "lodash";
 import {EApiRoutes} from "./EApiRoutes";
 import {
@@ -11,7 +11,7 @@ import {
     IEditOrgParams,
     IAddAdminParams,
     IAddEventParams,
-    IAddSecretaryParams
+    IAddSecretaryParams, ISportObjectPrams, IJudgePrams, IAddUserParams, IEditUserParams
 } from "./params";
 import {
     IGetTrialsResponse,
@@ -25,13 +25,16 @@ import {
     IGetOrgEventsListResponse,
     IRefreshResponse,
     IGetSecretaries,
-    IGetEventResponse,
+    IGetEventResponse, IGetEventResultsResponse,
     IGetOrgInfoResponse, IGetLocalAdminsResponse, IGetTeamsResponse, IGetEventParticipantsResponse,
-    IGetTeamCoachesResponse, IGetUserProfileInfo, IGetTeamInfoResponse,
+    IGetTeamCoachesResponse, IGetUserProfileInfo, IGetTeamInfoResponse, IGetSportObjectResponse, IGetJudgesResponse,
+    IGetTablesResponse, IGetEventTrialsResponse, IGetEventAddedTrialsResponse, IGetCurrentTableResponse,
+    IGetUserResultResponse, IGetTrialResultResponse,
 } from "./responses";
 import {IGetUserEventsResponse} from "./responses/IGetUserEventsResponse";
 import {UserStore} from "../../components/user-store";
 import {EPath} from "../../EPath";
+import {IAddEventTrialParams} from "./params";
 
 export class Transport<T extends object = object> {
     private static BASE_URL: string;
@@ -76,7 +79,9 @@ export class Transport<T extends object = object> {
                         UserStore.getInstance().refreshToken = response.data.refreshToken;
                         return axios(originalRequest);
                     }).catch(error => {
-                        window.location.replace(EPath.LOGIN);
+                        if (error.response.data.errors && error.response.data.errors[0] && error.response.data.errors[0].type === "UNAUTHENTICATED") {
+                            window.location.replace(EPath.LOGIN);
+                        }
                     });
                 }
                 return Promise.reject(error);
@@ -86,6 +91,14 @@ export class Transport<T extends object = object> {
 
     async getParticipantInfo(id: string): Promise<AxiosResponse<IGetUserInfoResponse>> {
         return this.client.get(`${EApiRoutes.GET_PARTICIPANT_INFO}`.replace("{:uid}", id));
+    }
+
+    async getAllEventResults(eventId: number): Promise<AxiosResponse<IGetEventResultsResponse>> {
+        return this.client.get(`${EApiRoutes.ALL_RESULTS}`.replace("{:eventId}", eventId.toString()), Transport.getHeaderToken());
+    }
+
+    async getCSV(eventId: number): Promise<AxiosResponse<string>> {
+        return this.client.get(`${EApiRoutes.GET_CSV}`.replace("{:eventId}", eventId.toString()), Transport.getHeaderToken());
     }
 
     async getUserProfileInfo(): Promise<AxiosResponse<IGetUserProfileInfo>> {
@@ -204,10 +217,54 @@ export class Transport<T extends object = object> {
         return this.client.get(`${EApiRoutes.EVENTS}`.replace("{:id}", id.toString()));
     }
 
+    async getEventAddedTrials(eventId: number): Promise<AxiosResponse<IGetEventAddedTrialsResponse[]>> {
+        return this.client.get(EApiRoutes.GET_EVENT_ADDED_TRIALS.replace("{:eventId}", eventId.toString()));
+    }
+
+    async removeEventTrial(trialInEventId: number): Promise<AxiosResponse<IGetEventAddedTrialsResponse[]>> {
+        return this.client.delete(
+            EApiRoutes.REMOVE_EVENT_TRIAL.replace("{:trialInEventId}", trialInEventId.toString()),
+            Transport.getHeaderToken()
+        );
+    }
+
+    async getCurrentTable(eventId: number): Promise<AxiosResponse<IGetCurrentTableResponse>> {
+        return this.client.get(EApiRoutes.GET_CURRENT_EVENT_TABLE.replace("{:eventId}", eventId.toString()));
+    }
+
+    async getEventTrials(eventId: number): Promise<AxiosResponse<IGetEventTrialsResponse[]>> {
+        return this.client.get(EApiRoutes.GET_EVENT_TRIALS.replace("{:eventId}", eventId.toString()));
+    }
+
+    async addEventTrial(eventId: number, params: IAddEventTrialParams): Promise<AxiosResponse> {
+        return this.client.post(
+            EApiRoutes.ADD_EVENT_TRIAL.replace("{:eventId}", eventId.toString()),
+            params,
+            Transport.getHeaderToken()
+        );
+    }
+
+    async changeEventStatus(eventId: number): Promise<AxiosResponse> {
+        return this.client.post(
+            EApiRoutes.CHANGE_EVENT_STATUS.replace("{:eventId}", eventId.toString()),
+            {},
+            Transport.getHeaderToken()
+        );
+    }
+
     async getEvent(orgId: number, eventId: number): Promise<AxiosResponse<IGetEventResponse>> {
         return this.client.get(`${EApiRoutes.EVENT}`
             .replace("{:orgId}", orgId.toString())
             .replace("{:eventId}", eventId.toString())
+        );
+    }
+
+    async addJudgeInTrial(trialInEventId: number, refereeInOrganizationId: number): Promise<AxiosResponse<IGetEventResponse>> {
+        return this.client.post(EApiRoutes.ADD_JUDGE_IN_TRIAL
+                .replace("{:trialInEventId}", trialInEventId.toString())
+                .replace("{:refereeInOrganizationId}", refereeInOrganizationId.toString()),
+            {},
+            Transport.getHeaderToken()
         );
     }
 
@@ -222,6 +279,10 @@ export class Transport<T extends object = object> {
 
     async userEventRequest(eventId: number): Promise<AxiosResponse> {
         return this.client.post(`${EApiRoutes.EVENT_REQUEST}`.replace("{:eventId}", eventId.toString()), {}, Transport.getHeaderToken());
+    }
+
+    async cancelUserEventRequest(eventId: number): Promise<AxiosResponse> {
+        return this.client.post(EApiRoutes.CANCEL_REQUEST.replace("{:eventId}", eventId.toString()), {}, Transport.getHeaderToken());
     }
 
     async getEventParticipants(eventId: number): Promise<AxiosResponse<IGetEventParticipantsResponse[]>> {
@@ -255,11 +316,10 @@ export class Transport<T extends object = object> {
         );
     }
 
-    async addExistingSecretary(email: string, orgId: number, eventId: number): Promise<AxiosResponse> {
+    async addExistingSecretary(email: string, orgId: number): Promise<AxiosResponse> {
         return this.client.post(
             `${EApiRoutes.SECRETARY_EXIST}`
-                .replace("{:orgId}", orgId.toString())
-                .replace("{:eventId}", eventId.toString()),
+                .replace("{:orgId}", orgId.toString()),
             {email: email}, Transport.getHeaderToken()
         );
     }
@@ -274,11 +334,35 @@ export class Transport<T extends object = object> {
         );
     }
 
+    async removeSecretaryFromOrg(orgId: number, secretaryId: number): Promise<AxiosResponse> {
+        return this.client.delete(
+            EApiRoutes.REMOVE_SECRETARY_FROM_ORG
+                .replace("{:orgId}", orgId.toString())
+                .replace("{:secretaryId}", secretaryId.toString()),
+            Transport.getHeaderToken()
+        );
+    }
+
     async getSecretaries(orgId: number, eventId: number): Promise<AxiosResponse<IGetSecretaries[]>> {
         return this.client.get(
             `${EApiRoutes.SECRETARY}`
                 .replace("{:orgId}", orgId.toString())
                 .replace("{:eventId}", eventId.toString()),
+            Transport.getHeaderToken()
+        );
+    }
+
+    async getSecretariesCatalog(orgId: number): Promise<AxiosResponse<IGetSecretaries[]>> {
+        return this.client.get(EApiRoutes.ORG_SECRETARY_CATALOG.replace("{:orgId}", orgId.toString()),
+            Transport.getHeaderToken()
+        );
+    }
+
+    async addSecretaryInEvent(orgId: number, eventId: number, secretaryOnOrganizationId: number): Promise<AxiosResponse> {
+        return this.client.post(EApiRoutes.ADD_SECRETARY_IN_EVENT
+                .replace("{:orgId}", orgId.toString())
+                .replace("{:eventId}", eventId.toString())
+                .replace("{:secretaryOnOrganizationId}", secretaryOnOrganizationId.toString()), {},
             Transport.getHeaderToken()
         );
     }
@@ -319,6 +403,15 @@ export class Transport<T extends object = object> {
         return this.client.post(EApiRoutes.TEAM_PARTICIPANT.replace("{:teamId}", teamId.toString()), {email}, Transport.getHeaderToken());
     }
 
+    async editTeamParticipant(participantId: number, params: IEditUserParams): Promise<AxiosResponse> {
+        return this.client.put(
+            EApiRoutes.EDIT_PARTICIPANT
+                .replace("{:participantId}", participantId.toString()),
+            params,
+            Transport.getHeaderToken()
+        );
+    }
+
     async addPersonalParticipant(id: number, email: string): Promise<AxiosResponse> {
         return this.client.post(EApiRoutes.EVENT_PARTICIPANTS.replace("{:eventId}", id.toString()), {email}, Transport.getHeaderToken());
     }
@@ -337,6 +430,99 @@ export class Transport<T extends object = object> {
 
     async acceptAllTeam(teamId: number): Promise<AxiosResponse> {
         return this.client.post(EApiRoutes.TEAM_ACCEPT.replace("{:teamId}", teamId.toString()), {}, Transport.getHeaderToken());
+    }
+
+    async removeTeam(teamId: number): Promise<AxiosResponse> {
+        return this.client.delete(EApiRoutes.TEAM.replace("{:teamId}", teamId.toString()), Transport.getHeaderToken());
+    }
+
+    //Sport objects
+    async addSportObject(orgId: number, params: ISportObjectPrams): Promise<AxiosResponse> {
+        return this.client.post(EApiRoutes.SPORT_OBJECT.replace("{:orgId}", orgId.toString()), params, Transport.getHeaderToken());
+    }
+
+    async getSportObject(orgId: number): Promise<AxiosResponse<IGetSportObjectResponse[]>> {
+        return this.client.get(EApiRoutes.SPORT_OBJECT.replace("{:orgId}", orgId.toString()), Transport.getHeaderToken());
+    }
+
+    async editSportObject(orgId: number, objectId: number, params: ISportObjectPrams): Promise<AxiosResponse> {
+        return this.client.post(
+            EApiRoutes.SPORT_OBJECT_ITEM
+                .replace("{:orgId}", orgId.toString())
+                .replace("{:sportObjectId}", objectId.toString()),
+            params,
+            Transport.getHeaderToken()
+        );
+    }
+
+    async removeSportObject(orgId: number, objectId: number): Promise<AxiosResponse> {
+        return this.client.delete(
+            EApiRoutes.SPORT_OBJECT_ITEM
+                .replace("{:orgId}", orgId.toString())
+                .replace("{:sportObjectId}", objectId.toString()),
+            Transport.getHeaderToken()
+        );
+    }
+
+    //Judges
+    async addJudge(orgId: number, email: string): Promise<AxiosResponse> {
+        return this.client.post(EApiRoutes.JUDGES.replace("{:orgId}", orgId.toString()), {email}, Transport.getHeaderToken());
+    }
+
+    async getJudges(orgId: number): Promise<AxiosResponse<IGetJudgesResponse[]>> {
+        return this.client.get(EApiRoutes.JUDGES.replace("{:orgId}", orgId.toString()), Transport.getHeaderToken());
+    }
+
+    async removeJudge(orgId: number, judgeId: number): Promise<AxiosResponse> {
+        return this.client.delete(
+            EApiRoutes.REMOVE_JUDGE
+                .replace("{:orgId}", orgId.toString())
+                .replace("{:judgeId}", judgeId.toString()),
+            Transport.getHeaderToken()
+        );
+    }
+
+    async removeJudgeFromEvent(judgeId: number): Promise<AxiosResponse> {
+        return this.client.delete(
+            EApiRoutes.REMOVE_JUDGE_FROM_TRIAL.replace("{:judgeId}", judgeId.toString()),
+            Transport.getHeaderToken()
+        );
+    }
+
+    //Tables
+    async getTables(): Promise<AxiosResponse<IGetTablesResponse[]>> {
+        return this.client.get(EApiRoutes.TABLES);
+    }
+
+    async addTable(eventId: number, tableId: number): Promise<AxiosResponse> {
+        return this.client.post(
+            EApiRoutes.ADD_TABLE
+                .replace("{:eventId}", eventId.toString())
+                .replace("{:tableId}", tableId.toString()),
+            {},
+            Transport.getHeaderToken()
+        );
+    }
+
+    //Result
+    async getUserResult(userId: number, eventId: number): Promise<AxiosResponse<IGetUserResultResponse>> {
+        return this.client.get(EApiRoutes.GET_USER_RESULT
+                .replace("{:userId}", userId.toString())
+                .replace("{:eventId}", eventId.toString()),
+            Transport.getHeaderToken()
+        );
+    }
+
+    async getTrialResult(trialInEventId: number): Promise<AxiosResponse<IGetTrialResultResponse>> {
+        return this.client.get(EApiRoutes.GET_TRIAL_RESULT.replace("{:trialInEventId}", trialInEventId.toString()),
+            Transport.getHeaderToken()
+        );
+    }
+
+    async updateUserTrialResult(trialInEventId: number, firstResult: string): Promise<AxiosResponse> {
+        return this.client.put(EApiRoutes.PUT_FIRST_RESULT.replace("{:resultTrialInEventId}", trialInEventId.toString()),
+            {firstResult}, Transport.getHeaderToken()
+        );
     }
 
     private static getHeaderToken() {

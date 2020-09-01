@@ -24,6 +24,7 @@ export class UserProfile extends React.Component {
                     columns={[
                         {accessor: "_name", title: "Название", className: "name", cell: this.setNameCell},
                         {accessor: "startDate", title: "Дата начала"},
+                        {accessor: "status", title: "Статус"},
                         {accessor: "description", title: "Описание"},
                     ]}
                     data={this.store.data}/>

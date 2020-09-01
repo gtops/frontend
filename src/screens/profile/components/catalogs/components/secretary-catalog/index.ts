@@ -1,0 +1,1 @@
+export {SecretaryCatalog} from "./SecretaryCatalog"

@@ -27,6 +27,6 @@ export class RegistrationStore extends Store {
         this.isError = true;
         let errors = error.response ? error.response.data.errors : [];
         let message = errors.length > 0 ? errors[0].description : "";
-        this.message = `Произошла ошибка. ${message}`
+        this.message = message
     }
 }
