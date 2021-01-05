@@ -16,7 +16,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/react-select": "^2.0.17",
     "@types/selectize": "^0.12.34",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
